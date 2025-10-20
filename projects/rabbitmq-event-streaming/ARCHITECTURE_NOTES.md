@@ -1,59 +1,73 @@
-# Event-Driven Architecture Migration - Real-World Achievement
+# Event-Driven Architecture Enhancement - Real-World Achievement
 
 **Project**: Student Application Management Platform (AMT)
-**Migration**: WebSocket-based Integration → AWS SNS/SQS Event Streaming
-**Impact**: Improved reliability, scalability, and observability for Salesforce data synchronization
+**Enhancement**: Added AWS SNS/SQS Monitoring Infrastructure to Existing WebSocket Integration
+**Impact**: Improved debugging capabilities and data flow management for Salesforce synchronization
 
 ---
 
 ## Problem Statement
 
-The platform needed to receive real-time updates from a Salesforce-based system (Passport) for:
+The platform receives real-time updates from a Salesforce-based system (Passport) via WebSocket connection for:
 - Student application opportunities
 - Document attachments
 - Application form items
 
-**Initial Approach**: WebSocket connection for live event streaming
+**Existing Approach**: WebSocket connection for live event streaming
 - Direct persistent connection from Ruby application to Passport system
 - Real-time data synchronization
 
-**Challenges**:
-- WebSocket connection stability issues with Ruby client
-- Difficulty maintaining persistent connections at scale
-- Limited visibility into message processing failures
-- Poor error recovery mechanisms
-- Scaling challenges as more programs onboarded
+**Challenges with Observability**:
+- Limited visibility into message flow and processing
+- Difficult to debug data influx patterns
+- No built-in retry or error recovery mechanisms
+- Hard to track failed messages or processing errors
+- Challenging to monitor event volume and types
 
 ---
 
-## Solution: Event-Driven Architecture with AWS SNS/SQS
+## Solution: Added AWS SNS/SQS Monitoring Infrastructure
 
 ### Architecture Overview
 
 ```
 Salesforce (Passport)
         ↓
-    SNS Topic
+    ┌───────────────────┐
+    │   WebSocket       │ (Primary - real-time events)
+    │   Connection      │
+    └───────────────────┘
         ↓
-    SQS Queue (buffered)
-        ↓
-    Long-Polling Consumer (Ruby)
+    AMT Application
         ↓
     Sidekiq Jobs (async processing)
         ↓
-    AMT Application Database
+    Database
+
+        +  (Added for Observability)
+
+Salesforce (Passport)
+        ↓
+    SNS Topic (event routing)
+        ↓
+    SQS Queue (monitoring/debugging)
+        ↓
+    Long-Polling Consumer (Ruby)
+        ↓
+    Observability & DLQ Handling
 ```
 
 ### Key Components
 
-#### 1. **SNS/SQS Integration**
-- **SNS Topic**: `Passport Events` (application_broker)
-- **SQS Queue**: Durable message buffer
+#### 1. **SNS/SQS Monitoring Infrastructure** (Added Layer)
+- **SNS Topics**: Route events by type (opportunities, attachments, items)
+- **SQS Queues**: Buffer and monitor event flow
+- **Dead Letter Queues**: Capture failed messages for debugging
 - **Benefits**:
-  - Decoupled publisher/subscriber
-  - Message persistence (no data loss)
-  - Built-in retry mechanisms
-  - Scalable message distribution
+  - Visibility into data influx patterns
+  - Easy debugging of message processing
+  - Failed message tracking and recovery
+  - Topic-based event routing
 
 #### 2. **Message Consumer (PassportSqs::Consumer)**
 - Long-polling pattern with AWS SDK
@@ -126,29 +140,23 @@ active_span.set_tag('sqs_stats.messages', stats.received_message_count)
 
 ## Impact & Results
 
-### Reliability Improvements
-- ✅ **Eliminated WebSocket connection drops**
-- ✅ **Zero message loss** (SQS durability guarantees)
-- ✅ **Automatic retry** with exponential backoff
-- ✅ **Dead Letter Queue** for permanently failed messages
+### Observability Improvements
+- ✅ **Easier debugging** of data flow through topic-based routing
+- ✅ **Dead Letter Queue tracking** for failed message visibility
+- ✅ **Better management of data influx** by event type
+- ✅ **Structured logging** for troubleshooting integration issues
 
-### Scalability Gains
-- ✅ **Batch processing**: 10x throughput vs single message processing
-- ✅ **Horizontal scaling**: Multiple consumers can poll same queue
-- ✅ **Backpressure handling**: SQS buffers spikes in event volume
-- ✅ **Concurrency control**: Prevents race conditions on same record
-
-### Observability Enhancements
-- ✅ **End-to-end tracing** with Datadog APM
-- ✅ **Structured logging** for debugging
-- ✅ **Metrics dashboards** for queue depth, latency, errors
-- ✅ **Alerting** on processing failures
+### Monitoring Enhancements
+- ✅ **Visibility into event volume** across different topics
+- ✅ **Failed message tracking** without losing data
+- ✅ **Queue metrics** for monitoring integration health
+- ✅ **Datadog APM integration** for distributed tracing
 
 ### Operational Benefits
-- ✅ **Reduced on-call incidents** from connection failures
-- ✅ **Easier debugging** with trace IDs and logs
-- ✅ **Configurable throttling** for load management
-- ✅ **Graceful degradation** during Salesforce outages
+- ✅ **Simplified troubleshooting** of Passport integration issues
+- ✅ **Better error recovery** through DLQ message replay
+- ✅ **Topic-based routing** for organized event handling
+- ✅ **Improved integration monitoring** without disrupting websocket flow
 
 ---
 

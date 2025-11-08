@@ -38,15 +38,46 @@ body {
 }
 
 /* ==========================================================================
+   Skip Navigation Link (WCAG 2.4.1)
+   ========================================================================== */
+.skip-link {
+    position: absolute;
+    left: -10000px;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+
+.skip-link:focus {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: auto;
+    height: auto;
+    padding: 1rem 2rem;
+    background: #000;
+    color: #fff;
+    text-decoration: none;
+    z-index: 10000;
+    font-weight: 600;
+    border-bottom-right-radius: var(--border-radius);
+}
+
+/* ==========================================================================
    Site Header & Navigation
    ========================================================================== */
 .site-header {
     position: sticky;
     top: 0;
+    /* Improved opacity for better readability (Issue #6) */
     background: var(--background-color);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     z-index: 100;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     padding: var(--spacing-sm) 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .site-nav__link {
@@ -56,6 +87,11 @@ body {
 .site-nav__link:hover {
     color: var(--color-primary);
     text-decoration: none;
+}
+
+.site-nav__link:focus {
+    outline: 3px solid var(--color-primary);
+    outline-offset: 2px;
 }
 
 /* ==========================================================================
@@ -316,6 +352,30 @@ body {
 .contact-section__info {
     text-align: center;
     color: var(--color-secondary);
+}
+
+/* ==========================================================================
+   Focus Indicators (WCAG 2.4.7)
+   ========================================================================== */
+a:focus,
+button:focus,
+[role="button"]:focus,
+input:focus,
+textarea:focus,
+select:focus {
+    outline: 3px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+/* Ensure focus is never completely removed */
+*:focus:not(:focus-visible) {
+    outline: 3px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+*:focus-visible {
+    outline: 3px solid var(--color-primary);
+    outline-offset: 2px;
 }
 
 /* ==========================================================================

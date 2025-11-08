@@ -15,9 +15,12 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <!-- Skip navigation link for keyboard users (WCAG 2.4.1) -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
     <!-- Header Navigation -->
     <header class="site-header container">
-        <nav class="site-nav">
+        <nav class="site-nav" aria-label="Main navigation">
             <ul class="site-nav__brand">
                 <li><strong>Christopher Junker</strong></li>
             </ul>
@@ -32,7 +35,7 @@
     </header>
 
     <!-- Main Content -->
-    <main class="site-main container">
+    <main id="main-content" class="site-main container" tabindex="-1">
 
         <!-- Hero Section -->
         <section id="hero" class="hero-section">

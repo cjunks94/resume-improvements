@@ -70,10 +70,10 @@ body {
 .site-header {
     position: sticky;
     top: 0;
+
     /* Improved opacity for better readability (Issue #6) */
     background: var(--background-color);
     backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
     z-index: 100;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     padding: var(--spacing-sm) 0;
@@ -368,12 +368,12 @@ select:focus {
 }
 
 /* Ensure focus is never completely removed */
-*:focus:not(:focus-visible) {
+*:focus-visible {
     outline: 3px solid var(--color-primary);
     outline-offset: 2px;
 }
 
-*:focus-visible {
+*:focus:not(:focus-visible) {
     outline: 3px solid var(--color-primary);
     outline-offset: 2px;
 }

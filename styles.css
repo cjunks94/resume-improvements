@@ -98,7 +98,7 @@ body {
    Hero Section
    ========================================================================== */
 .hero-section {
-    padding: var(--spacing-xl) 0;
+    padding: var(--spacing-md) var(--spacing-sm);
     text-align: center;
     background: var(--background-color);
     border: 2px solid rgba(0, 102, 204, 0.2);
@@ -111,13 +111,13 @@ body {
 }
 
 .hero-section__title {
-    font-size: 3rem;
+    font-size: 1.75rem;
     font-weight: 700;
     margin-bottom: var(--spacing-xs);
 }
 
 .hero-section__subtitle {
-    font-size: 1.25rem;
+    font-size: 1rem;
     color: var(--color-secondary);
     font-weight: 400;
 }
@@ -125,7 +125,7 @@ body {
 .hero-section__summary {
     max-width: 800px;
     margin: 0 auto var(--spacing-md);
-    font-size: 1.1rem;
+    font-size: 1rem;
     line-height: 1.8;
 }
 
@@ -162,7 +162,7 @@ body {
 
 .tech-radar-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
     gap: var(--spacing-md);
     margin-bottom: var(--spacing-md);
 }
@@ -207,8 +207,8 @@ body {
 
 .tech-radar-section__actions {
     display: flex;
+    flex-direction: column;
     gap: var(--spacing-sm);
-    flex-wrap: wrap;
 }
 
 /* ==========================================================================
@@ -220,7 +220,7 @@ body {
 
 .projects-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
     gap: var(--spacing-md);
 }
 
@@ -310,9 +310,9 @@ body {
 
 .resume-downloads {
     display: flex;
+    flex-direction: column;
     gap: var(--spacing-sm);
     margin-bottom: var(--spacing-lg);
-    flex-wrap: wrap;
 }
 
 .resume-highlights {
@@ -349,9 +349,9 @@ body {
 
 .contact-links {
     display: flex;
+    flex-direction: column;
     gap: var(--spacing-sm);
     margin-bottom: var(--spacing-md);
-    flex-wrap: wrap;
 }
 
 .contact-section__info {
@@ -426,50 +426,47 @@ select:focus {
 }
 
 /* ==========================================================================
-   Responsive Design
+   Responsive Design - Mobile-First Approach
    ========================================================================== */
-@media (max-width: 768px) {
+
+/* Small tablets and larger (481px+) */
+@media (min-width: 481px) {
+    .hero-section {
+        padding: var(--spacing-lg) var(--spacing-md);
+    }
+
     .hero-section__title {
         font-size: 2rem;
     }
 
     .hero-section__subtitle {
-        font-size: 1rem;
-    }
-
-    .hero-section__summary {
-        font-size: 1rem;
-    }
-
-    .tech-radar-grid,
-    .projects-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .resume-downloads,
-    .contact-links,
-    .tech-radar-section__actions {
-        flex-direction: column;
-    }
-
-    .site-nav {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .site-nav__links {
-        flex-wrap: wrap;
-        justify-content: flex-start;
+        font-size: 1.125rem;
     }
 }
 
-@media (max-width: 480px) {
+/* Tablets and small laptops (769px+) */
+@media (min-width: 769px) {
     .hero-section {
-        padding: var(--spacing-md) var(--spacing-sm);
+        padding: var(--spacing-xl) 0;
     }
 
     .hero-section__title {
-        font-size: 1.75rem;
+        font-size: 3rem;
+    }
+
+    .hero-section__subtitle {
+        font-size: 1.25rem;
+    }
+
+    .hero-section__summary {
+        font-size: 1.1rem;
+    }
+
+    /* Button groups: horizontal layout on desktop */
+    .resume-downloads,
+    .contact-links,
+    .tech-radar-section__actions {
+        flex-flow: row wrap;
     }
 }
 

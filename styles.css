@@ -114,12 +114,11 @@ body {
     font-size: 3rem;
     font-weight: 700;
     margin-bottom: var(--spacing-xs);
-    color: #1a1a1a;
 }
 
 .hero-section__subtitle {
     font-size: 1.25rem;
-    color: #3a3a3a;
+    color: var(--color-secondary);
     font-weight: 400;
 }
 
@@ -128,12 +127,11 @@ body {
     margin: 0 auto var(--spacing-md);
     font-size: 1.1rem;
     line-height: 1.8;
-    color: #1a1a1a;
 }
 
 .hero-section__location {
     font-size: 1rem;
-    color: #3a3a3a;
+    color: var(--color-secondary);
 }
 
 /* ==========================================================================

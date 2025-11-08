@@ -6,6 +6,7 @@
     "test": "npm run test:sections && npm run test:links",
     "test:sections": "node tests/validate.js",
     "test:links": "node tests/check-links.js",
+    "test:a11y": "pa11y-ci",
     "lint": "npm run lint:html && npm run lint:css",
     "lint:html": "htmlhint index.html",
     "lint:css": "stylelint styles.css",
@@ -20,6 +21,7 @@
   "license": "MIT",
   "devDependencies": {
     "htmlhint": "^1.1.4",
+    "pa11y-ci": "^3.0.1",
     "stylelint": "^16.0.0",
     "stylelint-config-standard": "^36.0.0"
   }

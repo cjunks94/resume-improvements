@@ -1,19 +1,15 @@
-name: Test and Deploy
+name: Test on Push and PR
 
 on:
   push:
     branches: [ master ]
+    tags-ignore:
+      - '**'  # Ignore all tags (handled by deploy-tags.yml)
   pull_request:
     branches: [ master ]
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
 
 jobs:
   test:
@@ -47,28 +43,13 @@ jobs:
       - name: Run accessibility tests
         run: npm run test:a11y
 
-  deploy:
-    name: Deploy to GitHub Pages
-    runs-on: ubuntu-latest
-    needs: test
-    if: github.ref == 'refs/heads/master' && github.event_name == 'push'
-
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: '.'
-
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+      - name: Test summary
+        if: always()
+        run: |
+          echo "### ✅ Tests Complete" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "All tests and linters have passed!" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Note:** Deployment now requires tags:" >> $GITHUB_STEP_SUMMARY
+          echo "- Production: \`git tag v1.0.0 && git push origin v1.0.0\`" >> $GITHUB_STEP_SUMMARY
+          echo "- Staging: \`git tag staging-v1.0.0 && git push origin staging-v1.0.0\`" >> $GITHUB_STEP_SUMMARY

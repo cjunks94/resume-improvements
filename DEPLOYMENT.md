@@ -1,12 +1,28 @@
 # Deployment Guide
 
-This guide covers deploying the portfolio site to GitHub Pages with optional custom domain setup.
+This guide covers deploying the portfolio site to GitHub Pages using tag-based deployments with separate production and staging environments.
 
 ## Prerequisites
 
 - GitHub account
 - Git installed locally
 - Node.js 20+ installed (for local testing)
+- DNS access for cjunker.dev (for custom domains)
+
+## Deployment Overview
+
+This site uses **tag-based deployments** with two environments:
+
+- **Production** (cjunker.dev): Deployed from tags like `v1.0.0`, `v1.1.0`
+- **Staging** (staging.cjunker.dev): Deployed from tags like `staging-v1.0.0`, `staging-latest`
+
+### Why Tag-Based?
+- ✅ Controlled deployments (no accidental production releases)
+- ✅ Version history and rollback capability
+- ✅ Staging environment for testing before production
+- ✅ Semantic versioning for clear release communication
+
+See `decisions/003-tag-based-deployment-strategy.md` for full rationale.
 
 ## Local Development
 
@@ -23,6 +39,7 @@ npm test          # Run all tests
 npm run lint      # Run linters only
 npm run test:sections  # Test section presence
 npm run test:links     # Check local file links
+npm run test:a11y      # Accessibility tests
 ```
 
 ### Local Preview
@@ -32,33 +49,178 @@ npm run serve
 # Visit http://localhost:8000
 ```
 
-## GitHub Pages Setup
+## Deployment Workflow
 
-### Step 1: Enable GitHub Pages
-
-1. Go to your repository on GitHub
-2. Click **Settings** → **Pages**
-3. Under **Build and deployment**:
-   - **Source**: Select "GitHub Actions"
-   - The workflow `.github/workflows/test-and-deploy.yml` will handle deployment
-
-### Step 2: Push Your Code
+### Step 1: Develop and Test Locally
 
 ```bash
-git add .
-git commit -m "Initial portfolio site"
+# Create feature branch
+git checkout -b feature/new-feature
+
+# Make changes
+# ...
+
+# Test locally
+npm test
+npm run lint
+
+# Commit changes
+git commit -m "feat: add new feature"
+git push origin feature/new-feature
+```
+
+### Step 2: Deploy to Staging
+
+```bash
+# Tag your feature branch for staging
+git tag staging-v1.0.0-rc1
+git push origin staging-v1.0.0-rc1
+
+# Check deployment at: https://staging.cjunker.dev
+```
+
+The GitHub Actions workflow will:
+1. Run all tests and linters
+2. Deploy to `gh-pages-staging` branch
+3. Site available at staging.cjunker.dev
+
+### Step 3: Merge to Master
+
+```bash
+# After testing on staging
+git checkout master
+git merge feature/new-feature
 git push origin master
 ```
 
-### Step 3: Verify Deployment
+**Note:** Pushing to master only runs tests, NOT deployment.
 
-1. Go to **Actions** tab in your repository
-2. Wait for the "Test and Deploy" workflow to complete
-3. Your site will be live at: `https://<username>.github.io/resume-improvements/`
+### Step 4: Deploy to Production
+
+```bash
+# Tag master for production release
+git tag v1.0.0
+git push origin v1.0.0
+
+# Check deployment at: https://cjunker.dev
+```
+
+The GitHub Actions workflow will:
+1. Run all tests and linters
+2. Deploy to `gh-pages-production` branch
+3. Site available at cjunker.dev
+
+## Tag Naming Conventions
+
+### Production Tags (Semantic Versioning)
+
+Format: `v<major>.<minor>.<patch>[-prerelease]`
+
+```bash
+v1.0.0        # Major release
+v1.1.0        # Minor release (new features)
+v1.1.1        # Patch release (bug fixes)
+v2.0.0-beta.1 # Pre-release (optional)
+```
+
+**When to increment:**
+- **Major (v2.0.0)**: Breaking changes, major redesign
+- **Minor (v1.1.0)**: New features, non-breaking changes
+- **Patch (v1.0.1)**: Bug fixes, small improvements
+
+### Staging Tags
+
+Format: `staging-<description>` or `staging-v<version>[-rc]`
+
+```bash
+staging-latest         # Always latest master
+staging-v1.0.0-rc1     # Release candidate 1
+staging-mobile-fix     # Feature-specific
+staging-2025-11-08     # Date-based
+```
+
+## Rollback Strategy
+
+### Option 1: Force Update Tag (Quick)
+
+```bash
+# Find commit SHA of working version
+git log --oneline
+
+# Move tag to that commit
+git checkout <old-commit-sha>
+git tag -f v1.0.0
+git push origin v1.0.0 --force
+```
+
+### Option 2: Create New Patch Tag (Recommended)
+
+```bash
+# Tag the older working commit with new version
+git checkout <old-commit-sha>
+git tag v1.0.2  # New patch version
+git push origin v1.0.2
+```
+
+## GitHub Actions Workflows
+
+### Test on Push and PR (`.github/workflows/test-and-deploy.yml`)
+
+**Triggers:**
+- Push to `master`
+- Pull requests to `master`
+
+**Actions:**
+- Run linters (HTML, CSS)
+- Run tests (section validation, links)
+- Run accessibility tests
+- **Does NOT deploy** (tests only)
+
+### Deploy from Tags (`.github/workflows/deploy-tags.yml`)
+
+**Triggers:**
+- Tags matching `v*.*.*` (production)
+- Tags matching `staging-*` (staging)
+
+**Actions:**
+- Run all tests
+- Deploy to appropriate branch:
+  - `v*` → `gh-pages-production` → cjunker.dev
+  - `staging-*` → `gh-pages-staging` → staging.cjunker.dev
+
+## DNS Configuration for Staging
+
+To set up staging.cjunker.dev:
+
+1. **Add CNAME record at your DNS provider:**
+   ```
+   Type: CNAME
+   Name: staging
+   Value: cjunks94.github.io
+   TTL: 3600 (or automatic)
+   ```
+
+2. **Wait for DNS propagation** (5-30 minutes typically)
+
+3. **Verify DNS:**
+   ```bash
+   dig staging.cjunker.dev +noall +answer
+   # Should show CNAME to cjunks94.github.io
+   ```
+
+4. **Deploy to staging with a tag:**
+   ```bash
+   git tag staging-latest
+   git push origin staging-latest
+   ```
+
+5. **Check GitHub Pages settings:**
+   - Go to **Settings → Environments → staging**
+   - Custom domain will be automatically configured via CNAME file in gh-pages-staging
 
 ## Custom Domain Setup
 
-### Option 1: Using a Custom Domain (e.g., cjunker.dev)
+### Production Domain (cjunker.dev)
 
 #### DNS Configuration
 

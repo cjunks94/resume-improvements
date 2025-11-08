@@ -8,8 +8,8 @@
 :root {
     --color-primary: #0066cc;
     --color-secondary: #5e5e5e;
-    --color-accent: #ff6b6b;
-    --color-success: #28a745;
+    --color-accent: #c92a2a;
+    --color-success: #1e7e34;
     --spacing-xs: 0.5rem;
     --spacing-sm: 1rem;
     --spacing-md: 2rem;
@@ -100,7 +100,8 @@ body {
 .hero-section {
     padding: var(--spacing-xl) 0;
     text-align: center;
-    background: linear-gradient(135deg, rgba(0, 102, 204, 0.05) 0%, rgba(0, 102, 204, 0.02) 100%);
+    background: var(--background-color);
+    border: 2px solid rgba(0, 102, 204, 0.2);
     border-radius: var(--border-radius);
     margin-bottom: var(--spacing-lg);
 }
@@ -113,11 +114,12 @@ body {
     font-size: 3rem;
     font-weight: 700;
     margin-bottom: var(--spacing-xs);
+    color: #1a1a1a;
 }
 
 .hero-section__subtitle {
     font-size: 1.25rem;
-    color: var(--color-secondary);
+    color: #3a3a3a;
     font-weight: 400;
 }
 
@@ -126,11 +128,12 @@ body {
     margin: 0 auto var(--spacing-md);
     font-size: 1.1rem;
     line-height: 1.8;
+    color: #1a1a1a;
 }
 
 .hero-section__location {
     font-size: 1rem;
-    color: var(--color-secondary);
+    color: #3a3a3a;
 }
 
 /* ==========================================================================

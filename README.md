@@ -4,6 +4,12 @@
 **Project Start**: October 20, 2025
 **Application Target**: October 27, 2025
 
+## Live Portfolio
+
+**Website**: [View Live Site](https://<username>.github.io/resume-improvements/) (update after deployment)
+**Tech Stack**: HTML5, CSS3, GitHub Pages
+**Status**: Deployed with CI/CD via GitHub Actions
+
 ## Project Overview
 
 This repository tracks strategic improvements to my software engineering resume and portfolio to target senior-level positions at companies like Datadog. The focus is on demonstrating real, actionable achievements in distributed systems, observability, and cloud-native technologies.
@@ -20,16 +26,25 @@ This repository tracks strategic improvements to my software engineering resume 
 
 ```
 resume-improvements/
-├── README.md           # This file - project overview
-├── CLAUDE.md          # Context for Claude Code assistant
-├── TODO.md            # Prioritized task list with deadlines
-├── projects/          # Code demonstrations and prototypes
+├── index.html              # Portfolio site homepage
+├── styles.css              # Custom styling
+├── tech-radar.csv          # Technology expertise radar
+├── DEPLOYMENT.md           # Deployment and custom domain guide
+├── README.md               # This file - project overview
+├── CLAUDE.md               # Context for Claude Code assistant
+├── TODO.md                 # Prioritized task list with deadlines
+├── .github/workflows/      # CI/CD automation
+│   └── test-and-deploy.yml # Test and deploy pipeline
+├── tests/                  # Validation and testing
+│   ├── validate.js         # Section presence tests
+│   └── check-links.js      # Link validation
+├── projects/               # Code demonstrations and prototypes
 │   ├── go-microservice/
 │   ├── event-streaming/
 │   └── ml-anomaly-detection/
-├── blog-posts/        # Technical writing and thought leadership
-├── certifications/    # Progress on professional certifications
-└── resume-versions/   # Tailored resume iterations
+├── blog-posts/             # Technical writing and thought leadership
+├── certifications/         # Progress on professional certifications
+└── resume-versions/        # Tailored resume iterations
 ```
 
 ## Success Metrics
@@ -46,6 +61,35 @@ resume-improvements/
 
 **Target Additions**: Go, Kafka/RabbitMQ, Prometheus, distributed tracing, AI/ML monitoring
 
+## Development
+
+### Local Development
+
+```bash
+# Install dependencies
+npm install
+
+# Run tests
+npm test
+
+# Run linters
+npm lint
+
+# Serve locally
+npm run serve
+# Visit http://localhost:8000
+```
+
+### Deployment
+
+The site automatically deploys to GitHub Pages on every push to `master` via GitHub Actions.
+
+See [DEPLOYMENT.md](DEPLOYMENT.md) for:
+- GitHub Pages setup
+- Custom domain configuration
+- DNS setup guide
+- Troubleshooting
+
 ## Progress Tracking
 
 See [TODO.md](TODO.md) for detailed task list with priorities and deadlines.
@@ -56,4 +100,4 @@ This is a private repository for personal career development.
 
 ---
 
-*Last Updated: October 20, 2025*
+*Last Updated: November 8, 2025*

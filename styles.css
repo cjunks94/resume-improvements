@@ -1,0 +1,427 @@
+/* ==========================================================================
+   Custom Styles for Christopher Junker Portfolio
+   ========================================================================== */
+
+/* ==========================================================================
+   CSS Variables
+   ========================================================================== */
+:root {
+    --color-primary: #0066cc;
+    --color-secondary: #5e5e5e;
+    --color-accent: #ff6b6b;
+    --color-success: #28a745;
+    --spacing-xs: 0.5rem;
+    --spacing-sm: 1rem;
+    --spacing-md: 2rem;
+    --spacing-lg: 3rem;
+    --spacing-xl: 4rem;
+    --border-radius: 0.5rem;
+    --transition-speed: 0.3s;
+}
+
+/* ==========================================================================
+   Global Styles
+   ========================================================================== */
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    line-height: 1.7;
+}
+
+.section-title {
+    margin-bottom: var(--spacing-md);
+    color: var(--color-primary);
+    border-bottom: 2px solid var(--color-primary);
+    padding-bottom: var(--spacing-xs);
+}
+
+/* ==========================================================================
+   Site Header & Navigation
+   ========================================================================== */
+.site-header {
+    position: sticky;
+    top: 0;
+    background: var(--background-color);
+    z-index: 100;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: var(--spacing-sm) 0;
+}
+
+.site-nav__link {
+    transition: color var(--transition-speed) ease;
+}
+
+.site-nav__link:hover {
+    color: var(--color-primary);
+    text-decoration: none;
+}
+
+/* ==========================================================================
+   Hero Section
+   ========================================================================== */
+.hero-section {
+    padding: var(--spacing-xl) 0;
+    text-align: center;
+    background: linear-gradient(135deg, rgba(0, 102, 204, 0.05) 0%, rgba(0, 102, 204, 0.02) 100%);
+    border-radius: var(--border-radius);
+    margin-bottom: var(--spacing-lg);
+}
+
+.hero-section__header {
+    margin-bottom: var(--spacing-md);
+}
+
+.hero-section__title {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: var(--spacing-xs);
+}
+
+.hero-section__subtitle {
+    font-size: 1.25rem;
+    color: var(--color-secondary);
+    font-weight: 400;
+}
+
+.hero-section__summary {
+    max-width: 800px;
+    margin: 0 auto var(--spacing-md);
+    font-size: 1.1rem;
+    line-height: 1.8;
+}
+
+.hero-section__location {
+    font-size: 1rem;
+    color: var(--color-secondary);
+}
+
+/* ==========================================================================
+   About Section
+   ========================================================================== */
+.about-section {
+    margin-bottom: var(--spacing-lg);
+}
+
+.about-section__content {
+    max-width: 800px;
+}
+
+.about-section__paragraph {
+    margin-bottom: var(--spacing-md);
+}
+
+/* ==========================================================================
+   Tech Radar Section
+   ========================================================================== */
+.tech-radar-section {
+    margin-bottom: var(--spacing-lg);
+}
+
+.tech-radar-section__description {
+    margin-bottom: var(--spacing-md);
+}
+
+.tech-radar-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+}
+
+.tech-radar-quadrant {
+    background: var(--card-background-color);
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--card-border-color);
+    transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+}
+
+.tech-radar-quadrant:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.tech-radar-quadrant__title {
+    font-size: 1.25rem;
+    margin-bottom: var(--spacing-sm);
+    color: var(--color-primary);
+}
+
+.tech-radar-quadrant__list {
+    list-style: none;
+    padding-left: 0;
+}
+
+.tech-radar-quadrant__item {
+    margin-bottom: var(--spacing-sm);
+    line-height: 1.6;
+}
+
+.tech-radar-quadrant__ring {
+    color: var(--color-accent);
+    font-weight: 600;
+}
+
+.tech-radar-quadrant__tech {
+    color: var(--color-secondary);
+}
+
+.tech-radar-section__actions {
+    display: flex;
+    gap: var(--spacing-sm);
+    flex-wrap: wrap;
+}
+
+/* ==========================================================================
+   Projects Section
+   ========================================================================== */
+.projects-section {
+    margin-bottom: var(--spacing-lg);
+}
+
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: var(--spacing-md);
+}
+
+.project-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: var(--card-background-color);
+    border: 1px solid var(--card-border-color);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-md);
+    transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+}
+
+.project-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+.project-card__header {
+    margin-bottom: var(--spacing-sm);
+}
+
+.project-card__title {
+    font-size: 1.5rem;
+    margin-bottom: var(--spacing-xs);
+    color: var(--color-primary);
+}
+
+.project-card__tech {
+    color: var(--color-secondary);
+    margin: 0;
+}
+
+.project-card__description {
+    flex-grow: 1;
+    margin-bottom: var(--spacing-md);
+}
+
+.project-card__footer {
+    margin-top: auto;
+}
+
+.project-card__link {
+    color: var(--color-primary);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color var(--transition-speed) ease;
+}
+
+.project-card__link:hover {
+    color: var(--color-accent);
+    text-decoration: underline;
+}
+
+.project-status {
+    display: inline-block;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    background: var(--color-success);
+    color: white;
+    border-radius: var(--border-radius);
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+/* ==========================================================================
+   Resume Section
+   ========================================================================== */
+.resume-section {
+    margin-bottom: var(--spacing-lg);
+}
+
+.resume-section__subtitle {
+    font-size: 1.5rem;
+    margin-top: var(--spacing-md);
+    margin-bottom: var(--spacing-sm);
+    color: var(--color-primary);
+}
+
+.resume-section__description {
+    margin-bottom: var(--spacing-md);
+}
+
+.resume-downloads {
+    display: flex;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-lg);
+    flex-wrap: wrap;
+}
+
+.resume-highlights {
+    list-style: none;
+    padding-left: 0;
+}
+
+.resume-highlights__item {
+    position: relative;
+    padding-left: var(--spacing-md);
+    margin-bottom: var(--spacing-sm);
+    line-height: 1.6;
+}
+
+.resume-highlights__item::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--color-success);
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+/* ==========================================================================
+   Contact Section
+   ========================================================================== */
+.contact-section {
+    margin-bottom: var(--spacing-lg);
+}
+
+.contact-section__description {
+    margin-bottom: var(--spacing-md);
+}
+
+.contact-links {
+    display: flex;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
+    flex-wrap: wrap;
+}
+
+.contact-section__info {
+    text-align: center;
+    color: var(--color-secondary);
+}
+
+/* ==========================================================================
+   Button Styles
+   ========================================================================== */
+.btn {
+    display: inline-block;
+    text-decoration: none;
+    transition: all var(--transition-speed) ease;
+}
+
+.btn--primary {
+    /* Inherits Pico's primary button styles */
+}
+
+.btn--secondary {
+    /* Inherits Pico's secondary button styles */
+}
+
+/* ==========================================================================
+   Site Footer
+   ========================================================================== */
+.site-footer {
+    margin-top: var(--spacing-xl);
+    padding: var(--spacing-md) 0;
+    text-align: center;
+}
+
+.site-footer__text {
+    margin: 0;
+    color: var(--color-secondary);
+}
+
+.site-footer__link {
+    color: var(--color-primary);
+    text-decoration: none;
+    transition: color var(--transition-speed) ease;
+}
+
+.site-footer__link:hover {
+    color: var(--color-accent);
+    text-decoration: underline;
+}
+
+/* ==========================================================================
+   Responsive Design
+   ========================================================================== */
+@media (max-width: 768px) {
+    .hero-section__title {
+        font-size: 2rem;
+    }
+
+    .hero-section__subtitle {
+        font-size: 1rem;
+    }
+
+    .hero-section__summary {
+        font-size: 1rem;
+    }
+
+    .tech-radar-grid,
+    .projects-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .resume-downloads,
+    .contact-links,
+    .tech-radar-section__actions {
+        flex-direction: column;
+    }
+
+    .site-nav {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .site-nav__links {
+        flex-wrap: wrap;
+        justify-content: flex-start;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-section {
+        padding: var(--spacing-md) var(--spacing-sm);
+    }
+
+    .hero-section__title {
+        font-size: 1.75rem;
+    }
+}
+
+/* ==========================================================================
+   Print Styles
+   ========================================================================== */
+@media print {
+    .site-header,
+    .site-footer {
+        display: none;
+    }
+
+    .hero-section,
+    .about-section,
+    .tech-radar-section,
+    .projects-section,
+    .resume-section {
+        page-break-inside: avoid;
+    }
+}

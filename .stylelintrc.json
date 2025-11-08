@@ -1,0 +1,18 @@
+{
+  "extends": "stylelint-config-standard",
+  "rules": {
+    "selector-class-pattern": null,
+    "custom-property-pattern": null,
+    "color-function-notation": "legacy",
+    "color-hex-length": null,
+    "alpha-value-notation": "number",
+    "media-feature-range-notation": "prefix",
+    "import-notation": "string",
+    "at-rule-no-unknown": [
+      true,
+      {
+        "ignoreAtRules": ["layer"]
+      }
+    ]
+  }
+}

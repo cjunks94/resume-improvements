@@ -89,13 +89,12 @@ jobs:
           publish_branch: gh-pages
           publish_dir: .
           cname: staging.cjunker.dev
-          force_orphan: true
-          keep_files: true
           exclude_assets: '.github,node_modules,tests,package*.json,.gitignore,.stylelintrc.json,.htmlvalidate.json,decisions,TODO.md,CLAUDE.md'
-      - name: Restore domain (API)
+      - name: Restore domain (API safety net)
         if: always()
         run: |
-          curl -L -X PUT -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+          curl -L -X PUT \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
             -H "Accept: application/vnd.github.v3+json" \
             https://api.github.com/repos/cjunks94/resume-improvements-staging/pages \
             -d '{"cname": "staging.cjunker.dev", "https_enforced": true}'

@@ -11,7 +11,8 @@
   "urls": [
     {
       "url": "http://localhost:8000/index.html",
-      "screenCapture": "screenshots/home.png"
+      "screenCapture": "screenshots/home.png",
+      "hideElements": "#radar"
     }
   ]
 }

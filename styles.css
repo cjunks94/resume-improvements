@@ -397,6 +397,32 @@ body {
     font-size: 1.5rem;
 }
 
+/* Legend header actions (CSV, Docs, Show All) */
+.radar-legend__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.radar-legend__link {
+    color: var(--color-primary);
+    text-decoration: none;
+    font-size: 0.875rem;
+    padding: var(--spacing-xs);
+    transition: opacity var(--transition-speed) ease;
+    white-space: nowrap;
+}
+
+.radar-legend__link:hover {
+    opacity: 0.7;
+    text-decoration: underline;
+}
+
+.radar-legend__link:focus {
+    outline: 3px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
 .radar-legend__toggle {
     background: transparent;
     border: 2px solid var(--color-primary);

@@ -329,7 +329,7 @@ function buildLegend(legend, cfg) {
   const legendContainer = d3.select("#radar-legend");
   legendContainer.selectAll("*").remove();
 
-  // Add header with toggle button
+  // Add header with toggle button and action links
   const header = legendContainer.append("div")
     .attr("class", "radar-legend__header");
 
@@ -337,7 +337,26 @@ function buildLegend(legend, cfg) {
     .attr("class", "radar-legend__title")
     .text("Technology Index");
 
-  const toggleBtn = header.append("button")
+  // Action buttons container
+  const actions = header.append("div")
+    .attr("class", "radar-legend__actions");
+
+  // Download CSV link (subtle)
+  actions.append("a")
+    .attr("href", "tech-radar.csv")
+    .attr("class", "radar-legend__link")
+    .attr("title", "Download Tech Radar CSV")
+    .html("📊 CSV");
+
+  // Documentation link (subtle)
+  actions.append("a")
+    .attr("href", "TECH_RADAR.md")
+    .attr("class", "radar-legend__link")
+    .attr("title", "Read Full Documentation")
+    .html("📖 Docs");
+
+  // Toggle button
+  const toggleBtn = actions.append("button")
     .attr("class", "radar-legend__toggle")
     .attr("aria-expanded", "false")
     .attr("aria-controls", "radar-legend-content")

@@ -28,15 +28,14 @@ const radar_visualization = function(config) {
   // Clear any existing SVG
   d3.select("#" + cfg.svg_id).select("svg").remove();
 
-  // Create SVG
+  // Create SVG (no role="img" to avoid nested interactive controls)
   const svg = d3.select("#" + cfg.svg_id)
     .append("svg")
     .attr("width", cfg.width)
     .attr("height", cfg.height)
     .attr("viewBox", `0 0 ${cfg.width} ${cfg.height}`)
     .attr("preserveAspectRatio", "xMidYMid meet")
-    .attr("role", "img")
-    .attr("aria-label", cfg.title);
+    .attr("aria-hidden", "false");
 
   // Add title for accessibility
   svg.append("title").text(cfg.title);
@@ -93,7 +92,7 @@ const radar_visualization = function(config) {
       .attr("text-anchor", "middle")
       .style("font-weight", "bold")
       .style("font-size", "14px")
-      .style("fill", "#333")
+      .style("fill", "#000")  // Black for maximum contrast
       .text(quadrant.name.replace('-', ' & ').toUpperCase());
   });
 
@@ -138,7 +137,7 @@ const radar_visualization = function(config) {
       .attr("transform", `translate(${x},${y})`)
       .attr("class", "blip")
       .attr("tabindex", "0")
-      .attr("role", "button")
+      .attr("role", "group")
       .attr("aria-label", `${entry.label} - ${entry.ring} - ${cfg.quadrants[quadrantIndex].name}`);
 
     blip.append("circle")
@@ -154,14 +153,20 @@ const radar_visualization = function(config) {
         .attr("fill", cfg.rings[ringIndex].color);
     }
 
-    // Number label
+    // Number label - use white background circle for contrast
     const num = idx + 1;
+    // White circle background for text contrast
+    blip.append("circle")
+      .attr("r", 7)
+      .attr("fill", "#fff")
+      .style("pointer-events", "none");
+    // Black text on white for maximum contrast
     blip.append("text")
       .attr("y", 3)
       .attr("text-anchor", "middle")
       .style("font-size", "10px")
       .style("font-weight", "bold")
-      .style("fill", "#fff")
+      .style("fill", "#000")
       .style("pointer-events", "none")
       .text(num);
 
@@ -293,7 +298,8 @@ function buildLegend(legend, cfg) {
         if (item.moved > 0) {
           li.append("span")
             .style("margin-left", "0.5rem")
-            .style("color", "#5ba300")
+            .style("color", "#1a3009")  // Very dark green for WCAG AAA compliance
+            .style("font-weight", "bold")
             .text("▲ NEW");
         }
       });

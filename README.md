@@ -93,7 +93,7 @@ git push origin master
 # → Available at https://cjunker.dev
 ```
 
-**Staging (staging.cjunker.dev):**
+**Staging / PR Previews (staging.cjunker.dev):**
 ```bash
 git checkout -b feature/my-feature
 git push origin feature/my-feature
@@ -106,6 +106,15 @@ git push origin feature/my-feature
 - ✅ Clean environment isolation
 - ✅ Secure SSH deploy key authentication
 - ✅ Industry-standard pattern (used by Stripe, Vercel, etc.)
+- ✅ Automatic PR preview deployments
+- ✅ Zero history bloat with force_orphan
+
+### CI/CD Pipeline
+- **Production:** `master` → https://cjunker.dev
+- **Staging / PR Previews:** All branches → https://staging.cjunker.dev
+- **Manual deploy:** Workflow dispatch with environment selector
+- **External staging repo:** Bulletproof SSL + isolation
+- **Build time:** ~45s (GitHub hosted)
 
 See [DEPLOYMENT.md](DEPLOYMENT.md) for:
 - Complete deployment workflow

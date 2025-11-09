@@ -76,7 +76,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Deploy to root of gh-pages
+      - name: Deploy to gh-pages branch
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -117,7 +117,7 @@ jobs:
           deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
           external_repository: cjunks94/resume-improvements-staging
           publish_dir: .
-          publish_branch: gh-pages
+          publish_branch: master
           cname: staging.cjunker.dev
           exclude_assets: '.github,node_modules,tests,package*.json,.gitignore,.stylelintrc.json,.htmlvalidate.json,decisions,TODO.md,CLAUDE.md'
 
@@ -128,7 +128,7 @@ jobs:
           echo "- **Environment:** Staging" >> $GITHUB_STEP_SUMMARY
           echo "- **URL:** https://staging.cjunker.dev" >> $GITHUB_STEP_SUMMARY
           echo "- **Target Repository:** cjunks94/resume-improvements-staging" >> $GITHUB_STEP_SUMMARY
-          echo "- **Branch:** gh-pages (root)" >> $GITHUB_STEP_SUMMARY
+          echo "- **Branch:** master (root)" >> $GITHUB_STEP_SUMMARY
           echo "- **Source Branch:** ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Deployed at:** $(date -u)" >> $GITHUB_STEP_SUMMARY

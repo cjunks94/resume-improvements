@@ -111,23 +111,24 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Deploy to /staging subfolder of gh-pages
+      - name: Deploy to external staging repository
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+          external_repository: cjunks94/resume-improvements-staging
           publish_dir: .
           publish_branch: gh-pages
-          destination_dir: staging
           cname: staging.cjunker.dev
           exclude_assets: '.github,node_modules,tests,package*.json,.gitignore,.stylelintrc.json,.htmlvalidate.json,decisions,TODO.md,CLAUDE.md'
 
       - name: Create deployment summary
         run: |
-          echo "### 🧪 Staging Deployment" >> $GITHUB_STEP_SUMMARY
+          echo "### 🧪 Staging Deployment (External Repo)" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "- **Environment:** Staging" >> $GITHUB_STEP_SUMMARY
           echo "- **URL:** https://staging.cjunker.dev" >> $GITHUB_STEP_SUMMARY
-          echo "- **Branch:** gh-pages (/staging subfolder)" >> $GITHUB_STEP_SUMMARY
+          echo "- **Target Repository:** cjunks94/resume-improvements-staging" >> $GITHUB_STEP_SUMMARY
+          echo "- **Branch:** gh-pages (root)" >> $GITHUB_STEP_SUMMARY
           echo "- **Source Branch:** ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Deployed at:** $(date -u)" >> $GITHUB_STEP_SUMMARY

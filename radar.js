@@ -66,13 +66,25 @@ const radar_visualization = function(config) {
       .style("stroke", cfg.colors.grid)
       .style("stroke-width", 1);
 
-    // Ring labels
+    // Ring labels with white stroke halo
+    const ringLabelY = -radius + (i * ringWidth) + ringWidth / 2;
+
+    // White stroke (halo) layer
     radar.append("text")
-      .attr("y", -radius + (i * ringWidth) + ringWidth / 2)
+      .attr("y", ringLabelY)
+      .attr("text-anchor", "middle")
+      .attr("class", "svg-text-halo")
+      .style("font-weight", "bold")
+      .style("font-size", "14px")
+      .text(ring.name.toUpperCase());
+
+    // Colored fill layer on top
+    radar.append("text")
+      .attr("y", ringLabelY)
       .attr("text-anchor", "middle")
       .style("fill", ring.color)
       .style("font-weight", "bold")
-      .style("font-size", "12px")
+      .style("font-size", "14px")
       .text(ring.name.toUpperCase());
   });
 
@@ -103,12 +115,9 @@ const radar_visualization = function(config) {
       .attr("x", x)
       .attr("y", y)
       .attr("text-anchor", "middle")
+      .attr("class", "svg-text-halo")
       .style("font-weight", "bold")
       .style("font-size", "14px")
-      .style("stroke", "#fff")
-      .style("stroke-width", "4px")
-      .style("fill", "none")
-      .style("paint-order", "stroke")
       .text(labelText);
 
     // Main text (black fill on top)
@@ -167,7 +176,7 @@ const radar_visualization = function(config) {
       .attr("aria-label", `${entry.label} - ${entry.ring} - ${cfg.quadrants[quadrantIndex].name}`);
 
     blip.append("circle")
-      .attr("r", entry.moved > 0 ? 8 : 6)
+      .attr("r", entry.moved > 0 ? 10 : 9)
       .attr("fill", cfg.rings[ringIndex].color)
       .style("opacity", 0.8)
       .style("cursor", "pointer");
@@ -209,8 +218,46 @@ const radar_visualization = function(config) {
       moved: entry.moved
     });
 
-    // Tooltip/hover
+    // Native browser tooltip
     blip.append("title").text(entry.label);
+
+    // Visible hover label (hidden by default)
+    const hoverLabel = blip.append("g")
+      .attr("class", "hover-label")
+      .style("opacity", 0)
+      .style("pointer-events", "none");
+
+    // White background for label
+    const labelText = entry.label;
+    const labelPadding = 8;
+    const labelWidth = labelText.length * 7 + labelPadding * 2;
+
+    hoverLabel.append("rect")
+      .attr("x", -labelWidth / 2)
+      .attr("y", 15)
+      .attr("width", labelWidth)
+      .attr("height", 24)
+      .attr("rx", 4)
+      .style("fill", "#fff")
+      .style("stroke", "#000")
+      .style("stroke-width", 2);
+
+    hoverLabel.append("text")
+      .attr("y", 30)
+      .attr("text-anchor", "middle")
+      .style("font-size", "12px")
+      .style("font-weight", "600")
+      .style("fill", "#000")
+      .text(labelText);
+
+    // Show/hide label on hover
+    blip.on("mouseenter", function() {
+      hoverLabel.style("opacity", 1);
+    });
+
+    blip.on("mouseleave", function() {
+      hoverLabel.style("opacity", 0);
+    });
 
     // Click handler - show description
     blip.on("click", function() {

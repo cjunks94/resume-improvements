@@ -364,6 +364,14 @@ body {
     outline-offset: 2px;
 }
 
+/* SVG Text with White Stroke Halo (reusable utility) */
+.svg-text-halo {
+    stroke: #fff;
+    stroke-width: 4px;
+    fill: none;
+    paint-order: stroke;
+}
+
 /* Radar Legend */
 .radar-legend {
     max-width: 1200px;

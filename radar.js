@@ -5,6 +5,17 @@
  */
 
 const radar_visualization = function(config) {
+  // Helper function to resolve CSS variable colors
+  const resolveColor = function(color) {
+    if (color.startsWith('var(')) {
+      // Extract variable name from var(--variable-name)
+      const varName = color.match(/var\((--[\w-]+)\)/)[1];
+      // Get computed value from root element
+      return getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
+    }
+    return color;
+  };
+
   // Configuration defaults
   const cfg = {
     svg_id: config.svg_id || "radar",
@@ -17,7 +28,7 @@ const radar_visualization = function(config) {
     },
     title: config.title || "Tech Radar",
     quadrants: config.quadrants || [],
-    rings: config.rings || [],
+    rings: config.rings.map(r => ({ ...r, color: resolveColor(r.color) })) || [],
     entries: config.entries || []
   };
 
@@ -256,8 +267,40 @@ function buildLegend(legend, cfg) {
   const legendContainer = d3.select("#radar-legend");
   legendContainer.selectAll("*").remove();
 
+  // Add header with toggle button
+  const header = legendContainer.append("div")
+    .attr("class", "radar-legend__header");
+
+  header.append("h3")
+    .attr("class", "radar-legend__title")
+    .text("Technology Index");
+
+  const toggleBtn = header.append("button")
+    .attr("class", "radar-legend__toggle")
+    .attr("aria-expanded", "false")
+    .attr("aria-controls", "radar-legend-content")
+    .text("Show All");
+
+  // Content container (collapsed by default)
+  const content = legendContainer.append("div")
+    .attr("id", "radar-legend-content")
+    .attr("class", "radar-legend__content")
+    .attr("aria-hidden", "true")
+    .style("max-height", "0");
+
+  // Toggle functionality
+  toggleBtn.on("click", function() {
+    const isExpanded = toggleBtn.attr("aria-expanded") === "true";
+    toggleBtn
+      .attr("aria-expanded", !isExpanded)
+      .text(isExpanded ? "Show All" : "Hide All");
+    content
+      .attr("aria-hidden", isExpanded)
+      .style("max-height", isExpanded ? "0" : "none");
+  });
+
   Object.keys(legend).forEach(quadrant => {
-    const section = legendContainer.append("div")
+    const section = content.append("div")
       .attr("class", "legend-quadrant")
       .style("margin-bottom", "2rem");
 
@@ -298,7 +341,7 @@ function buildLegend(legend, cfg) {
         if (item.moved > 0) {
           li.append("span")
             .style("margin-left", "0.5rem")
-            .style("color", "#1a3009")  // Very dark green for WCAG AAA compliance
+            .style("color", "var(--radar-new)")
             .style("font-weight", "bold")
             .text("▲ NEW");
         }

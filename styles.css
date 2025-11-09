@@ -17,6 +17,31 @@
     --spacing-xl: 4rem;
     --border-radius: 0.5rem;
     --transition-speed: 0.3s;
+
+    /* Tech Radar Colors - Light Mode (WCAG AAA on white) */
+    --radar-adopt: #1a3009;     /* Very dark green */
+    --radar-trial: #003840;     /* Very dark teal */
+    --radar-assess: #3d3800;    /* Very dark yellow-brown */
+    --radar-new: #1a3009;       /* Dark green for NEW indicator */
+}
+
+/* Dark mode color overrides */
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+        /* Tech Radar Colors - Dark Mode (bright, saturated colors) */
+        --radar-adopt: #5ba300;     /* Bright green */
+        --radar-trial: #009eb0;     /* Bright teal */
+        --radar-assess: #c7ba00;    /* Bright yellow */
+        --radar-new: #5ba300;       /* Bright green for NEW indicator */
+    }
+}
+
+/* Explicit dark theme (if Pico sets data-theme) */
+[data-theme="dark"] {
+    --radar-adopt: #5ba300;
+    --radar-trial: #009eb0;
+    --radar-assess: #c7ba00;
+    --radar-new: #5ba300;
 }
 
 /* ==========================================================================
@@ -344,6 +369,56 @@ body {
     background: var(--card-background-color);
     border: 1px solid var(--card-border-color);
     border-radius: var(--border-radius);
+}
+
+.radar-legend__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-md);
+    padding-bottom: var(--spacing-sm);
+    border-bottom: 2px solid var(--color-primary);
+}
+
+.radar-legend__title {
+    margin: 0;
+    color: var(--color-primary);
+    font-size: 1.5rem;
+}
+
+.radar-legend__toggle {
+    background: transparent;
+    border: 2px solid var(--color-primary);
+    color: var(--color-primary);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-weight: 600;
+    transition: all var(--transition-speed) ease;
+    min-width: 100px;
+}
+
+.radar-legend__toggle:hover {
+    background: var(--color-primary);
+    color: #fff;
+}
+
+.radar-legend__toggle:focus {
+    outline: 3px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+.radar-legend__content {
+    overflow: hidden;
+    transition: max-height var(--transition-speed) ease;
+}
+
+.radar-legend__content[aria-hidden="true"] {
+    max-height: 0;
+}
+
+.radar-legend__content[aria-hidden="false"] {
+    max-height: none;
 }
 
 .legend-quadrant {

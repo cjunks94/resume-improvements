@@ -1,37 +1,63 @@
-version: '3'
+version: '3.8'
+
 services:
   umami:
-    image: ghcr.io/umami-software/umami:postgresql-latest
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
-      - "3000:3000"
+      - "${PORT:-3000}:3000"
     environment:
-      DATABASE_URL: postgresql://umami:umami@db:5432/umami
+      DATABASE_URL: ${DATABASE_URL:-postgresql://umami:umami@db:5432/umami}
       DATABASE_TYPE: postgresql
       APP_SECRET: ${APP_SECRET:-change-me-to-random-string}
+      DISABLE_TELEMETRY: 1
+      CLIENT_IP_HEADER: ${CLIENT_IP_HEADER:-CF-Connecting-IP}
     depends_on:
       db:
         condition: service_healthy
-    restart: always
+    restart: unless-stopped
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:3000/api/heartbeat || exit 1"]
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:3000/api/heartbeat || exit 1"]
       interval: 30s
       timeout: 10s
       retries: 3
+      start_period: 40s
+    networks:
+      - umami-network
 
   db:
-    image: postgres:15-alpine
+    image: postgres:16-alpine
     environment:
-      POSTGRES_DB: umami
-      POSTGRES_USER: umami
-      POSTGRES_PASSWORD: umami
+      POSTGRES_DB: ${POSTGRES_DB:-umami}
+      POSTGRES_USER: ${POSTGRES_USER:-umami}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-umami}
+      POSTGRES_INITDB_ARGS: "-E UTF8 --locale=C"
     volumes:
       - umami-db-data:/var/lib/postgresql/data
-    restart: always
+    restart: unless-stopped
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U umami"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-umami} -d ${POSTGRES_DB:-umami}"]
       interval: 10s
       timeout: 5s
       retries: 5
+      start_period: 30s
+    networks:
+      - umami-network
+    # Performance tuning for small instance
+    command:
+      - "postgres"
+      - "-c"
+      - "max_connections=50"
+      - "-c"
+      - "shared_buffers=128MB"
+      - "-c"
+      - "effective_cache_size=512MB"
 
 volumes:
   umami-db-data:
+    driver: local
+
+networks:
+  umami-network:
+    driver: bridge

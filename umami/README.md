@@ -5,18 +5,53 @@ Self-hosted Umami analytics for cjunker.dev with zero-cost hosting and Cloudflar
 ## Architecture
 
 - **Analytics Dashboard**: `umami.cjunker.dev`
-- **Hosting**: Railway.app (free tier)
-- **Database**: PostgreSQL (included with Railway)
+- **Hosting**: Railway.app (free tier) with Docker
+- **Database**: PostgreSQL 16 Alpine (minimal footprint)
 - **Security**: Cloudflare Access (GitHub OAuth)
 - **Frontend**: Tracking script on cjunker.dev
+- **Container**: Multi-stage Alpine-based build (~150MB)
 
-## Quick Start - Railway Deployment
+## Docker Images
 
-### 1. Deploy to Railway
+- **Umami**: Custom multi-stage build (Node 18 Alpine)
+- **PostgreSQL**: `postgres:16-alpine` (~240MB)
+- **Total stack size**: ~390MB (vs 1GB+ with standard images)
 
-[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/umami)
+## Quick Start - Railway Deployment (Docker)
 
-**Manual deployment:**
+### 1. Link GitHub Repository to Railway
+
+1. Go to [Railway Dashboard](https://railway.app/dashboard)
+2. Click **"+ New Project"**
+3. Select **"Deploy from GitHub repo"**
+4. Choose `resume-improvements` repository
+5. Railway will detect the `umami/` folder with Dockerfile
+
+### 2. Add PostgreSQL Database
+
+1. In your Railway project, click **"+ New"**
+2. Select **"Database"** → **"Add PostgreSQL"**
+3. Railway automatically creates `DATABASE_URL` variable
+
+### 3. Configure Umami Service
+
+1. Click on your Umami service
+2. Go to **"Variables"** tab
+3. Add environment variables:
+
+```bash
+DATABASE_URL=${{Postgres.DATABASE_URL}}
+DATABASE_TYPE=postgresql
+APP_SECRET=<run: openssl rand -hex 32>
+DISABLE_TELEMETRY=1
+CLIENT_IP_HEADER=CF-Connecting-IP
+```
+
+4. Go to **"Settings"** tab
+5. Set **"Root Directory"**: `umami`
+6. Click **"Deploy"**
+
+### 4. Alternative: Deploy via Railway CLI
 
 ```bash
 # Install Railway CLI
@@ -25,28 +60,37 @@ npm install -g @railway/cli
 # Login to Railway
 railway login
 
-# Create new project
+# Navigate to umami directory
+cd umami
+
+# Initialize Railway project
 railway init
 
-# Add PostgreSQL database
+# Link to PostgreSQL database
 railway add
 
 # Set environment variables
 railway variables set APP_SECRET=$(openssl rand -hex 32)
-railway variables set DATABASE_URL=${{Postgres.DATABASE_URL}}
+railway variables set DATABASE_URL='${{Postgres.DATABASE_URL}}'
+railway variables set DATABASE_TYPE=postgresql
+railway variables set DISABLE_TELEMETRY=1
+railway variables set CLIENT_IP_HEADER=CF-Connecting-IP
 
-# Deploy Umami
+# Deploy (uses Dockerfile automatically)
 railway up
+
+# Get deployment URL
+railway domain
 ```
 
-### 2. Configure Custom Domain
+### 5. Configure Custom Domain
 
 In Railway dashboard:
 1. Go to **Settings** → **Domains**
 2. Add custom domain: `umami.cjunker.dev`
 3. Copy the CNAME value (e.g., `xyz.up.railway.app`)
 
-### 3. Configure Cloudflare DNS
+### 6. Configure Cloudflare DNS
 
 Add CNAME record in Cloudflare:
 
@@ -58,7 +102,7 @@ Proxy status: Proxied (orange cloud)
 TTL: Auto
 ```
 
-### 4. Set Up Cloudflare Access
+### 7. Set Up Cloudflare Access
 
 **Create GitHub OAuth Application:**
 
@@ -88,7 +132,7 @@ TTL: Auto
    - **Include**: Emails ending in `@gmail.com` (or your GitHub email)
    - **Require**: GitHub
 
-### 5. Initial Umami Setup
+### 8. Initial Umami Setup
 
 1. Visit `https://umami.cjunker.dev`
 2. Authenticate via Cloudflare Access (GitHub OAuth)

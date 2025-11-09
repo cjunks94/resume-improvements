@@ -19,9 +19,10 @@
     --transition-speed: 0.3s;
 
     /* Tech Radar Colors - Light Mode (WCAG AAA on white) */
-    --radar-adopt: #1a3009;     /* Very dark green */
+    --radar-adopt: #1a3009;     /* Very dark green - innermost */
     --radar-trial: #003840;     /* Very dark teal */
     --radar-assess: #3d3800;    /* Very dark yellow-brown */
+    --radar-hold: #5a1a1a;      /* Very dark red - outermost */
     --radar-new: #1a3009;       /* Dark green for NEW indicator */
 }
 
@@ -32,6 +33,7 @@
         --radar-adopt: #5ba300;     /* Bright green */
         --radar-trial: #009eb0;     /* Bright teal */
         --radar-assess: #c7ba00;    /* Bright yellow */
+        --radar-hold: #e09b96;      /* Bright pink/coral */
         --radar-new: #5ba300;       /* Bright green for NEW indicator */
     }
 }
@@ -41,6 +43,7 @@
     --radar-adopt: #5ba300;
     --radar-trial: #009eb0;
     --radar-assess: #c7ba00;
+    --radar-hold: #e09b96;
     --radar-new: #5ba300;
 }
 

@@ -89,22 +89,37 @@ const radar_visualization = function(config) {
     .style("stroke", cfg.colors.grid)
     .style("stroke-width", 1);
 
-  // Quadrant labels
+  // Quadrant labels with white stroke halo for contrast
   const quadrantAngles = [45, 135, 225, 315]; // degrees
   cfg.quadrants.forEach((quadrant, i) => {
     const angle = (quadrantAngles[i] - 90) * Math.PI / 180;
     const labelRadius = radius + 30;
     const x = labelRadius * Math.cos(angle);
     const y = labelRadius * Math.sin(angle);
+    const labelText = quadrant.name.replace('-', ' & ').toUpperCase();
 
+    // White stroke (halo) for contrast on dark backgrounds
     radar.append("text")
       .attr("x", x)
       .attr("y", y)
       .attr("text-anchor", "middle")
       .style("font-weight", "bold")
       .style("font-size", "14px")
-      .style("fill", "#000")  // Black for maximum contrast
-      .text(quadrant.name.replace('-', ' & ').toUpperCase());
+      .style("stroke", "#fff")
+      .style("stroke-width", "4px")
+      .style("fill", "none")
+      .style("paint-order", "stroke")
+      .text(labelText);
+
+    // Main text (black fill on top)
+    radar.append("text")
+      .attr("x", x)
+      .attr("y", y)
+      .attr("text-anchor", "middle")
+      .style("font-weight", "bold")
+      .style("font-size", "14px")
+      .style("fill", "#000")
+      .text(labelText);
   });
 
   // Map quadrant names to indices

@@ -6,10 +6,10 @@
 
 ## Live Portfolio
 
-**Production**: [cjunker.dev](https://cjunker.dev) (tag-based deployment)
-**Staging**: [staging.cjunker.dev](https://staging.cjunker.dev) (test environment)
-**Tech Stack**: HTML5, CSS3, GitHub Pages, GitHub Actions
-**Status**: Tag-based deployments with production & staging environments
+**Production**: [cjunker.dev](https://cjunker.dev) - Deployed from `master` branch
+**Staging**: [staging.cjunker.dev](https://staging.cjunker.dev) - Deployed to dedicated repository
+**Tech Stack**: HTML5, CSS3, GitHub Pages, GitHub Actions, SSH Deploy Keys
+**Status**: Multi-repository architecture with bulletproof SSL + isolated environments
 
 ## Project Overview
 
@@ -83,25 +83,42 @@ npm run serve
 
 ### Deployment
 
-The site uses **branch-based deployments** with automatic CI/CD:
+The site uses **multi-repository architecture** with automatic CI/CD:
 
 **Production (cjunker.dev):**
 ```bash
 git checkout master
 git push origin master
-# → Automatically deploys to production
+# → Deploys to cjunks94/resume-improvements gh-pages branch
+# → Available at https://cjunker.dev
 ```
 
-**Staging (staging.cjunker.dev):**
+**Staging / PR Previews (staging.cjunker.dev):**
 ```bash
 git checkout -b feature/my-feature
 git push origin feature/my-feature
-# → Automatically deploys to staging
+# → Deploys to cjunks94/resume-improvements-staging (external repo)
+# → Available at https://staging.cjunker.dev
 ```
+
+**Architecture Benefits:**
+- ✅ Separate SSL certificates (no more `NET::ERR_CERT_COMMON_NAME_INVALID`)
+- ✅ Clean environment isolation
+- ✅ Secure SSH deploy key authentication
+- ✅ Industry-standard pattern (used by Stripe, Vercel, etc.)
+- ✅ Automatic PR preview deployments
+- ✅ Zero history bloat with force_orphan
+
+### CI/CD Pipeline
+- **Production:** `master` → https://cjunker.dev
+- **Staging / PR Previews:** All branches → https://staging.cjunker.dev
+- **Manual deploy:** Workflow dispatch with environment selector
+- **External staging repo:** Bulletproof SSL + isolation
+- **Build time:** ~45s (GitHub hosted)
 
 See [DEPLOYMENT.md](DEPLOYMENT.md) for:
 - Complete deployment workflow
-- Branch strategy (master → production, feature → staging)
+- Multi-repository strategy details
 - Rollback strategies
 - DNS configuration
 - Troubleshooting guide
@@ -116,4 +133,4 @@ This is a private repository for personal career development.
 
 ---
 
-*Last Updated: November 8, 2025*
+*Last Updated: November 9, 2025*

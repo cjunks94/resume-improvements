@@ -414,11 +414,11 @@ body {
 }
 
 .radar-legend__content[aria-hidden="true"] {
-    max-height: 0;
+    display: none;
 }
 
 .radar-legend__content[aria-hidden="false"] {
-    max-height: none;
+    display: block;
 }
 
 .legend-quadrant {
@@ -449,6 +449,10 @@ body {
     margin-bottom: 0.25rem;
     font-size: 0.9rem;
     line-height: 1.5;
+}
+
+.legend-number {
+    color: var(--color-primary);
 }
 
 /* Radar Tooltip */

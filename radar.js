@@ -285,8 +285,7 @@ function buildLegend(legend, cfg) {
   const content = legendContainer.append("div")
     .attr("id", "radar-legend-content")
     .attr("class", "radar-legend__content")
-    .attr("aria-hidden", "true")
-    .style("max-height", "0");
+    .attr("aria-hidden", "true");
 
   // Toggle functionality
   toggleBtn.on("click", function() {
@@ -295,8 +294,7 @@ function buildLegend(legend, cfg) {
       .attr("aria-expanded", !isExpanded)
       .text(isExpanded ? "Show All" : "Hide All");
     content
-      .attr("aria-hidden", isExpanded)
-      .style("max-height", isExpanded ? "0" : "none");
+      .attr("aria-hidden", isExpanded);
   });
 
   Object.keys(legend).forEach(quadrant => {
@@ -305,7 +303,6 @@ function buildLegend(legend, cfg) {
       .style("margin-bottom", "2rem");
 
     section.append("h3")
-      .style("color", "#0066cc")
       .style("margin-bottom", "1rem")
       .text(quadrant.replace('-', ' & ').toUpperCase());
 
@@ -329,10 +326,10 @@ function buildLegend(legend, cfg) {
           .style("font-size", "0.9rem");
 
         li.append("span")
+          .attr("class", "legend-number")
           .style("display", "inline-block")
           .style("width", "30px")
           .style("font-weight", "bold")
-          .style("color", "#0066cc")
           .text(item.number + ".");
 
         li.append("span")

@@ -1,6 +1,6 @@
 # Deployment Guide
 
-This guide covers deploying the portfolio site to GitHub Pages using tag-based deployments with separate production and staging environments.
+This guide covers deploying the portfolio site to GitHub Pages using branch-based deployments with automatic staging previews.
 
 ## Prerequisites
 
@@ -11,18 +11,19 @@ This guide covers deploying the portfolio site to GitHub Pages using tag-based d
 
 ## Deployment Overview
 
-This site uses **tag-based deployments** with two environments:
+This site uses **branch-based deployments** with automatic staging:
 
-- **Production** (cjunker.dev): Deployed from tags like `v1.0.0`, `v1.1.0`
-- **Staging** (staging.cjunker.dev): Deployed from tags like `staging-v1.0.0`, `staging-latest`
+- **Production** (cjunker.dev): Deployed automatically from `master` branch
+- **Staging** (staging.cjunker.dev): Deployed automatically from `staging` and `feature/*` branches
 
-### Why Tag-Based?
-- ✅ Controlled deployments (no accidental production releases)
-- ✅ Version history and rollback capability
-- ✅ Staging environment for testing before production
-- ✅ Semantic versioning for clear release communication
+### Why Branch-Based Subfolder Deployment?
+- ✅ True CI/CD (automatic deployment on push)
+- ✅ Feature branch previews (test before merging)
+- ✅ Single gh-pages branch with subfolders
+- ✅ Works natively with GitHub Pages
+- ✅ Simple rollback with git revert
 
-See `decisions/003-tag-based-deployment-strategy.md` for full rationale.
+See `decisions/003-branch-based-deployment-strategy.md` for full rationale.
 
 ## Local Development
 
@@ -69,124 +70,125 @@ git commit -m "feat: add new feature"
 git push origin feature/new-feature
 ```
 
-### Step 2: Deploy to Staging
+### Step 2: Auto-Deploy to Staging
+
+Pushing your feature branch automatically deploys to staging:
 
 ```bash
-# Tag your feature branch for staging
-git tag staging-v1.0.0-rc1
-git push origin staging-v1.0.0-rc1
-
-# Check deployment at: https://staging.cjunker.dev
+git push origin feature/new-feature
+# → Automatically deploys to https://staging.cjunker.dev
 ```
 
 The GitHub Actions workflow will:
 1. Run all tests and linters
-2. Deploy to `gh-pages-staging` branch
-3. Site available at staging.cjunker.dev
+2. Deploy to `/staging` subfolder of `gh-pages` branch
+3. Site available at staging.cjunker.dev within 1-2 minutes
 
-### Step 3: Merge to Master
+**Preview your changes at:** https://staging.cjunker.dev
+
+### Step 3: Create Pull Request
 
 ```bash
-# After testing on staging
+# Create PR on GitHub for code review
+# Tests will run automatically on PR
+```
+
+### Step 4: Merge to Master (Auto-Deploy to Production)
+
+```bash
+# After PR approval and merge
 git checkout master
-git merge feature/new-feature
-git push origin master
-```
-
-**Note:** Pushing to master only runs tests, NOT deployment.
-
-### Step 4: Deploy to Production
-
-```bash
-# Tag master for production release
-git tag v1.0.0
-git push origin v1.0.0
-
-# Check deployment at: https://cjunker.dev
+git pull origin master
+# → Automatically deploys to https://cjunker.dev
 ```
 
 The GitHub Actions workflow will:
 1. Run all tests and linters
-2. Deploy to `gh-pages-production` branch
-3. Site available at cjunker.dev
+2. Deploy to root of `gh-pages` branch
+3. Site available at cjunker.dev within 1-2 minutes
 
-## Tag Naming Conventions
-
-### Production Tags (Semantic Versioning)
-
-Format: `v<major>.<minor>.<patch>[-prerelease]`
-
-```bash
-v1.0.0        # Major release
-v1.1.0        # Minor release (new features)
-v1.1.1        # Patch release (bug fixes)
-v2.0.0-beta.1 # Pre-release (optional)
-```
-
-**When to increment:**
-- **Major (v2.0.0)**: Breaking changes, major redesign
-- **Minor (v1.1.0)**: New features, non-breaking changes
-- **Patch (v1.0.1)**: Bug fixes, small improvements
-
-### Staging Tags
-
-Format: `staging-<description>` or `staging-v<version>[-rc]`
-
-```bash
-staging-latest         # Always latest master
-staging-v1.0.0-rc1     # Release candidate 1
-staging-mobile-fix     # Feature-specific
-staging-2025-11-08     # Date-based
-```
+**No manual steps required!** Production updates automatically on merge to master.
 
 ## Rollback Strategy
 
-### Option 1: Force Update Tag (Quick)
+### Option 1: Revert Specific Commit (Recommended)
 
 ```bash
-# Find commit SHA of working version
+# Find the bad commit
 git log --oneline
 
-# Move tag to that commit
-git checkout <old-commit-sha>
-git tag -f v1.0.0
-git push origin v1.0.0 --force
+# Revert it (creates new commit that undoes changes)
+git checkout master
+git revert <bad-commit-sha>
+git push origin master
+# → Automatically deploys reverted version to production
 ```
 
-### Option 2: Create New Patch Tag (Recommended)
+### Option 2: Revert Multiple Commits
 
 ```bash
-# Tag the older working commit with new version
-git checkout <old-commit-sha>
-git tag v1.0.2  # New patch version
-git push origin v1.0.2
+# Revert a range of commits
+git revert <oldest-bad-commit>..<newest-bad-commit>
+git push origin master
+```
+
+### Option 3: Hard Reset (Use with Caution)
+
+```bash
+# Reset master to a known good commit
+git checkout master
+git reset --hard <good-commit-sha>
+git push origin master --force
+
+# ⚠️ WARNING: This rewrites history
+# Only use if absolutely necessary
+```
+
+### Testing Rollback on Staging First
+
+```bash
+# Test the rollback on a feature branch first
+git checkout -b rollback-test
+git revert <bad-commit-sha>
+git push origin rollback-test
+# → Check https://staging.cjunker.dev
+
+# If it looks good, apply to master
+git checkout master
+git cherry-pick <revert-commit-sha>
+git push origin master
 ```
 
 ## GitHub Actions Workflows
 
-### Test on Push and PR (`.github/workflows/test-and-deploy.yml`)
+### Workflow File: `.github/workflows/deploy.yml`
 
 **Triggers:**
-- Push to `master`
+- Push to `master`, `staging`, or `feature/**` branches
 - Pull requests to `master`
 
-**Actions:**
-- Run linters (HTML, CSS)
-- Run tests (section validation, links)
-- Run accessibility tests
-- **Does NOT deploy** (tests only)
+**Jobs:**
 
-### Deploy from Tags (`.github/workflows/deploy-tags.yml`)
+1. **test** (runs on all triggers):
+   - Install dependencies
+   - Run linters (HTML, CSS)
+   - Run tests (section validation, links)
+   - Run accessibility tests
 
-**Triggers:**
-- Tags matching `v*.*.*` (production)
-- Tags matching `staging-*` (staging)
+2. **deploy-production** (only on push to master):
+   - Runs after tests pass
+   - Deploys to root of `gh-pages` branch
+   - Site available at cjunker.dev
 
-**Actions:**
-- Run all tests
-- Deploy to appropriate branch:
-  - `v*` → `gh-pages-production` → cjunker.dev
-  - `staging-*` → `gh-pages-staging` → staging.cjunker.dev
+3. **deploy-staging** (only on push to non-master branches):
+   - Runs after tests pass
+   - Deploys to `/staging` subfolder of `gh-pages` branch
+   - Site available at staging.cjunker.dev
+
+**Key Configuration:**
+- Uses `peaceiris/actions-gh-pages@v3` for deployment
+- Excludes build artifacts (node_modules, tests, etc.)
+- Sets up GitHub environments (production, staging)
 
 ## DNS Configuration for Staging
 
@@ -208,15 +210,18 @@ To set up staging.cjunker.dev:
    # Should show CNAME to cjunks94.github.io
    ```
 
-4. **Deploy to staging with a tag:**
+4. **Push to a feature branch to trigger staging deployment:**
    ```bash
-   git tag staging-latest
-   git push origin staging-latest
+   git checkout -b feature/test-staging
+   git push origin feature/test-staging
+   # → Deploys to https://staging.cjunker.dev within 1-2 minutes
    ```
 
-5. **Check GitHub Pages settings:**
-   - Go to **Settings → Environments → staging**
-   - Custom domain will be automatically configured via CNAME file in gh-pages-staging
+5. **GitHub Pages Configuration:**
+   - Go to **Settings → Pages**
+   - Source should be **gh-pages** branch (root)
+   - Custom domain: `cjunker.dev`
+   - GitHub Pages will automatically route `staging.cjunker.dev` to `/staging` subfolder
 
 ## Custom Domain Setup
 
@@ -309,19 +314,24 @@ No additional configuration needed!
 
 The GitHub Actions workflow automatically:
 
-1. **On every push to master**:
+1. **On push to master**:
    - Installs dependencies
    - Runs linters (HTML + CSS)
    - Runs tests (section validation + link checking)
-   - Deploys to GitHub Pages if tests pass
+   - Runs accessibility tests
+   - Deploys to production (cjunker.dev) if tests pass
 
-2. **On pull requests**:
-   - Runs linters and tests
+2. **On push to staging or feature branches**:
+   - Runs all tests and linters
+   - Deploys to staging (staging.cjunker.dev) if tests pass
+
+3. **On pull requests**:
+   - Runs linters and tests only
    - Does NOT deploy (only validates)
 
 ### Workflow File
 
-Located at: `.github/workflows/test-and-deploy.yml`
+Located at: `.github/workflows/deploy.yml`
 
 To modify deployment behavior, edit this file.
 

@@ -83,26 +83,28 @@ npm run serve
 
 ### Deployment
 
-The site uses **tag-based deployments** for controlled releases:
+The site uses **branch-based deployments** with automatic CI/CD:
 
 **Production (cjunker.dev):**
 ```bash
-git tag v1.0.0
-git push origin v1.0.0
+git checkout master
+git push origin master
+# → Automatically deploys to production
 ```
 
 **Staging (staging.cjunker.dev):**
 ```bash
-git tag staging-v1.0.0
-git push origin staging-v1.0.0
+git checkout -b feature/my-feature
+git push origin feature/my-feature
+# → Automatically deploys to staging
 ```
 
 See [DEPLOYMENT.md](DEPLOYMENT.md) for:
-- Tag-based deployment workflow
-- Semantic versioning guide
-- Production vs staging environments
-- DNS configuration
+- Complete deployment workflow
+- Branch strategy (master → production, feature → staging)
 - Rollback strategies
+- DNS configuration
+- Troubleshooting guide
 
 ## Progress Tracking
 

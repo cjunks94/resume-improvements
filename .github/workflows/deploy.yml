@@ -1,0 +1,119 @@
+name: Deploy Production + Staging
+
+on:
+  push:
+    branches:
+      - master              # Production
+      - staging             # Staging
+      - 'feature/**'        # Feature branch previews
+  pull_request:
+    branches: [ master ]
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  test:
+    name: Run Tests and Linters
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run linters
+        run: npm run lint
+
+      - name: Run tests
+        run: npm test
+
+      - name: Start local server for accessibility testing
+        run: |
+          npm run serve &
+          sleep 3
+
+      - name: Run accessibility tests
+        run: npm run test:a11y
+
+  deploy-production:
+    name: Deploy to Production (cjunker.dev)
+    runs-on: ubuntu-latest
+    needs: test
+    if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+
+    environment:
+      name: production
+      url: https://cjunker.dev
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy to root of gh-pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: .
+          publish_branch: gh-pages
+          cname: cjunker.dev
+          exclude_assets: '.github,node_modules,tests,package*.json,.gitignore,.stylelintrc.json,.htmlvalidate.json,decisions,TODO.md,CLAUDE.md'
+
+      - name: Create deployment summary
+        run: |
+          echo "### 🚀 Production Deployment" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Environment:** Production" >> $GITHUB_STEP_SUMMARY
+          echo "- **URL:** https://cjunker.dev" >> $GITHUB_STEP_SUMMARY
+          echo "- **Branch:** gh-pages (root)" >> $GITHUB_STEP_SUMMARY
+          echo "- **Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Deployed at:** $(date -u)" >> $GITHUB_STEP_SUMMARY
+
+  deploy-staging:
+    name: Deploy to Staging (staging.cjunker.dev)
+    runs-on: ubuntu-latest
+    needs: test
+    if: github.ref != 'refs/heads/master' && github.event_name == 'push'
+
+    environment:
+      name: staging
+      url: https://staging.cjunker.dev
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy to /staging subfolder of gh-pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: .
+          publish_branch: gh-pages
+          destination_dir: staging
+          cname: staging.cjunker.dev
+          exclude_assets: '.github,node_modules,tests,package*.json,.gitignore,.stylelintrc.json,.htmlvalidate.json,decisions,TODO.md,CLAUDE.md'
+
+      - name: Create deployment summary
+        run: |
+          echo "### 🧪 Staging Deployment" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Environment:** Staging" >> $GITHUB_STEP_SUMMARY
+          echo "- **URL:** https://staging.cjunker.dev" >> $GITHUB_STEP_SUMMARY
+          echo "- **Branch:** gh-pages (/staging subfolder)" >> $GITHUB_STEP_SUMMARY
+          echo "- **Source Branch:** ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Deployed at:** $(date -u)" >> $GITHUB_STEP_SUMMARY

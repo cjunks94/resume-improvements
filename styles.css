@@ -299,57 +299,119 @@ body {
 
 .tech-radar-section__description {
     margin-bottom: var(--spacing-md);
+    text-align: center;
 }
 
-.tech-radar-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
-    gap: var(--spacing-md);
-    margin-bottom: var(--spacing-md);
-}
-
-.tech-radar-quadrant {
-    background: var(--card-background-color);
+/* Interactive Radar Container */
+.radar-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto var(--spacing-lg);
     padding: var(--spacing-md);
-    border-radius: var(--border-radius);
+    background: var(--card-background-color);
     border: 1px solid var(--card-border-color);
-    transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+    border-radius: var(--border-radius);
+    overflow-x: auto;
 }
 
-.tech-radar-quadrant:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+.radar-container svg {
+    width: 100%;
+    height: auto;
+    display: block;
 }
 
-.tech-radar-quadrant__title {
+/* Blips (technologies on radar) */
+.blip {
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+}
+
+.blip:hover,
+.blip:focus {
+    opacity: 1 !important;
+}
+
+.blip:focus {
+    outline: 3px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+/* Radar Legend */
+.radar-legend {
+    max-width: 1200px;
+    margin: 0 auto var(--spacing-lg);
+    padding: var(--spacing-md);
+    background: var(--card-background-color);
+    border: 1px solid var(--card-border-color);
+    border-radius: var(--border-radius);
+}
+
+.legend-quadrant {
+    margin-bottom: 2rem;
+}
+
+.legend-quadrant h3 {
     font-size: 1.25rem;
-    margin-bottom: var(--spacing-sm);
     color: var(--color-primary);
+    margin-bottom: 1rem;
+    border-bottom: 2px solid var(--color-primary);
+    padding-bottom: var(--spacing-xs);
 }
 
-.tech-radar-quadrant__list {
-    list-style: none;
-    padding-left: 0;
-}
-
-.tech-radar-quadrant__item {
-    margin-bottom: var(--spacing-sm);
-    line-height: 1.6;
-}
-
-.tech-radar-quadrant__ring {
-    color: var(--color-accent);
-    font-weight: 600;
-}
-
-.tech-radar-quadrant__tech {
+.legend-quadrant h4 {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
     color: var(--color-secondary);
 }
 
+.legend-quadrant ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1rem;
+}
+
+.legend-quadrant li {
+    margin-bottom: 0.25rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+/* Radar Tooltip */
+#radar-tooltip {
+    position: absolute;
+    background: var(--background-color);
+    border: 2px solid var(--color-primary);
+    border-radius: var(--border-radius);
+    padding: 1rem;
+    max-width: 350px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    pointer-events: none;
+}
+
+#radar-tooltip h4 {
+    margin: 0 0 0.5rem;
+    color: var(--color-primary);
+    font-size: 1.1rem;
+}
+
+#radar-tooltip p {
+    margin: 0 0 0.5rem;
+    font-size: 0.9rem;
+}
+
+#radar-tooltip p:last-child {
+    margin: 0;
+    color: var(--color-secondary);
+}
+
+/* Tech Radar Actions */
 .tech-radar-section__actions {
     display: flex;
     flex-direction: column;
     gap: var(--spacing-sm);
+    max-width: 600px;
+    margin: 0 auto;
 }
 
 /* ==========================================================================

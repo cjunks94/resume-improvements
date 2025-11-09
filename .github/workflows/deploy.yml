@@ -89,8 +89,12 @@ jobs:
           publish_branch: gh-pages
           publish_dir: .
           cname: staging.cjunker.dev
+          force_orphan: true
+          keep_files: true
           exclude_assets: '.github,node_modules,tests,package*.json,.gitignore,.stylelintrc.json,.htmlvalidate.json,decisions,TODO.md,CLAUDE.md'
-      - name: Restore domain (API safety net)
+      - name: Wait for GitHub Pages to process deployment
+        run: sleep 5
+      - name: Restore domain (API double-check)
         if: always()
         run: |
           curl -L -X PUT \

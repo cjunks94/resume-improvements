@@ -26,3 +26,9 @@ Thumbs.db
 
 # Accessibility testing
 screenshots/
+
+# Umami Analytics
+umami/.env
+umami/data/
+*.sql
+*.backup

@@ -218,9 +218,6 @@ const radar_visualization = function(config) {
       moved: entry.moved
     });
 
-    // Native browser tooltip
-    blip.append("title").text(entry.label);
-
     // Visible hover label (hidden by default)
     const hoverLabel = blip.append("g")
       .attr("class", "hover-label")
@@ -232,21 +229,24 @@ const radar_visualization = function(config) {
     const labelPadding = 8;
     const labelWidth = labelText.length * 7 + labelPadding * 2;
 
+    // White background rect (rendered first, so it's behind text)
     hoverLabel.append("rect")
       .attr("x", -labelWidth / 2)
       .attr("y", 15)
       .attr("width", labelWidth)
-      .attr("height", 24)
+      .attr("height", 26)
       .attr("rx", 4)
       .style("fill", "#fff")
       .style("stroke", "#000")
-      .style("stroke-width", 2);
+      .style("stroke-width", 2)
+      .style("filter", "drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.3))");
 
+    // Tech name text (rendered second, so it's on top)
     hoverLabel.append("text")
-      .attr("y", 30)
+      .attr("y", 32)
       .attr("text-anchor", "middle")
-      .style("font-size", "12px")
-      .style("font-weight", "600")
+      .style("font-size", "13px")
+      .style("font-weight", "bold")
       .style("fill", "#000")
       .text(labelText);
 

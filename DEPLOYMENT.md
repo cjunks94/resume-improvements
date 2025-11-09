@@ -1,12 +1,29 @@
 # Deployment Guide
 
-This guide covers deploying the portfolio site to GitHub Pages with optional custom domain setup.
+This guide covers deploying the portfolio site to GitHub Pages using branch-based deployments with automatic staging previews.
 
 ## Prerequisites
 
 - GitHub account
 - Git installed locally
 - Node.js 20+ installed (for local testing)
+- DNS access for cjunker.dev (for custom domains)
+
+## Deployment Overview
+
+This site uses **branch-based deployments** with automatic staging:
+
+- **Production** (cjunker.dev): Deployed automatically from `master` branch
+- **Staging** (staging.cjunker.dev): Deployed automatically from `staging` and `feature/*` branches
+
+### Why Branch-Based Subfolder Deployment?
+- ✅ True CI/CD (automatic deployment on push)
+- ✅ Feature branch previews (test before merging)
+- ✅ Single gh-pages branch with subfolders
+- ✅ Works natively with GitHub Pages
+- ✅ Simple rollback with git revert
+
+See `decisions/003-branch-based-deployment-strategy.md` for full rationale.
 
 ## Local Development
 
@@ -23,6 +40,7 @@ npm test          # Run all tests
 npm run lint      # Run linters only
 npm run test:sections  # Test section presence
 npm run test:links     # Check local file links
+npm run test:a11y      # Accessibility tests
 ```
 
 ### Local Preview
@@ -32,33 +50,182 @@ npm run serve
 # Visit http://localhost:8000
 ```
 
-## GitHub Pages Setup
+## Deployment Workflow
 
-### Step 1: Enable GitHub Pages
-
-1. Go to your repository on GitHub
-2. Click **Settings** → **Pages**
-3. Under **Build and deployment**:
-   - **Source**: Select "GitHub Actions"
-   - The workflow `.github/workflows/test-and-deploy.yml` will handle deployment
-
-### Step 2: Push Your Code
+### Step 1: Develop and Test Locally
 
 ```bash
-git add .
-git commit -m "Initial portfolio site"
+# Create feature branch
+git checkout -b feature/new-feature
+
+# Make changes
+# ...
+
+# Test locally
+npm test
+npm run lint
+
+# Commit changes
+git commit -m "feat: add new feature"
+git push origin feature/new-feature
+```
+
+### Step 2: Auto-Deploy to Staging
+
+Pushing your feature branch automatically deploys to staging:
+
+```bash
+git push origin feature/new-feature
+# → Automatically deploys to https://staging.cjunker.dev
+```
+
+The GitHub Actions workflow will:
+1. Run all tests and linters
+2. Deploy to `/staging` subfolder of `gh-pages` branch
+3. Site available at staging.cjunker.dev within 1-2 minutes
+
+**Preview your changes at:** https://staging.cjunker.dev
+
+### Step 3: Create Pull Request
+
+```bash
+# Create PR on GitHub for code review
+# Tests will run automatically on PR
+```
+
+### Step 4: Merge to Master (Auto-Deploy to Production)
+
+```bash
+# After PR approval and merge
+git checkout master
+git pull origin master
+# → Automatically deploys to https://cjunker.dev
+```
+
+The GitHub Actions workflow will:
+1. Run all tests and linters
+2. Deploy to root of `gh-pages` branch
+3. Site available at cjunker.dev within 1-2 minutes
+
+**No manual steps required!** Production updates automatically on merge to master.
+
+## Rollback Strategy
+
+### Option 1: Revert Specific Commit (Recommended)
+
+```bash
+# Find the bad commit
+git log --oneline
+
+# Revert it (creates new commit that undoes changes)
+git checkout master
+git revert <bad-commit-sha>
+git push origin master
+# → Automatically deploys reverted version to production
+```
+
+### Option 2: Revert Multiple Commits
+
+```bash
+# Revert a range of commits
+git revert <oldest-bad-commit>..<newest-bad-commit>
 git push origin master
 ```
 
-### Step 3: Verify Deployment
+### Option 3: Hard Reset (Use with Caution)
 
-1. Go to **Actions** tab in your repository
-2. Wait for the "Test and Deploy" workflow to complete
-3. Your site will be live at: `https://<username>.github.io/resume-improvements/`
+```bash
+# Reset master to a known good commit
+git checkout master
+git reset --hard <good-commit-sha>
+git push origin master --force
+
+# ⚠️ WARNING: This rewrites history
+# Only use if absolutely necessary
+```
+
+### Testing Rollback on Staging First
+
+```bash
+# Test the rollback on a feature branch first
+git checkout -b rollback-test
+git revert <bad-commit-sha>
+git push origin rollback-test
+# → Check https://staging.cjunker.dev
+
+# If it looks good, apply to master
+git checkout master
+git cherry-pick <revert-commit-sha>
+git push origin master
+```
+
+## GitHub Actions Workflows
+
+### Workflow File: `.github/workflows/deploy.yml`
+
+**Triggers:**
+- Push to `master`, `staging`, or `feature/**` branches
+- Pull requests to `master`
+
+**Jobs:**
+
+1. **test** (runs on all triggers):
+   - Install dependencies
+   - Run linters (HTML, CSS)
+   - Run tests (section validation, links)
+   - Run accessibility tests
+
+2. **deploy-production** (only on push to master):
+   - Runs after tests pass
+   - Deploys to root of `gh-pages` branch
+   - Site available at cjunker.dev
+
+3. **deploy-staging** (only on push to non-master branches):
+   - Runs after tests pass
+   - Deploys to `/staging` subfolder of `gh-pages` branch
+   - Site available at staging.cjunker.dev
+
+**Key Configuration:**
+- Uses `peaceiris/actions-gh-pages@v3` for deployment
+- Excludes build artifacts (node_modules, tests, etc.)
+- Sets up GitHub environments (production, staging)
+
+## DNS Configuration for Staging
+
+To set up staging.cjunker.dev:
+
+1. **Add CNAME record at your DNS provider:**
+   ```
+   Type: CNAME
+   Name: staging
+   Value: cjunks94.github.io
+   TTL: 3600 (or automatic)
+   ```
+
+2. **Wait for DNS propagation** (5-30 minutes typically)
+
+3. **Verify DNS:**
+   ```bash
+   dig staging.cjunker.dev +noall +answer
+   # Should show CNAME to cjunks94.github.io
+   ```
+
+4. **Push to a feature branch to trigger staging deployment:**
+   ```bash
+   git checkout -b feature/test-staging
+   git push origin feature/test-staging
+   # → Deploys to https://staging.cjunker.dev within 1-2 minutes
+   ```
+
+5. **GitHub Pages Configuration:**
+   - Go to **Settings → Pages**
+   - Source should be **gh-pages** branch (root)
+   - Custom domain: `cjunker.dev`
+   - GitHub Pages will automatically route `staging.cjunker.dev` to `/staging` subfolder
 
 ## Custom Domain Setup
 
-### Option 1: Using a Custom Domain (e.g., cjunker.dev)
+### Production Domain (cjunker.dev)
 
 #### DNS Configuration
 
@@ -147,19 +314,24 @@ No additional configuration needed!
 
 The GitHub Actions workflow automatically:
 
-1. **On every push to master**:
+1. **On push to master**:
    - Installs dependencies
    - Runs linters (HTML + CSS)
    - Runs tests (section validation + link checking)
-   - Deploys to GitHub Pages if tests pass
+   - Runs accessibility tests
+   - Deploys to production (cjunker.dev) if tests pass
 
-2. **On pull requests**:
-   - Runs linters and tests
+2. **On push to staging or feature branches**:
+   - Runs all tests and linters
+   - Deploys to staging (staging.cjunker.dev) if tests pass
+
+3. **On pull requests**:
+   - Runs linters and tests only
    - Does NOT deploy (only validates)
 
 ### Workflow File
 
-Located at: `.github/workflows/test-and-deploy.yml`
+Located at: `.github/workflows/deploy.yml`
 
 To modify deployment behavior, edit this file.
 

@@ -6,9 +6,10 @@
 
 ## Live Portfolio
 
-**Website**: [View Live Site](https://<username>.github.io/resume-improvements/) (update after deployment)
-**Tech Stack**: HTML5, CSS3, GitHub Pages
-**Status**: Deployed with CI/CD via GitHub Actions
+**Production**: [cjunker.dev](https://cjunker.dev) (tag-based deployment)
+**Staging**: [staging.cjunker.dev](https://staging.cjunker.dev) (test environment)
+**Tech Stack**: HTML5, CSS3, GitHub Pages, GitHub Actions
+**Status**: Tag-based deployments with production & staging environments
 
 ## Project Overview
 
@@ -82,13 +83,28 @@ npm run serve
 
 ### Deployment
 
-The site automatically deploys to GitHub Pages on every push to `master` via GitHub Actions.
+The site uses **branch-based deployments** with automatic CI/CD:
+
+**Production (cjunker.dev):**
+```bash
+git checkout master
+git push origin master
+# → Automatically deploys to production
+```
+
+**Staging (staging.cjunker.dev):**
+```bash
+git checkout -b feature/my-feature
+git push origin feature/my-feature
+# → Automatically deploys to staging
+```
 
 See [DEPLOYMENT.md](DEPLOYMENT.md) for:
-- GitHub Pages setup
-- Custom domain configuration
-- DNS setup guide
-- Troubleshooting
+- Complete deployment workflow
+- Branch strategy (master → production, feature → staging)
+- Rollback strategies
+- DNS configuration
+- Troubleshooting guide
 
 ## Progress Tracking
 

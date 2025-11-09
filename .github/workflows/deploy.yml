@@ -117,7 +117,7 @@ jobs:
           deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
           external_repository: cjunks94/resume-improvements-staging
           publish_dir: .
-          publish_branch: master
+          publish_branch: gh-pages
           cname: staging.cjunker.dev
           exclude_assets: '.github,node_modules,tests,package*.json,.gitignore,.stylelintrc.json,.htmlvalidate.json,decisions,TODO.md,CLAUDE.md'
 
@@ -128,7 +128,7 @@ jobs:
           echo "- **Environment:** Staging" >> $GITHUB_STEP_SUMMARY
           echo "- **URL:** https://staging.cjunker.dev" >> $GITHUB_STEP_SUMMARY
           echo "- **Target Repository:** cjunks94/resume-improvements-staging" >> $GITHUB_STEP_SUMMARY
-          echo "- **Branch:** master (root)" >> $GITHUB_STEP_SUMMARY
+          echo "- **Branch:** gh-pages (root)" >> $GITHUB_STEP_SUMMARY
           echo "- **Source Branch:** ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Deployed at:** $(date -u)" >> $GITHUB_STEP_SUMMARY

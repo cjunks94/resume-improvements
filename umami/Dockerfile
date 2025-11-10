@@ -17,7 +17,12 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY --from=deps /app .
 ENV NEXT_TELEMETRY_DISABLED=1 \
     DATABASE_URL="postgresql://dummy:dummy@localhost:5432/dummy"
-RUN npm run build
+# Skip check-db during build (no database access at build time)
+RUN npm run check-env && \
+    npm run build-db && \
+    npm run build-tracker && \
+    npm run build-geo && \
+    npm run build-app
 
 # Stage 3: Runtime (FINAL – 82 MB)
 FROM node:20-alpine AS runner

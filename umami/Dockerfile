@@ -33,7 +33,8 @@ LABEL org.opencontainers.image.title="Umami Analytics" \
       org.opencontainers.image.source="https://github.com/cjunks94/resume-improvements"
 
 # Runtime deps + security
-RUN apk add --no-cache dumb-init wget openssl \
+# openssl1.1-compat provides libssl.so.1.1 required by Prisma engine
+RUN apk add --no-cache dumb-init wget openssl1.1-compat \
     && rm -rf /var/cache/apk/* \
     && addgroup -S nodejs -g 1001 \
     && adduser -S nodejs -u 1001 -G nodejs

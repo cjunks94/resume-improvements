@@ -16,7 +16,8 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY --from=deps /app .
 ENV NEXT_TELEMETRY_DISABLED=1 \
-    DATABASE_URL="postgresql://dummy:dummy@localhost:5432/dummy"
+    DATABASE_URL="postgresql://dummy:dummy@localhost:5432/dummy" \
+    PRISMA_CLI_BINARY_TARGETS="linux-musl-openssl-3.0.x"
 # Skip check-db during build (no database access at build time)
 RUN npm run check-env && \
     npm run build-db && \

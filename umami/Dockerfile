@@ -9,7 +9,7 @@ RUN apk add --no-cache git openssl libc6-compat
 ARG UMAMI_VERSION=v2.13.2
 RUN git clone --depth 1 --branch ${UMAMI_VERSION} https://github.com/umami-software/umami.git /app
 # Patch Prisma schema BEFORE npm install (which generates Prisma client)
-RUN find . -name "schema.prisma" -type f -exec sed -i 's/binaryTargets = \["native"\]/binaryTargets = ["native", "linux-musl-openssl-3.0.x"]/g' {} \;
+RUN find . -name "schema.prisma" -type f -exec sed -i 's/binaryTargets = \["native"\]/binaryTargets = ["native", "linux-musl-openssl-3.0.x", "linux-musl"]/g' {} \;
 RUN npm install --legacy-peer-deps --ignore-scripts
 
 # Stage 2: Builder

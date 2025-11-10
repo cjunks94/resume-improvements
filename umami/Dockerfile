@@ -8,14 +8,13 @@ WORKDIR /app
 RUN apk add --no-cache git openssl libc6-compat
 ARG UMAMI_VERSION=v2.13.2
 RUN git clone --depth 1 --branch ${UMAMI_VERSION} https://github.com/umami-software/umami.git /app
-RUN npm ci --ignore-scripts
+RUN npm install --ignore-scripts
 
 # Stage 2: Builder
 FROM node:20-alpine AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY --from=deps /app .
-RUN npm ci --ignore-scripts
 ENV NEXT_TELEMETRY_DISABLED=1
 RUN npm run build
 

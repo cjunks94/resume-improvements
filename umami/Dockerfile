@@ -8,6 +8,8 @@ WORKDIR /app
 RUN apk add --no-cache git openssl libc6-compat
 ARG UMAMI_VERSION=v2.13.2
 RUN git clone --depth 1 --branch ${UMAMI_VERSION} https://github.com/umami-software/umami.git /app
+# Patch Prisma schema BEFORE npm install (which generates Prisma client)
+RUN find . -name "schema.prisma" -type f -exec sed -i 's/binaryTargets = \["native"\]/binaryTargets = ["native", "linux-musl-openssl-3.0.x"]/g' {} \;
 RUN npm install --legacy-peer-deps --ignore-scripts
 
 # Stage 2: Builder
@@ -17,13 +19,6 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY --from=deps /app .
 ENV NEXT_TELEMETRY_DISABLED=1 \
     DATABASE_URL="postgresql://dummy:dummy@localhost:5432/dummy"
-# Patch Prisma schema to include linux-musl-openssl-3.0.x binary target
-RUN echo "=== Searching for schema.prisma files ===" && \
-    find . -name "schema.prisma" -type f && \
-    echo "=== Patching schema files ===" && \
-    find . -name "schema.prisma" -type f -exec sh -c 'echo "Patching: $1"; cat "$1" | grep -A2 "generator client"; sed -i "s/binaryTargets = \\[\"native\"\\]/binaryTargets = [\"native\", \"linux-musl-openssl-3.0.x\"]/g" "$1"; echo "After patch:"; cat "$1" | grep -A2 "generator client"' shell {} \; && \
-    echo "=== Cleaning old Prisma client ===" && \
-    rm -rf node_modules/.prisma node_modules/@prisma/client
 # Skip check-db during build (no database access at build time)
 RUN npm run check-env && \
     npm run build-db && \

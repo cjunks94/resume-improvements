@@ -18,7 +18,7 @@ COPY --from=deps /app .
 ENV NEXT_TELEMETRY_DISABLED=1 \
     DATABASE_URL="postgresql://dummy:dummy@localhost:5432/dummy"
 # Patch Prisma schema to include linux-musl-openssl-3.0.x binary target
-RUN sed -i 's/binaryTargets = \["native"\]/binaryTargets = ["native", "linux-musl-openssl-3.0.x"]/' prisma/schema.prisma
+RUN find . -name "schema.prisma" -type f -exec sed -i 's/binaryTargets = \["native"\]/binaryTargets = ["native", "linux-musl-openssl-3.0.x"]/' {} \;
 # Skip check-db during build (no database access at build time)
 RUN npm run check-env && \
     npm run build-db && \

@@ -10,6 +10,7 @@ Docker,adopt,platforms,FALSE,"Containerization for all services, CI/CD optimizat
 AWS,adopt,platforms,FALSE,"EC2, S3, Lambda, CloudWatch, SNS/SQS (production monitoring), Secrets Manager (credential rotation)"
 ArgoCD,adopt,platforms,FALSE,"GitOps-based continuous delivery for Kubernetes deployments"
 Terraform,trial,platforms,FALSE,"Infrastructure as Code for AWS resource management"
+Railway,adopt,platforms,TRUE,"Modern PaaS for zero-config deployments: Umami analytics hosting (82MB Docker), PostgreSQL, auto-HTTPS, free tier ($0/month)"
 Datadog APM,adopt,tools,FALSE,"Production observability: distributed tracing, custom metrics, dashboards, alerts, deployment tracking, SLO monitoring"
 MySQL,adopt,tools,FALSE,"Primary production database, multi-year migration from MongoDB, billions of events"
 Redis,adopt,tools,FALSE,"Distributed caching layer, write-through pattern, Sidekiq job queue, cross-service performance optimization"

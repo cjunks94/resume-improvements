@@ -196,15 +196,17 @@ body {
     /* Mobile overlay menu */
     position: fixed;
     inset: 0;
-    background: var(--background-color);
+    background: var(--card-background-color);
+    backdrop-filter: blur(20px);
     z-index: 1000;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
 
     /* Layout */
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: var(--spacing-md);
+    gap: var(--spacing-sm);
 
     /* Hidden by default */
     transform: translateX(-100%);

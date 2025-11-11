@@ -186,7 +186,7 @@ body {
 /* Transform to X when expanded */
 .nav-toggle[aria-expanded="true"] .nav-toggle__icon {
     background: transparent;
-    transform: scaleX(0); /* Hide middle line completely */
+    opacity: 0; /* Hide middle line completely */
 }
 
 .nav-toggle[aria-expanded="true"] .nav-toggle__icon::before {

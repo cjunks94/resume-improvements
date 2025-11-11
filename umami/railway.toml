@@ -34,6 +34,13 @@ healthcheckTimeout = 10
 #   If set, admin password will be automatically reset on every deployment
 #   If not set, default password remains "umami" (login: admin/umami)
 
+# CORS Configuration (Required for cross-origin tracking):
+# - CORS=* (allow all origins - simplest)
+# OR
+# - ALLOWED_ORIGINS=https://cjunker.dev,https://staging.cjunker.dev
+#   Comma-separated list of allowed origins for API requests
+#   Required to track pageviews from your domains (prevents CORS errors)
+
 # Auto-Migration Behavior:
 # - Prisma migrations run automatically on every deployment via docker-entrypoint.sh
 # - Migrations are idempotent (safe to run multiple times)

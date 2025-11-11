@@ -48,9 +48,10 @@ RUN npm run check-env && \
     npm run build-geo && \
     npm run build-app
 
-# Remove devDependencies after build to reduce size
-# Keep only production dependencies for runtime
-RUN npm prune --production
+# After build, remove node_modules and reinstall ONLY production deps
+# This ensures clean production dependencies without peer conflicts
+RUN rm -rf node_modules && \
+    npm install --production --legacy-peer-deps
 
 # Create optimized entrypoint script
 RUN cat > /app/docker-entrypoint.sh <<'EOF'

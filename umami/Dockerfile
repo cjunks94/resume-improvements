@@ -16,11 +16,10 @@ RUN find . -name "schema.prisma" -type f -exec sed -i 's/binaryTargets = \["nati
 
 # Stage 2: Install dependencies (Prisma generates client automatically)
 FROM base AS deps
-COPY --from=patched /app/package.json ./package.json
-COPY --from=patched /app/package-lock.json ./package-lock.json
 COPY --from=patched /app /app
 WORKDIR /app
 # npm install runs Prisma's postinstall hook → generates client with patched targets
+# Note: npm install will generate package-lock.json if it doesn't exist
 RUN npm install --legacy-peer-deps
 
 # Stage 3: Build application

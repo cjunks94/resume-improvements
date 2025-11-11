@@ -41,27 +41,8 @@
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="radar.js"></script>
 
-    <!-- Umami Analytics - Environment-based tracking -->
-    <script>
-      (function() {
-        const hostname = window.location.hostname;
-        const websiteIds = {
-          'cjunker.dev': 'e6d18108-be73-4b78-b4bd-a84ac4a99c7e',          // Production
-          'staging.cjunker.dev': 'e1d1ff65-36f9-42c3-9ce9-42b7b60f57d3',  // Staging
-          'localhost': 'e1d1ff65-36f9-42c3-9ce9-42b7b60f57d3'             // Local (use staging ID)
-        };
-
-        const websiteId = websiteIds[hostname];
-
-        if (websiteId) {
-          const script = document.createElement('script');
-          script.defer = true;
-          script.src = 'https://umami-tracking.cjunker.dev/script.js';
-          script.setAttribute('data-website-id', websiteId);
-          document.head.appendChild(script);
-        }
-      })();
-    </script>
+    <!-- Umami Analytics - Environment-based tracking (see analytics-config.js) -->
+    <script src="analytics-config.js"></script>
 </head>
 <body>
     <!-- Skip navigation link for keyboard users (WCAG 2.4.1) -->

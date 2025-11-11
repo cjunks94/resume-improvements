@@ -56,7 +56,9 @@ html {
 
 body {
     line-height: 1.7;
+
     /* Note: Dotted background removed for WCAG compliance */
+
     /* Even subtle patterns affect contrast ratio calculations */
 }
 

@@ -7,10 +7,6 @@ FROM node:20-alpine AS base
 WORKDIR /app
 RUN apk add --no-cache git openssl libc6-compat
 
-# Stage 0: Copy local files (entrypoint script)
-FROM scratch AS local-files
-COPY docker-entrypoint.sh /docker-entrypoint.sh
-
 # Stage 1: Clone + patch Prisma BEFORE install
 FROM base AS patched
 ARG UMAMI_VERSION=v2.13.2
@@ -39,8 +35,49 @@ RUN npm run check-env && \
     npm run build-geo && \
     npm run build-app
 
-# Copy entrypoint script from local-files stage
-COPY --from=local-files /docker-entrypoint.sh /app/docker-entrypoint.sh
+# Create entrypoint script with auto-migration
+RUN cat > /app/docker-entrypoint.sh <<'EOF'
+#!/bin/sh
+# Umami Analytics - Docker Entrypoint with Auto-Migration
+set -e
+
+echo "========================================="
+echo "Umami Analytics - Starting Up"
+echo "========================================="
+echo ""
+
+# Check if DATABASE_URL is set
+if [ -z "$DATABASE_URL" ]; then
+    echo "❌ ERROR: DATABASE_URL environment variable is not set"
+    exit 1
+fi
+
+echo "✓ DATABASE_URL is configured"
+echo ""
+
+# Run Prisma migrations
+echo "📊 Running database migrations..."
+echo "---"
+
+if npx prisma migrate deploy; then
+    echo "---"
+    echo "✅ Database migrations completed successfully"
+else
+    echo "---"
+    echo "❌ ERROR: Database migrations failed"
+    exit 1
+fi
+
+echo ""
+echo "========================================="
+echo "🚀 Starting Umami Server..."
+echo "========================================="
+echo ""
+
+# Start the application
+exec node server.js
+EOF
+
 RUN chmod +x /app/docker-entrypoint.sh
 
 # Stage 4: Runtime

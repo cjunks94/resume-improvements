@@ -1,58 +1,66 @@
-# Umami Analytics - Multi-stage Slim Build (FINAL 2025 EDITION)
+# Umami Analytics - Railway + Local Proof 2025
 # Author: Chris Junker – Senior Engineer
 # Size: ~82 MB | Startup: <1.8s | Security: A+ | Recruiter flex: 100
 
-# Stage 1: Dependencies
-FROM node:20-alpine AS deps
+# Base stage with common dependencies
+FROM node:20-alpine AS base
 WORKDIR /app
 RUN apk add --no-cache git openssl libc6-compat
+
+# Stage 1: Clone + patch Prisma BEFORE install
+FROM base AS patched
 ARG UMAMI_VERSION=v2.13.2
 RUN git clone --depth 1 --branch ${UMAMI_VERSION} https://github.com/umami-software/umami.git /app
-# Patch Prisma schema BEFORE npm install (which generates Prisma client)
+# CRITICAL: Patch Prisma schema BEFORE npm install runs
 RUN find . -name "schema.prisma" -type f -exec sed -i 's/binaryTargets = \["native"\]/binaryTargets = ["native", "linux-musl-openssl-3.0.x", "linux-musl"]/g' {} \;
-RUN npm install --legacy-peer-deps --ignore-scripts
 
-# Stage 2: Builder
-FROM node:20-alpine AS builder
+# Stage 2: Install dependencies (Prisma generates client automatically)
+FROM base AS deps
+COPY --from=patched /app/package.json ./package.json
+COPY --from=patched /app/package-lock.json ./package-lock.json
+COPY --from=patched /app /app
 WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
-COPY --from=deps /app .
+# npm install runs Prisma's postinstall hook → generates client with patched targets
+RUN npm install --legacy-peer-deps
+
+# Stage 3: Build application
+FROM base AS builder
+COPY --from=deps /app /app
+WORKDIR /app
 ENV NEXT_TELEMETRY_DISABLED=1 \
     DATABASE_URL="postgresql://dummy:dummy@localhost:5432/dummy"
-# Skip check-db during build (no database access at build time)
-RUN npm run check-env && \
-    npm run build-db && \
-    npm run build-tracker && \
-    npm run build-geo && \
-    npm run build-app
+# Build the app (no need to run build-db separately, it's in the build script)
+RUN npm run build
 
-# Stage 3: Runtime (FINAL – 82 MB)
+# Stage 4: Runtime
 FROM node:20-alpine AS runner
 WORKDIR /app
+
 LABEL org.opencontainers.image.title="Umami Analytics" \
       org.opencontainers.image.author="Chris Junker" \
       org.opencontainers.image.url="https://umami.cjunker.dev" \
       org.opencontainers.image.source="https://github.com/cjunks94/resume-improvements"
 
-# Runtime deps + security
-# openssl provides OpenSSL 3.x which matches our Prisma binary target
+# Runtime dependencies + security
 RUN apk add --no-cache dumb-init wget openssl \
     && rm -rf /var/cache/apk/* \
     && addgroup -S nodejs -g 1001 \
     && adduser -S nodejs -u 1001 -G nodejs
 
-# Copy only what's needed
-COPY --from=builder --chown=nodejs:nodejs /app/next.config.js ./
-COPY --from=builder --chown=nodejs:nodejs /app/public ./public
+# Copy built application
 COPY --from=builder --chown=nodejs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nodejs:nodejs /app/.next/static ./.next/static
-COPY --from=builder --chown=nodejs:nodejs /app/package.json ./
+COPY --from=builder --chown=nodejs:nodejs /app/public ./public
+COPY --from=builder --chown=nodejs:nodejs /app/package.json ./package.json
+
+# Copy Prisma files (includes generated client with correct binary)
 COPY --from=builder --chown=nodejs:nodejs /app/prisma ./prisma
 COPY --from=builder --chown=nodejs:nodejs /app/node_modules/.prisma ./node_modules/.prisma
 COPY --from=builder --chown=nodejs:nodejs /app/node_modules/@prisma ./node_modules/@prisma
 
 USER nodejs
 EXPOSE 3000
+
 ENV NODE_ENV=production \
     PORT=3000 \
     HOSTNAME="0.0.0.0" \

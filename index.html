@@ -293,8 +293,9 @@
             <h2 class="section-title">Tech Radar</h2>
             <article class="tech-radar-section__content">
                 <p class="tech-radar-section__description">
-                    My technology landscape organized by expertise level and category. Click on any technology
-                    to see detailed production experience. ▲ indicates new/emerging technologies.
+                    My technology landscape organized by expertise level and category. <strong>MAINTAIN</strong> (center) = daily use,
+                    <strong>ADOPT</strong> = production-ready, <strong>TRIAL</strong> = actively exploring,
+                    <strong>ASSESS</strong> (outer) = learning. Click any technology for details. ▲ indicates new additions.
                 </p>
 
                 <!-- Interactive Tech Radar Visualization -->
@@ -321,10 +322,10 @@
                 { name: "techniques" }
               ],
               rings: [
+                { name: "maintain", color: "var(--radar-maintain)" },
                 { name: "adopt", color: "var(--radar-adopt)" },
                 { name: "trial", color: "var(--radar-trial)" },
-                { name: "assess", color: "var(--radar-assess)" },
-                { name: "hold", color: "var(--radar-hold)" }
+                { name: "assess", color: "var(--radar-assess)" }
               ],
               entries: data.map(d => ({
                 quadrant: d.quadrant,

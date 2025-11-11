@@ -38,3 +38,7 @@ Secrets Management,adopt,techniques,FALSE,"AWS Secrets Manager with Kubernetes p
 Cloudflare,adopt,platforms,TRUE,"DNS management, CDN, DDoS protection, Access (Zero Trust SSO with GitHub OAuth), dual-subdomain CORS architecture"
 Architecture Decision Records,adopt,techniques,TRUE,"Documented architectural decisions (ADRs) for complex infrastructure choices, trade-off analysis, alternative evaluation"
 CORS Architecture,trial,techniques,TRUE,"Dual-subdomain pattern to bypass authentication on public endpoints while maintaining dashboard security"
+Flutter/Dart,adopt,languages-frameworks,TRUE,"Mobile app development: TMJ therapy tracker with MediaPipe face mesh, real-time jaw movement tracking, SQLite persistence, cross-platform (iOS/Android/macOS)"
+MediaPipe,trial,tools,TRUE,"Computer vision for real-time face mesh tracking in Flutter app, 468 3D facial landmarks for clinical jaw movement analysis"
+HTML5 Canvas,adopt,languages-frameworks,TRUE,"Vanilla JS game development: BB-Bounce brick breaker with 60 FPS animation, collision detection, canvas rendering without frameworks"
+Node.js/Express,adopt,languages-frameworks,FALSE,"Backend API development, BB-Bounce game server with PostgreSQL leaderboards, rate limiting, server-side score validation"

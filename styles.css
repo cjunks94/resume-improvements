@@ -19,10 +19,10 @@
     --transition-speed: 0.3s;
 
     /* Tech Radar Colors - Light Mode (WCAG AAA on white) */
-    --radar-adopt: #1a3009;     /* Very dark green - innermost */
-    --radar-trial: #003840;     /* Very dark teal */
-    --radar-assess: #3d3800;    /* Very dark yellow-brown */
-    --radar-hold: #5a1a1a;      /* Very dark red - outermost */
+    --radar-maintain: #1a3009;  /* Very dark green - innermost (daily use) */
+    --radar-adopt: #003840;     /* Very dark teal - strong recommendation */
+    --radar-trial: #3d3800;     /* Very dark yellow-brown - worth pursuing */
+    --radar-assess: #5a1a1a;    /* Very dark red - outermost (exploring) */
     --radar-new: #1a3009;       /* Dark green for NEW indicator */
 }
 
@@ -30,20 +30,20 @@
 @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
         /* Tech Radar Colors - Dark Mode (bright, saturated colors) */
-        --radar-adopt: #5ba300;     /* Bright green */
-        --radar-trial: #009eb0;     /* Bright teal */
-        --radar-assess: #c7ba00;    /* Bright yellow */
-        --radar-hold: #e09b96;      /* Bright pink/coral */
+        --radar-maintain: #5ba300;  /* Bright green - daily use */
+        --radar-adopt: #009eb0;     /* Bright teal - strong recommendation */
+        --radar-trial: #c7ba00;     /* Bright yellow - worth pursuing */
+        --radar-assess: #e09b96;    /* Bright pink/coral - exploring */
         --radar-new: #5ba300;       /* Bright green for NEW indicator */
     }
 }
 
 /* Explicit dark theme (if Pico sets data-theme) */
 [data-theme="dark"] {
-    --radar-adopt: #5ba300;
-    --radar-trial: #009eb0;
-    --radar-assess: #c7ba00;
-    --radar-hold: #e09b96;
+    --radar-maintain: #5ba300;
+    --radar-adopt: #009eb0;
+    --radar-trial: #c7ba00;
+    --radar-assess: #e09b96;
     --radar-new: #5ba300;
 }
 

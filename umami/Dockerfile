@@ -35,6 +35,10 @@ RUN npm run check-env && \
     npm run build-geo && \
     npm run build-app
 
+# Copy and prepare entrypoint script
+COPY docker-entrypoint.sh /app/docker-entrypoint.sh
+RUN chmod +x /app/docker-entrypoint.sh
+
 # Stage 4: Runtime
 FROM node:20-alpine AS runner
 WORKDIR /app
@@ -61,6 +65,9 @@ COPY --from=builder --chown=nodejs:nodejs /app/prisma ./prisma
 COPY --from=builder --chown=nodejs:nodejs /app/node_modules/.prisma ./node_modules/.prisma
 COPY --from=builder --chown=nodejs:nodejs /app/node_modules/@prisma ./node_modules/@prisma
 
+# Copy entrypoint script with auto-migration
+COPY --from=builder --chown=nodejs:nodejs /app/docker-entrypoint.sh ./docker-entrypoint.sh
+
 USER nodejs
 EXPOSE 3000
 
@@ -75,4 +82,5 @@ ENTRYPOINT ["dumb-init", "--"]
 HEALTHCHECK --interval=20s --timeout=3s --start-period=10s --retries=3 \
     CMD wget --no-verbose --tries=1 --spider http://localhost:3000/api/heartbeat || exit 1
 
-CMD ["node", "server.js"]
+# Use entrypoint script that runs migrations before starting server
+CMD ["sh", "/app/docker-entrypoint.sh"]

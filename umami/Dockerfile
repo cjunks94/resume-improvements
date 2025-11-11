@@ -142,6 +142,9 @@ COPY --from=builder --chown=nodejs:nodejs /app/prisma ./prisma
 COPY --from=builder --chown=nodejs:nodejs /app/node_modules/.prisma ./node_modules/.prisma
 COPY --from=builder --chown=nodejs:nodejs /app/node_modules/@prisma ./node_modules/@prisma
 
+# Copy bcryptjs for password reset functionality
+COPY --from=builder --chown=nodejs:nodejs /app/node_modules/bcryptjs ./node_modules/bcryptjs
+
 # Copy entrypoint script with auto-migration
 COPY --from=builder --chown=nodejs:nodejs /app/docker-entrypoint.sh ./docker-entrypoint.sh
 

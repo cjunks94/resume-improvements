@@ -18,27 +18,6 @@
 
 ## Step 1: Generate Secrets
 
-### Option A: Automated with GitHub Actions (Recommended) 🚀
-
-Use the automated workflow to generate and deploy secrets:
-
-1. Go to: **Actions → Railway Secret Management**
-2. Click **"Run workflow"**
-3. Select:
-   - **Action**: `generate-and-set`
-   - **Service name**: `umami`
-4. Click **"Run workflow"**
-
-**Prerequisites**: Set these GitHub secrets first:
-- `RAILWAY_TOKEN` - Get from [Railway Account Tokens](https://railway.app/account/tokens)
-- `RAILWAY_PROJECT_ID` - Find in Railway project URL or run `railway status`
-
-**See**: [.github/workflows/README-railway-secrets.md](../.github/workflows/README-railway-secrets.md) for full setup guide
-
-✅ **Skip to Step 2** if using this method!
-
-### Option B: Manual Generation
-
 **IMPORTANT**: Generate these secrets locally and store in password manager (1Password/Bitwarden):
 
 ```bash

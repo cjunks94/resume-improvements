@@ -1,0 +1,52 @@
+# Railway.app Configuration - Umami Analytics
+# Configuration as Code for Railway deployment
+# Author: Chris Junker – Senior Engineer
+#
+# NOTE: This file is currently for DOCUMENTATION ONLY.
+# Railway does not automatically read this file - you must configure
+# environment variables manually in the Railway dashboard.
+# This file serves as a reference for required configuration.
+
+[build]
+builder = "DOCKERFILE"
+dockerfilePath = "Dockerfile"
+
+[deploy]
+# No custom startCommand needed - handled by docker-entrypoint.sh
+# The entrypoint script automatically runs migrations before starting the server
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 10
+
+# Health check endpoint
+healthcheckPath = "/api/heartbeat"
+healthcheckTimeout = 10
+
+[deploy.env]
+# Required environment variables (set these in Railway dashboard):
+# - DATABASE_URL (automatically set by Railway PostgreSQL service)
+# - DATABASE_TYPE=postgresql
+# - HASH_SALT (generate with: openssl rand -hex 32)
+# - NEXTAUTH_SECRET (generate with: openssl rand -hex 32)
+# - POSTGRES_PASSWORD (generate with: openssl rand -hex 32)
+# - CLIENT_IP_HEADER=CF-Connecting-IP (for Cloudflare proxy)
+# - DISABLE_TELEMETRY=1
+# - NEXT_TELEMETRY_DISABLED=1
+# - NODE_ENV=production
+# - PORT=3000
+
+# Optional - Automatic Password Reset:
+# - UMAMI_ADMIN_PASSWORD (your desired admin password)
+#   If set, admin password will be automatically reset on every deployment
+#   If not set, default password remains "umami" (login: admin/umami)
+
+# CORS Configuration (Required for cross-origin tracking):
+# - TRACKER_CORS_ORIGINS=https://cjunker.dev,https://staging.cjunker.dev
+#   Comma-separated list of allowed origins for API requests
+#   OR use * to allow all origins: TRACKER_CORS_ORIGINS=*
+#   Required to track pageviews from your domains (prevents CORS errors)
+
+# Auto-Migration Behavior:
+# - Prisma migrations run automatically on every deployment via docker-entrypoint.sh
+# - Migrations are idempotent (safe to run multiple times)
+# - If migration fails, container will not start (fail-safe)
+# - Migration logs visible in Railway deployment logs

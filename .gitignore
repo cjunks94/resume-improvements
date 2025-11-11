@@ -29,6 +29,7 @@ screenshots/
 
 # Umami Analytics
 umami/.env
+umami/.env.local
 umami/data/
 umami/backups/
 *.sql

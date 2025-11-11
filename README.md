@@ -11,6 +11,32 @@
 **Tech Stack**: HTML5, CSS3, GitHub Pages, GitHub Actions, SSH Deploy Keys
 **Status**: Multi-repository architecture with bulletproof SSL + isolated environments
 
+## Analytics
+
+**Dashboard**: [umami.cjunker.dev](https://umami.cjunker.dev) - Self-hosted Umami analytics
+
+**Stack**:
+- **Frontend**: Privacy-friendly tracking script (no cookies, GDPR compliant)
+- **Backend**: Umami v2.13.2 in Docker (82MB Alpine-based image)
+- **Database**: PostgreSQL 16 Alpine
+- **Hosting**: Railway.app (free tier, $0/month)
+- **Security**: Cloudflare Access with GitHub OAuth (zero-trust)
+- **Features**: Custom event tracking, heatmaps, tech radar interactions
+
+**Deployment**:
+```yaml
+→ 82 MB container | 1.8s startup | Auto-HTTPS | Daily backups
+→ Zero maintenance | $0/month hosting | SOC2-ready
+```
+
+**Custom Events Tracked**:
+- Tech Radar: Click interactions, legend toggles
+- Downloads: Resume, CSV exports, documentation
+- Navigation: Page views, session analytics
+- Performance: Load times, error tracking
+
+See [umami/RAILWAY_DEPLOYMENT.md](umami/RAILWAY_DEPLOYMENT.md) for deployment guide.
+
 ## Project Overview
 
 This repository tracks strategic improvements to my software engineering resume and portfolio to target senior-level positions at companies like Datadog. The focus is on demonstrating real, actionable achievements in distributed systems, observability, and cloud-native technologies.

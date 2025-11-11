@@ -8,9 +8,9 @@
     'use strict';
 
     // Get DOM elements
-    const menuToggle = document.querySelector('.menu-toggle');
-    const nav = document.querySelector('.site-nav');
-    const navLinks = document.querySelectorAll('.site-nav__link');
+    const menuToggle = document.querySelector('.nav-toggle');
+    const nav = document.querySelector('.main-nav');
+    const navLinks = document.querySelectorAll('.nav-link');
 
     // Check if elements exist
     if (!menuToggle || !nav) {

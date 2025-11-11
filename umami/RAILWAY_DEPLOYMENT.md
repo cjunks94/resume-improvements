@@ -93,14 +93,14 @@ NEXT_TELEMETRY_DISABLED=1
 CLIENT_IP_HEADER=CF-Connecting-IP
 NODE_ENV=production
 PORT=3000
-CORS=*
+TRACKER_CORS_ORIGINS=*
 ```
 
 **Important Notes:**
 - `UMAMI_ADMIN_PASSWORD` is your secure admin password. It will be automatically applied on every deployment, so you can rotate it anytime by updating this variable.
-- `CORS=*` allows tracking from all domains. For production, you can restrict to specific domains:
+- `TRACKER_CORS_ORIGINS=*` allows tracking from all domains. For production, you can restrict to specific domains:
   ```
-  ALLOWED_ORIGINS=https://cjunker.dev,https://staging.cjunker.dev
+  TRACKER_CORS_ORIGINS=https://cjunker.dev,https://staging.cjunker.dev
   ```
 
 5. Click **"Save Changes"**

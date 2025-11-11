@@ -40,10 +40,9 @@ healthcheckTimeout = 10
 #   If not set, default password remains "umami" (login: admin/umami)
 
 # CORS Configuration (Required for cross-origin tracking):
-# - CORS=* (allow all origins - simplest)
-# OR
-# - ALLOWED_ORIGINS=https://cjunker.dev,https://staging.cjunker.dev
+# - TRACKER_CORS_ORIGINS=https://cjunker.dev,https://staging.cjunker.dev
 #   Comma-separated list of allowed origins for API requests
+#   OR use * to allow all origins: TRACKER_CORS_ORIGINS=*
 #   Required to track pageviews from your domains (prevents CORS errors)
 
 # Auto-Migration Behavior:

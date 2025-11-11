@@ -33,10 +33,10 @@ RUN git clone --depth 1 --branch ${UMAMI_VERSION} \
     && find . -name "schema.prisma" -exec sed -i \
        's/binaryTargets = \["native"\]/binaryTargets = ["native", "linux-musl-openssl-3.0.x", "linux-musl"]/g' {} \;
 
-# Install deps + generate correct Prisma client
+# Install deps + generate correct Prisma client (via postinstall hook)
 # --omit=dev excludes devDependencies, saving ~40MB
-RUN npm install --legacy-peer-deps --omit=dev \
-    && npx prisma generate --schema=./prisma/schema.prisma
+# Note: Umami's package.json has a postinstall script that runs prisma generate
+RUN npm install --legacy-peer-deps --omit=dev
 
 # Build standalone Next.js app
 ENV NEXT_TELEMETRY_DISABLED=1 \

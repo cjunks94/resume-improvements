@@ -4,12 +4,28 @@ Self-hosted Umami analytics for cjunker.dev with zero-cost hosting and Cloudflar
 
 ## Architecture
 
-- **Analytics Dashboard**: `umami.cjunker.dev`
+### Dual-Subdomain Setup
+
+- **Analytics Dashboard**: `umami.cjunker.dev` (Cloudflare proxied + Access protected)
+- **Tracking Endpoint**: `umami-tracking.cjunker.dev` (DNS-only, bypasses Cloudflare Access)
 - **Hosting**: Railway.app (free tier) with Docker
 - **Database**: PostgreSQL 16 Alpine (minimal footprint)
-- **Security**: Cloudflare Access (GitHub OAuth)
-- **Frontend**: Tracking script on cjunker.dev
+- **Security**: Cloudflare Access (GitHub OAuth) for dashboard only
+- **Frontend**: Tracking script on cjunker.dev and staging.cjunker.dev
 - **Container**: Multi-stage Alpine-based build (~150MB)
+
+### Why Two Subdomains?
+
+**Problem**: Cloudflare Access blocks all requests to protected domains, including:
+- Public tracking script (`/script.js`)
+- Analytics API endpoints (`/api/send`)
+- This causes CORS errors when browsers try to load tracking from cross-origin sites
+
+**Solution**: Separate subdomain for public tracking endpoints
+- `umami.cjunker.dev`: Dashboard access (Cloudflare proxy + Access) - requires GitHub OAuth
+- `umami-tracking.cjunker.dev`: Public tracking (DNS-only mode) - no authentication needed
+- Both point to the same Railway service and database
+- Cloudflare Access free tier doesn't support path-based bypass rules
 
 ## Docker Images
 
@@ -83,24 +99,39 @@ railway up
 railway domain
 ```
 
-### 5. Configure Custom Domain
+### 5. Configure Custom Domains (Both Required)
 
 In Railway dashboard:
-1. Go to **Settings** → **Domains**
-2. Add custom domain: `umami.cjunker.dev`
-3. Copy the CNAME value (e.g., `xyz.up.railway.app`)
+1. Go to **Settings** → **Networking** → **Public Networking**
+2. Add **first domain**: `umami.cjunker.dev`
+   - Copy the CNAME target (e.g., `xyz.up.railway.app`)
+3. Add **second domain**: `umami-tracking.cjunker.dev`
+   - Uses same CNAME target as first domain
+   - Wait for Railway to show "Active" status
 
-### 6. Configure Cloudflare DNS
+### 6. Configure Cloudflare DNS (Both Records Required)
 
-Add CNAME record in Cloudflare:
+Add two CNAME records in Cloudflare DNS:
 
+**Record 1: Dashboard (with Cloudflare Access)**
 ```
 Type: CNAME
 Name: umami
-Target: <railway-domain-from-step-2>
-Proxy status: Proxied (orange cloud)
+Target: <railway-cname-from-step-5>
+Proxy status: Proxied (orange cloud ☁️) ← IMPORTANT
 TTL: Auto
 ```
+
+**Record 2: Public Tracking (bypasses Access)**
+```
+Type: CNAME
+Name: umami-tracking
+Target: <same-railway-cname-as-above>
+Proxy status: DNS only (gray cloud ☁️) ← CRITICAL!
+TTL: Auto
+```
+
+⚠️ **Important**: `umami-tracking` MUST use **DNS only** (gray cloud). If proxied (orange cloud), Cloudflare Access will block tracking requests.
 
 ### 7. Set Up Cloudflare Access
 
@@ -151,13 +182,16 @@ TTL: Auto
 Add to `index.html` in `<head>`:
 
 ```html
-<!-- Umami Analytics -->
+<!-- Umami Analytics - Use tracking subdomain to bypass Cloudflare Access -->
 <script
   defer
-  src="https://umami.cjunker.dev/script.js"
+  src="https://umami-tracking.cjunker.dev/script.js"
   data-website-id="YOUR-WEBSITE-ID-HERE"
 ></script>
 ```
+
+⚠️ **Critical**: Use `umami-tracking.cjunker.dev`, **NOT** `umami.cjunker.dev`
+If you use the dashboard domain, browsers will encounter CORS errors due to Cloudflare Access blocking public requests.
 
 ### Custom Event Tracking
 
@@ -286,7 +320,41 @@ railway logs
 
 - Verify website ID is correct
 - Check browser console for errors
-- Test with curl: `curl -I https://umami.cjunker.dev/script.js`
+- Test with curl: `curl -I https://umami-tracking.cjunker.dev/script.js`
+
+### CORS errors / "Access-Control-Allow-Origin" missing
+
+**Symptoms:**
+```
+Access to fetch at 'https://cjunkerdev.cloudflareaccess.com/cdn-cgi/access/login/...'
+from origin 'https://staging.cjunker.dev' has been blocked by CORS policy
+```
+
+**Root Cause**: Using `umami.cjunker.dev` (dashboard domain) instead of `umami-tracking.cjunker.dev` for tracking script
+
+**Solutions:**
+1. **Check your tracking script URL** in `index.html`:
+   - ✅ Correct: `src="https://umami-tracking.cjunker.dev/script.js"`
+   - ❌ Wrong: `src="https://umami.cjunker.dev/script.js"`
+
+2. **Verify DNS configuration**:
+   ```bash
+   # Should return HTTP 200 (not 302 redirect)
+   curl -I https://umami-tracking.cjunker.dev/api/heartbeat
+
+   # Cloudflare DNS should show "DNS only" (gray cloud)
+   dig umami-tracking.cjunker.dev +short
+   ```
+
+3. **Ensure Cloudflare proxy is disabled** for tracking subdomain:
+   - Go to Cloudflare Dashboard → DNS → Records
+   - Find `umami-tracking` CNAME record
+   - **Proxy status MUST be gray cloud (DNS only)**
+   - If orange cloud (proxied), click to toggle it to gray
+
+**Why this happens**: Cloudflare Access free tier doesn't support path-based bypass rules.
+The only way to allow public tracking while keeping the dashboard protected is to use
+two separate subdomains with different proxy configurations.
 
 ## Useful Links
 
@@ -297,5 +365,7 @@ railway logs
 
 ---
 
-**Status**: 🟢 Deployed at https://umami.cjunker.dev
-**Last Updated**: November 2025
+**Status**: 🟢 Production Ready
+- **Dashboard**: https://umami.cjunker.dev (Cloudflare Access protected)
+- **Tracking**: https://umami-tracking.cjunker.dev (public access)
+**Last Updated**: November 11, 2025

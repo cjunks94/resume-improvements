@@ -7,6 +7,10 @@ FROM node:20-alpine AS base
 WORKDIR /app
 RUN apk add --no-cache git openssl libc6-compat
 
+# Stage 0: Copy local files (entrypoint script)
+FROM scratch AS local-files
+COPY docker-entrypoint.sh /docker-entrypoint.sh
+
 # Stage 1: Clone + patch Prisma BEFORE install
 FROM base AS patched
 ARG UMAMI_VERSION=v2.13.2
@@ -35,8 +39,8 @@ RUN npm run check-env && \
     npm run build-geo && \
     npm run build-app
 
-# Copy and prepare entrypoint script
-COPY docker-entrypoint.sh /app/docker-entrypoint.sh
+# Copy entrypoint script from local-files stage
+COPY --from=local-files /docker-entrypoint.sh /app/docker-entrypoint.sh
 RUN chmod +x /app/docker-entrypoint.sh
 
 # Stage 4: Runtime

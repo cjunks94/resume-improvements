@@ -48,6 +48,10 @@ RUN npm run check-env && \
     npm run build-geo && \
     npm run build-app
 
+# Remove devDependencies after build to reduce size
+# Keep only production dependencies for runtime
+RUN npm prune --production
+
 # Create optimized entrypoint script
 RUN cat > /app/docker-entrypoint.sh <<'EOF'
 #!/bin/sh
@@ -122,13 +126,9 @@ COPY --from=builder --chown=nodejs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nodejs:nodejs /app/.next/static ./.next/static
 COPY --from=builder --chown=nodejs:nodejs /app/public ./public
 
-# Copy minimal node_modules (only runtime + Prisma + bcryptjs)
-COPY --from=builder --chown=nodejs:nodejs \
-    /app/node_modules/.prisma \
-    /app/node_modules/@prisma \
-    /app/node_modules/bcryptjs \
-    /app/node_modules/prisma \
-    ./node_modules/
+# Copy all node_modules from builder (includes runtime deps)
+# The standalone build already minimizes what's needed
+COPY --from=builder --chown=nodejs:nodejs /app/node_modules ./node_modules
 
 # Copy Prisma schema + generated client
 COPY --from=builder --chown=nodejs:nodejs /app/prisma ./prisma

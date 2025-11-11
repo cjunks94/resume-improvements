@@ -29,6 +29,11 @@ healthcheckTimeout = 10
 # - NODE_ENV=production
 # - PORT=3000
 
+# Optional - Automatic Password Reset:
+# - UMAMI_ADMIN_PASSWORD (your desired admin password)
+#   If set, admin password will be automatically reset on every deployment
+#   If not set, default password remains "umami" (login: admin/umami)
+
 # Auto-Migration Behavior:
 # - Prisma migrations run automatically on every deployment via docker-entrypoint.sh
 # - Migrations are idempotent (safe to run multiple times)

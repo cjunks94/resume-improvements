@@ -21,13 +21,16 @@
 **IMPORTANT**: Generate these secrets locally and store in password manager (1Password/Bitwarden):
 
 ```bash
-# Generate all 3 secrets
+# Generate all 4 secrets
 echo "HASH_SALT=$(openssl rand -hex 32)"
 echo "NEXTAUTH_SECRET=$(openssl rand -hex 32)"
 echo "POSTGRES_PASSWORD=$(openssl rand -hex 32)"
+echo "UMAMI_ADMIN_PASSWORD=$(openssl rand -base64 24)"
 ```
 
 **Save these values** - you'll need them in Step 4.
+
+**Note**: `UMAMI_ADMIN_PASSWORD` will be automatically set as the admin password on every deployment.
 
 ## Step 2: Create Railway Project
 
@@ -84,12 +87,15 @@ DATABASE_TYPE=postgresql
 HASH_SALT=<paste-your-secret-from-step-1>
 NEXTAUTH_SECRET=<paste-your-secret-from-step-1>
 POSTGRES_PASSWORD=<paste-your-secret-from-step-1>
+UMAMI_ADMIN_PASSWORD=<paste-your-secret-from-step-1>
 DISABLE_TELEMETRY=1
 NEXT_TELEMETRY_DISABLED=1
 CLIENT_IP_HEADER=CF-Connecting-IP
 NODE_ENV=production
 PORT=3000
 ```
+
+**Important**: `UMAMI_ADMIN_PASSWORD` is your secure admin password. It will be automatically applied on every deployment, so you can rotate it anytime by updating this variable.
 
 5. Click **"Save Changes"**
 
@@ -99,6 +105,7 @@ PORT=3000
 railway variables set HASH_SALT="your-secret-here"
 railway variables set NEXTAUTH_SECRET="your-secret-here"
 railway variables set POSTGRES_PASSWORD="your-secret-here"
+railway variables set UMAMI_ADMIN_PASSWORD="your-password-here"
 railway variables set DATABASE_TYPE=postgresql
 railway variables set DISABLE_TELEMETRY=1
 railway variables set NEXT_TELEMETRY_DISABLED=1
@@ -172,10 +179,13 @@ curl -I https://umami.cjunker.dev/api/heartbeat
 ### Access Dashboard
 
 1. Visit: `https://umami.cjunker.dev`
-2. Default credentials:
+2. Login credentials:
    - **Username**: `admin`
-   - **Password**: `umami`
-3. **IMPORTANT**: Change password immediately!
+   - **Password**: Your `UMAMI_ADMIN_PASSWORD` from Railway secrets
+
+   If you didn't set `UMAMI_ADMIN_PASSWORD`:
+   - **Default Password**: `umami`
+   - **IMPORTANT**: Set `UMAMI_ADMIN_PASSWORD` in Railway secrets immediately!
 
 ### Check Logs
 
@@ -200,11 +210,19 @@ railway logs
 4. Click **"Save"**
 5. **Copy the Website ID** (needed for tracking script)
 
-### Change Admin Password
+### Password Management
 
-1. **Settings** → **"Users"** → Click **"admin"**
-2. **Change password** → Enter strong password
-3. Save password in password manager
+Your admin password is automatically managed through the `UMAMI_ADMIN_PASSWORD` Railway secret:
+
+**To change password:**
+1. Update `UMAMI_ADMIN_PASSWORD` in Railway dashboard → Umami service → Variables
+2. Redeploy or wait for next deployment
+3. Password will be automatically updated
+
+**Password Rotation:**
+- Generate new password: `openssl rand -base64 24`
+- Update Railway secret
+- Redeploy
 
 ## Troubleshooting
 

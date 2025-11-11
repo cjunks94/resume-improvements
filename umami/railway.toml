@@ -1,6 +1,11 @@
 # Railway.app Configuration - Umami Analytics
 # Configuration as Code for Railway deployment
 # Author: Chris Junker – Senior Engineer
+#
+# NOTE: This file is currently for DOCUMENTATION ONLY.
+# Railway does not automatically read this file - you must configure
+# environment variables manually in the Railway dashboard.
+# This file serves as a reference for required configuration.
 
 [build]
 builder = "DOCKERFILE"

@@ -28,8 +28,12 @@ COPY --from=deps /app /app
 WORKDIR /app
 ENV NEXT_TELEMETRY_DISABLED=1 \
     DATABASE_URL="postgresql://dummy:dummy@localhost:5432/dummy"
-# Build the app (no need to run build-db separately, it's in the build script)
-RUN npm run build
+# Build the app - run steps individually to skip check-db (no database during build)
+RUN npm run check-env && \
+    npm run build-db && \
+    npm run build-tracker && \
+    npm run build-geo && \
+    npm run build-app
 
 # Stage 4: Runtime
 FROM node:20-alpine AS runner

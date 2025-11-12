@@ -654,24 +654,13 @@ body {
 }
 
 .resume-highlights {
-    list-style: none;
-    padding-left: 0;
+    list-style: disc;
+    padding-left: var(--spacing-md);
 }
 
 .resume-highlights__item {
-    position: relative;
-    padding-left: var(--spacing-md);
     margin-bottom: var(--spacing-sm);
     line-height: 1.6;
-}
-
-.resume-highlights__item::before {
-    content: "✓";
-    position: absolute;
-    left: 0;
-    color: var(--color-success);
-    font-weight: bold;
-    font-size: 1.2rem;
 }
 
 /* ==========================================================================

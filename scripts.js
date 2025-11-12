@@ -134,3 +134,40 @@
 
     console.log('Mobile menu initialized');
 })();
+
+/**
+ * Shrinking Header on Scroll
+ * Adds/removes 'scrolled' class to header based on scroll position
+ */
+(function() {
+    'use strict';
+
+    const header = document.querySelector('.site-header');
+
+    if (!header) {
+        console.warn('Header element not found');
+        return;
+    }
+
+    function handleScroll() {
+        if (window.scrollY > 20) {
+            header.classList.add('scrolled');
+        } else {
+            header.classList.remove('scrolled');
+        }
+    }
+
+    // Throttle scroll events for performance
+    let scrollTimer;
+    window.addEventListener('scroll', function() {
+        if (scrollTimer) {
+            window.cancelAnimationFrame(scrollTimer);
+        }
+        scrollTimer = window.requestAnimationFrame(handleScroll);
+    });
+
+    // Check initial state
+    handleScroll();
+
+    console.log('Scroll header initialized');
+})();

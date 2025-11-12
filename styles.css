@@ -161,7 +161,7 @@ body {
 .nav-toggle__icon::before,
 .nav-toggle__icon::after,
 .nav-toggle__icon {
-    background: currentColor;
+    background: currentcolor;
     height: 2px;
     border-radius: 2px;
     transition: all 0.3s ease;

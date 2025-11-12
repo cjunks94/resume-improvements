@@ -50,55 +50,32 @@
 
     <!-- Header Navigation -->
     <header class="site-header container">
-        <!-- Mobile Menu Toggle Button -->
-        <button class="menu-toggle"
-                aria-expanded="false"
-                aria-controls="site-nav"
-                aria-label="Toggle navigation menu">
-            <!-- Hamburger icon (☰) -->
-            <svg class="menu-toggle__icon menu-toggle__icon--menu"
-                 aria-hidden="true"
-                 width="24"
-                 height="24"
-                 viewBox="0 0 24 24"
-                 fill="none"
-                 stroke="currentColor"
-                 stroke-width="2"
-                 stroke-linecap="round"
-                 stroke-linejoin="round">
-                <line x1="3" y1="6" x2="21" y2="6"></line>
-                <line x1="3" y1="12" x2="21" y2="12"></line>
-                <line x1="3" y1="18" x2="21" y2="18"></line>
-            </svg>
-            <!-- Close icon (✕) -->
-            <svg class="menu-toggle__icon menu-toggle__icon--close"
-                 aria-hidden="true"
-                 width="24"
-                 height="24"
-                 viewBox="0 0 24 24"
-                 fill="none"
-                 stroke="currentColor"
-                 stroke-width="2"
-                 stroke-linecap="round"
-                 stroke-linejoin="round"
-                 hidden>
-                <line x1="18" y1="6" x2="6" y2="18"></line>
-                <line x1="6" y1="6" x2="18" y2="18"></line>
-            </svg>
-        </button>
+        <div class="site-header__content">
+            <!-- Brand -->
+            <div class="site-brand">
+                <strong>Christopher Junker</strong>
+            </div>
 
-        <nav id="site-nav" class="site-nav" aria-label="Main navigation">
-            <ul class="site-nav__brand">
-                <li><strong>Christopher Junker</strong></li>
-            </ul>
-            <ul class="site-nav__links">
-                <li><a href="#about" class="site-nav__link">About</a></li>
-                <li><a href="#tech-radar" class="site-nav__link">Tech Radar</a></li>
-                <li><a href="#projects" class="site-nav__link">Projects</a></li>
-                <li><a href="#resume" class="site-nav__link">Resume</a></li>
-                <li><a href="#contact" class="site-nav__link">Contact</a></li>
-            </ul>
-        </nav>
+            <!-- Mobile Menu Toggle -->
+            <button class="nav-toggle"
+                    aria-expanded="false"
+                    aria-controls="main-nav"
+                    aria-label="Menu">
+                <span class="nav-toggle__icon"></span>
+                <span class="nav-toggle__text">Menu</span>
+            </button>
+
+            <!-- Navigation -->
+            <nav id="main-nav" class="main-nav" aria-label="Main navigation">
+                <ul class="nav-list">
+                    <li><a href="#about" class="nav-link">About</a></li>
+                    <li><a href="#tech-radar" class="nav-link">Tech Radar</a></li>
+                    <li><a href="#projects" class="nav-link">Projects</a></li>
+                    <li><a href="#resume" class="nav-link">Resume</a></li>
+                    <li><a href="#contact" class="nav-link">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
     </header>
 
     <!-- Main Content -->

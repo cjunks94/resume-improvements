@@ -69,9 +69,8 @@
             <nav id="main-nav" class="main-nav" aria-label="Main navigation">
                 <ul class="nav-list">
                     <li><a href="#about" class="nav-link">About</a></li>
-                    <li><a href="#tech-radar" class="nav-link">Tech Radar</a></li>
                     <li><a href="#projects" class="nav-link">Projects</a></li>
-                    <li><a href="#resume" class="nav-link">Resume</a></li>
+                    <li><a href="#tech-radar" class="nav-link">Tech Radar</a></li>
                     <li><a href="#contact" class="nav-link">Contact</a></li>
                 </ul>
             </nav>
@@ -98,98 +97,195 @@
             </p>
         </section>
 
-        <!-- About Section -->
-        <section id="about" class="about-section">
-            <h2 class="section-title">About Me</h2>
-            <article class="about-section__content">
-                <p class="about-section__paragraph">
-                    I'm a senior software engineer with deep experience in building and scaling production systems.
-                    My work spans from creating production Go microservices with 230+ tests to architecting
-                    comprehensive observability infrastructure with Datadog APM and distributed tracing.
-                </p>
-                <p class="about-section__paragraph">
-                    As the primary on-call engineer and team lead for a platform serving 10,000+ users, I've
-                    developed expertise in SLO monitoring, incident response, and post-mortem analysis. I'm
-                    passionate about resilience patterns, distributed systems, and making complex infrastructure
-                    observable and maintainable.
-                </p>
-            </article>
-        </section>
+        <!-- About & Contact Section (Side-by-Side) -->
+        <div class="about-contact-wrapper">
+            <!-- About Section -->
+            <section id="about" class="about-section">
+                <h2 class="section-title">About Me</h2>
+                <article class="about-section__content">
+                    <p class="about-section__paragraph">
+                        Senior software engineer and wannabe architect with team leadership experience.
+                        I love being both a learner and a leader—constantly exploring new technologies
+                        while mentoring others and driving architectural decisions.
+                    </p>
+                </article>
+            </section>
 
-        <!-- Contact Section -->
-        <section id="contact" class="contact-section">
-            <h2 class="section-title">Get In Touch</h2>
-            <article class="contact-section__content">
-                <p class="contact-section__description">
-                    I'm currently exploring senior engineering opportunities in NYC, particularly roles
-                    focused on distributed systems and observability.
-                </p>
+            <!-- Contact Section -->
+            <section id="contact" class="contact-section">
+                <h2 class="section-title">Get In Touch</h2>
+                <article class="contact-section__content">
+                    <p class="contact-section__description">
+                        I'm currently exploring senior engineering opportunities in NYC, particularly roles
+                        focused on distributed systems and observability.
+                    </p>
 
-                <div class="contact-links">
-                    <a href="mailto:cjunks94@gmail.com"
-                       role="button"
-                       class="btn btn--primary">
-                        <span role="img" aria-label="Email">📧</span> Email
-                    </a>
-                    <a href="https://github.com/cjunks94"
-                       target="_blank"
-                       rel="noopener noreferrer"
-                       role="button"
-                       class="btn btn--secondary">
-                        GitHub
-                    </a>
-                    <a href="https://linkedin.com/in/christopher-junker-218aabba/"
-                       target="_blank"
-                       rel="noopener noreferrer"
-                       role="button"
-                       class="btn btn--secondary">
-                        LinkedIn
-                    </a>
-                </div>
+                    <div class="contact-links">
+                        <a href="mailto:cjunks94@gmail.com"
+                           role="button"
+                           class="btn btn--primary">
+                            <span role="img" aria-label="Email">📧</span> Email
+                        </a>
+                        <a href="https://github.com/cjunks94"
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           role="button"
+                           class="btn btn--secondary">
+                            GitHub
+                        </a>
+                        <a href="https://linkedin.com/in/christopher-junker-218aabba/"
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           role="button"
+                           class="btn btn--secondary">
+                            LinkedIn
+                        </a>
+                        <a href="resume-versions/christopher-junker-resume-datadog-v4-gdocs.txt"
+                           role="button"
+                           class="btn btn--secondary">
+                            <span role="img" aria-label="Document">📄</span> Resume (TXT)
+                        </a>
+                        <a href="resume-10-25.docx"
+                           role="button"
+                           class="btn btn--secondary">
+                            <span role="img" aria-label="Document">📄</span> Resume (DOCX)
+                        </a>
+                    </div>
 
-                <p class="contact-section__info">
-                    <small>
-                        <span role="img" aria-label="Phone">📞</span> 631-827-5831 |
-                        <span role="img" aria-label="Location">📍</span> Brooklyn, NY
-                    </small>
-                </p>
-            </article>
-        </section>
+                    <p class="contact-section__info">
+                        <small>
+                            <span role="img" aria-label="Phone">📞</span> 631-827-5831 |
+                            <span role="img" aria-label="Location">📍</span> Brooklyn, NY
+                        </small>
+                    </p>
+                </article>
+            </section>
+        </div>
 
-        <!-- Resume Section -->
-        <section id="resume" class="resume-section">
-            <h2 class="section-title">Resume</h2>
-            <article class="resume-section__content">
-                <h3 class="resume-section__subtitle">Download Resume</h3>
-                <p class="resume-section__description">
-                    Tailored versions of my resume highlighting different aspects of my experience:
-                </p>
+        <!-- Projects Section -->
+        <section id="projects" class="projects-section">
+            <h2 class="section-title">Featured Projects</h2>
 
-                <div class="resume-downloads">
-                    <a href="resume-versions/christopher-junker-resume-datadog-v4-gdocs.txt"
-                       role="button"
-                       class="btn btn--primary">
-                        <span role="img" aria-label="Document">📄</span> Resume (Text Version)
-                    </a>
-                    <a href="resume-10-25.docx"
-                       role="button"
-                       class="btn btn--secondary">
-                        <span role="img" aria-label="Document">📄</span> Resume (DOCX)
-                    </a>
-                </div>
+            <div class="projects-grid">
+                <article class="project-card">
+                    <header class="project-card__header">
+                        <h3 class="project-card__title">BB-Bounce Brick Breaker</h3>
+                        <p class="project-card__tech">
+                            <small>HTML5 Canvas • Node.js/Express • PostgreSQL</small>
+                        </p>
+                    </header>
+                    <p class="project-card__description">
+                        Retro arcade brick breaker game with vanilla JavaScript, 60 FPS canvas rendering,
+                        server-side score validation, and PostgreSQL leaderboards. Deployed to Railway with
+                        anti-cheat mechanisms and real-time highscore tracking.
+                    </p>
+                    <footer class="project-card__footer project-card__footer--stacked">
+                        <a href="https://brickbreaker.cjunker.dev"
+                           class="project-card__link"
+                           target="_blank"
+                           rel="noopener noreferrer">
+                            Play Live Game →
+                        </a>
+                        <a href="https://github.com/cjunks94/bb-bounce"
+                           class="project-card__link"
+                           target="_blank"
+                           rel="noopener noreferrer">
+                            View on GitHub →
+                        </a>
+                    </footer>
+                </article>
 
-                <h3 class="resume-section__subtitle">Key Highlights</h3>
-                <ul class="resume-highlights">
-                    <li class="resume-highlights__item">7+ years of production software engineering experience</li>
-                    <li class="resume-highlights__item">Built production Go microservices with 230+ tests and 80%+ coverage</li>
-                    <li class="resume-highlights__item">Primary on-call engineer for platform serving 10,000+ users</li>
-                    <li class="resume-highlights__item">Comprehensive Datadog observability infrastructure (distributed tracing, custom metrics, dashboards)</li>
-                    <li class="resume-highlights__item">Kubernetes expertise with Helm charts, HPA, and GitOps deployment</li>
-                    <li class="resume-highlights__item">Event streaming architecture processing 1M+ daily events</li>
-                    <li class="resume-highlights__item">Performance optimization reducing latency by 33% and test times by 50%</li>
-                    <li class="resume-highlights__item">Led team of 5 engineers, mentored on Docker and Kubernetes best practices</li>
-                </ul>
-            </article>
+                <article class="project-card">
+                    <header class="project-card__header">
+                        <h3 class="project-card__title">AWS SQS Monitoring UI</h3>
+                        <p class="project-card__tech">
+                            <small>Go • WebSocket • Production Tool</small>
+                        </p>
+                    </header>
+                    <p class="project-card__description">
+                        Real-time SQS queue management with DLQ monitoring, message export, and 230+ tests
+                        (80%+ coverage). Deployed as single binary serving 15+ production programs.
+                    </p>
+                    <footer class="project-card__footer">
+                        <a href="https://github.com/cjunks94/go-sqs-ui"
+                           class="project-card__link"
+                           target="_blank"
+                           rel="noopener noreferrer">
+                            View on GitHub →
+                        </a>
+                    </footer>
+                </article>
+
+                <article class="project-card">
+                    <header class="project-card__header">
+                        <h3 class="project-card__title">Salesforce Debug Service</h3>
+                        <p class="project-card__tech">
+                            <small>Go • React/TypeScript • Kubernetes</small>
+                        </p>
+                    </header>
+                    <p class="project-card__description">
+                        Internal development tool for Salesforce-AMT sync debugging with Kubernetes deployment and ATM sidecar
+                        integration. Validates data consistency and field mappings across environments for 2U developers.
+                    </p>
+                    <footer class="project-card__footer">
+                        <span class="project-status">Internal Tool @ 2U</span>
+                    </footer>
+                </article>
+
+                <article class="project-card">
+                    <header class="project-card__header">
+                        <h3 class="project-card__title">Portfolio Website</h3>
+                        <p class="project-card__tech">
+                            <small>HTML5 • CSS • D3.js • Railway</small>
+                        </p>
+                    </header>
+                    <p class="project-card__description">
+                        Responsive portfolio site with interactive tech radar visualization, mobile-first design,
+                        WCAG-compliant accessibility, and automated CI/CD deployment to Railway. Features custom
+                        navigation patterns and scroll-based animations.
+                    </p>
+                    <footer class="project-card__footer">
+                        <a href="https://github.com/cjunks94/resume-improvements"
+                           class="project-card__link"
+                           target="_blank"
+                           rel="noopener noreferrer">
+                            View on GitHub →
+                        </a>
+                    </footer>
+                </article>
+
+                <article class="project-card">
+                    <header class="project-card__header">
+                        <h3 class="project-card__title">Observable Search Engine</h3>
+                        <p class="project-card__tech">
+                            <small>Elasticsearch • Rails • AWS/K8s</small>
+                        </p>
+                    </header>
+                    <p class="project-card__description">
+                        Admin-facing indexing tool deployed on AWS/K8s, serving 1K+ users with 60% faster
+                        selection times through real-time search and indexing.
+                    </p>
+                    <footer class="project-card__footer">
+                        <span class="project-status">Production @ 2U</span>
+                    </footer>
+                </article>
+
+                <article class="project-card">
+                    <header class="project-card__header">
+                        <h3 class="project-card__title">Async Data Pipeline Migrator</h3>
+                        <p class="project-card__tech">
+                            <small>Python • AWS • AI/ML</small>
+                        </p>
+                    </header>
+                    <p class="project-card__description">
+                        Automated legacy-to-modern data transfer for 500K+ records with AI-based anomaly detection,
+                        reducing migration errors by 50%.
+                    </p>
+                    <footer class="project-card__footer">
+                        <span class="project-status">Production @ 2U</span>
+                    </footer>
+                </article>
+            </div>
         </section>
 
         <!-- Tech Radar Section -->
@@ -245,126 +341,6 @@
               '<p>Error loading tech radar visualization. Please check the console for details.</p>';
           });
         </script>
-
-        <!-- Projects Section -->
-        <section id="projects" class="projects-section">
-            <h2 class="section-title">Featured Projects</h2>
-
-            <div class="projects-grid">
-                <article class="project-card">
-                    <header class="project-card__header">
-                        <h3 class="project-card__title">AWS SQS Monitoring UI</h3>
-                        <p class="project-card__tech">
-                            <small>Go • WebSocket • Production Tool</small>
-                        </p>
-                    </header>
-                    <p class="project-card__description">
-                        Real-time SQS queue management with DLQ monitoring, message export, and 230+ tests
-                        (80%+ coverage). Deployed as single binary serving 15+ production programs.
-                    </p>
-                    <footer class="project-card__footer">
-                        <a href="https://github.com/cjunks94/go-sqs-ui"
-                           class="project-card__link"
-                           target="_blank"
-                           rel="noopener noreferrer">
-                            View on GitHub →
-                        </a>
-                    </footer>
-                </article>
-
-                <article class="project-card">
-                    <header class="project-card__header">
-                        <h3 class="project-card__title">Salesforce Debug Service</h3>
-                        <p class="project-card__tech">
-                            <small>Go • React/TypeScript • Kubernetes</small>
-                        </p>
-                    </header>
-                    <p class="project-card__description">
-                        Internal development tool for Salesforce-AMT sync debugging with Kubernetes deployment and ATM sidecar
-                        integration. Validates data consistency and field mappings across environments for 2U developers.
-                    </p>
-                    <footer class="project-card__footer">
-                        <span class="project-status">Internal Tool @ 2U</span>
-                    </footer>
-                </article>
-
-                <article class="project-card">
-                    <header class="project-card__header">
-                        <h3 class="project-card__title">BB-Bounce Brick Breaker</h3>
-                        <p class="project-card__tech">
-                            <small>HTML5 Canvas • Node.js/Express • PostgreSQL</small>
-                        </p>
-                    </header>
-                    <p class="project-card__description">
-                        Retro arcade brick breaker game with vanilla JavaScript, 60 FPS canvas rendering,
-                        server-side score validation, and PostgreSQL leaderboards. Deployed to Railway with
-                        anti-cheat mechanisms and real-time highscore tracking.
-                    </p>
-                    <footer class="project-card__footer">
-                        <a href="https://brickbreaker.cjunker.dev"
-                           class="project-card__link"
-                           target="_blank"
-                           rel="noopener noreferrer">
-                            Play Live Game →
-                        </a>
-                        <a href="https://github.com/cjunks94/bb-bounce"
-                           class="project-card__link"
-                           target="_blank"
-                           rel="noopener noreferrer">
-                            View on GitHub →
-                        </a>
-                    </footer>
-                </article>
-
-                <article class="project-card">
-                    <header class="project-card__header">
-                        <h3 class="project-card__title">RabbitMQ Event Streaming Demo</h3>
-                        <p class="project-card__tech">
-                            <small>Python • RabbitMQ • Docker</small>
-                        </p>
-                    </header>
-                    <p class="project-card__description">
-                        Demonstration of event-driven architecture patterns with producer-consumer implementations,
-                        dead-letter queues, and retry logic. Includes Docker Compose setup for local development.
-                    </p>
-                    <footer class="project-card__footer">
-                        <span class="project-status project-status--coming-soon">Coming Soon</span>
-                    </footer>
-                </article>
-
-                <article class="project-card">
-                    <header class="project-card__header">
-                        <h3 class="project-card__title">Observable Search Engine</h3>
-                        <p class="project-card__tech">
-                            <small>Elasticsearch • Rails • AWS/K8s</small>
-                        </p>
-                    </header>
-                    <p class="project-card__description">
-                        Admin-facing indexing tool deployed on AWS/K8s, serving 1K+ users with 60% faster
-                        selection times through real-time search and indexing.
-                    </p>
-                    <footer class="project-card__footer">
-                        <span class="project-status">Production @ 2U</span>
-                    </footer>
-                </article>
-
-                <article class="project-card">
-                    <header class="project-card__header">
-                        <h3 class="project-card__title">Async Data Pipeline Migrator</h3>
-                        <p class="project-card__tech">
-                            <small>Python • AWS • AI/ML</small>
-                        </p>
-                    </header>
-                    <p class="project-card__description">
-                        Automated legacy-to-modern data transfer for 500K+ records with AI-based anomaly detection,
-                        reducing migration errors by 50%.
-                    </p>
-                    <footer class="project-card__footer">
-                        <span class="project-status">Production @ 2U</span>
-                    </footer>
-                </article>
-            </div>
-        </section>
     </main>
 
     <!-- Footer -->

@@ -366,14 +366,24 @@ body {
 }
 
 /* ==========================================================================
-   About Section
+   About & Contact Wrapper (Side-by-Side Layout)
    ========================================================================== */
-.about-section {
+.about-contact-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
     margin-bottom: var(--spacing-lg);
 }
 
+/* ==========================================================================
+   About Section
+   ========================================================================== */
+.about-section {
+    flex: 1;
+}
+
 .about-section__content {
-    max-width: 800px;
+    max-width: 100%;
 }
 
 .about-section__paragraph {
@@ -659,6 +669,13 @@ body {
     margin-top: auto;
 }
 
+.project-card__footer--stacked {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+    align-items: flex-start;
+}
+
 .project-card__link {
     color: var(--color-primary);
     text-decoration: none;
@@ -724,7 +741,7 @@ body {
    Contact Section
    ========================================================================== */
 .contact-section {
-    margin-bottom: var(--spacing-lg);
+    flex: 1;
 }
 
 .contact-section__description {
@@ -844,6 +861,18 @@ select:focus {
 
     .hero-section__summary {
         font-size: 1.1rem;
+    }
+
+    /* About & Contact: Side-by-side layout */
+    .about-contact-wrapper {
+        flex-direction: row;
+        gap: var(--spacing-md);
+    }
+
+    .about-section,
+    .contact-section {
+        flex: 1;
+        max-width: 48%;
     }
 
     /* Button groups: horizontal layout on desktop */

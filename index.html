@@ -69,9 +69,8 @@
             <nav id="main-nav" class="main-nav" aria-label="Main navigation">
                 <ul class="nav-list">
                     <li><a href="#about" class="nav-link">About</a></li>
-                    <li><a href="#tech-radar" class="nav-link">Tech Radar</a></li>
                     <li><a href="#projects" class="nav-link">Projects</a></li>
-                    <li><a href="#resume" class="nav-link">Resume</a></li>
+                    <li><a href="#tech-radar" class="nav-link">Tech Radar</a></li>
                     <li><a href="#contact" class="nav-link">Contact</a></li>
                 </ul>
             </nav>
@@ -141,6 +140,16 @@
                            class="btn btn--secondary">
                             LinkedIn
                         </a>
+                        <a href="resume-versions/christopher-junker-resume-datadog-v4-gdocs.txt"
+                           role="button"
+                           class="btn btn--secondary">
+                            <span role="img" aria-label="Document">📄</span> Resume (TXT)
+                        </a>
+                        <a href="resume-10-25.docx"
+                           role="button"
+                           class="btn btn--secondary">
+                            <span role="img" aria-label="Document">📄</span> Resume (DOCX)
+                        </a>
                     </div>
 
                     <p class="contact-section__info">
@@ -152,96 +161,6 @@
                 </article>
             </section>
         </div>
-
-        <!-- Resume Section -->
-        <section id="resume" class="resume-section">
-            <h2 class="section-title">Resume</h2>
-            <article class="resume-section__content">
-                <h3 class="resume-section__subtitle">Download Resume</h3>
-                <p class="resume-section__description">
-                    Tailored versions of my resume highlighting different aspects of my experience:
-                </p>
-
-                <div class="resume-downloads">
-                    <a href="resume-versions/christopher-junker-resume-datadog-v4-gdocs.txt"
-                       role="button"
-                       class="btn btn--primary">
-                        <span role="img" aria-label="Document">📄</span> Resume (Text Version)
-                    </a>
-                    <a href="resume-10-25.docx"
-                       role="button"
-                       class="btn btn--secondary">
-                        <span role="img" aria-label="Document">📄</span> Resume (DOCX)
-                    </a>
-                </div>
-
-                <h3 class="resume-section__subtitle">Key Highlights</h3>
-                <ul class="resume-highlights">
-                    <li class="resume-highlights__item">7+ years of production software engineering experience</li>
-                    <li class="resume-highlights__item">Built production Go microservices with 230+ tests and 80%+ coverage</li>
-                    <li class="resume-highlights__item">Primary on-call engineer for platform serving 10,000+ users</li>
-                    <li class="resume-highlights__item">Comprehensive Datadog observability infrastructure (distributed tracing, custom metrics, dashboards)</li>
-                    <li class="resume-highlights__item">Kubernetes expertise with Helm charts, HPA, and GitOps deployment</li>
-                    <li class="resume-highlights__item">Event streaming architecture processing 1M+ daily events</li>
-                    <li class="resume-highlights__item">Performance optimization reducing latency by 33% and test times by 50%</li>
-                    <li class="resume-highlights__item">Led team of 5 engineers, mentored on Docker and Kubernetes best practices</li>
-                </ul>
-            </article>
-        </section>
-
-        <!-- Tech Radar Section -->
-        <section id="tech-radar" class="tech-radar-section">
-            <h2 class="section-title">Tech Radar</h2>
-            <article class="tech-radar-section__content">
-                <p class="tech-radar-section__description">
-                    My technology landscape organized by expertise level and category. Click on any technology
-                    to see detailed production experience. ▲ indicates new/emerging technologies.
-                </p>
-
-                <!-- Interactive Tech Radar Visualization -->
-                <div id="radar" class="radar-container" role="region" aria-label="Interactive technology radar visualization"></div>
-
-                <!-- Legend -->
-                <div id="radar-legend" class="radar-legend" role="complementary" aria-label="Technology index"></div>
-            </article>
-        </section>
-
-        <!-- Tech Radar Initialization Script -->
-        <script>
-          // Load and parse CSV data
-          d3.csv('tech-radar.csv').then(data => {
-            radar_visualization({
-              svg_id: "radar",
-              width: 1200,
-              height: 800,
-              title: "Christopher Junker's Tech Radar",
-              quadrants: [
-                { name: "languages-frameworks" },
-                { name: "platforms" },
-                { name: "tools" },
-                { name: "techniques" }
-              ],
-              rings: [
-                { name: "adopt", color: "var(--radar-adopt)" },
-                { name: "trial", color: "var(--radar-trial)" },
-                { name: "assess", color: "var(--radar-assess)" },
-                { name: "hold", color: "var(--radar-hold)" }
-              ],
-              entries: data.map(d => ({
-                quadrant: d.quadrant,
-                ring: d.ring.toLowerCase(),
-                label: d.name,
-                description: d.description,
-                active: true,
-                moved: d.isNew === 'TRUE' ? 1 : 0
-              }))
-            });
-          }).catch(error => {
-            console.error('Error loading tech radar data:', error);
-            document.getElementById('radar').innerHTML =
-              '<p>Error loading tech radar visualization. Please check the console for details.</p>';
-          });
-        </script>
 
         <!-- Projects Section -->
         <section id="projects" class="projects-section">
@@ -362,6 +281,60 @@
                 </article>
             </div>
         </section>
+
+        <!-- Tech Radar Section -->
+        <section id="tech-radar" class="tech-radar-section">
+            <h2 class="section-title">Tech Radar</h2>
+            <article class="tech-radar-section__content">
+                <p class="tech-radar-section__description">
+                    My technology landscape organized by expertise level and category. Click on any technology
+                    to see detailed production experience. ▲ indicates new/emerging technologies.
+                </p>
+
+                <!-- Interactive Tech Radar Visualization -->
+                <div id="radar" class="radar-container" role="region" aria-label="Interactive technology radar visualization"></div>
+
+                <!-- Legend -->
+                <div id="radar-legend" class="radar-legend" role="complementary" aria-label="Technology index"></div>
+            </article>
+        </section>
+
+        <!-- Tech Radar Initialization Script -->
+        <script>
+          // Load and parse CSV data
+          d3.csv('tech-radar.csv').then(data => {
+            radar_visualization({
+              svg_id: "radar",
+              width: 1200,
+              height: 800,
+              title: "Christopher Junker's Tech Radar",
+              quadrants: [
+                { name: "languages-frameworks" },
+                { name: "platforms" },
+                { name: "tools" },
+                { name: "techniques" }
+              ],
+              rings: [
+                { name: "adopt", color: "var(--radar-adopt)" },
+                { name: "trial", color: "var(--radar-trial)" },
+                { name: "assess", color: "var(--radar-assess)" },
+                { name: "hold", color: "var(--radar-hold)" }
+              ],
+              entries: data.map(d => ({
+                quadrant: d.quadrant,
+                ring: d.ring.toLowerCase(),
+                label: d.name,
+                description: d.description,
+                active: true,
+                moved: d.isNew === 'TRUE' ? 1 : 0
+              }))
+            });
+          }).catch(error => {
+            console.error('Error loading tech radar data:', error);
+            document.getElementById('radar').innerHTML =
+              '<p>Error loading tech radar visualization. Please check the console for details.</p>';
+          });
+        </script>
     </main>
 
     <!-- Footer -->

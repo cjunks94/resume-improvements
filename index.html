@@ -293,9 +293,9 @@
             <h2 class="section-title">Tech Radar</h2>
             <article class="tech-radar-section__content">
                 <p class="tech-radar-section__description">
-                    My technology landscape organized by expertise level and category. <strong>MAINTAIN</strong> (center, custom ring) = daily use at work/projects,
-                    <strong>ADOPT</strong> = production-ready and actively using, <strong>TRIAL</strong> = in use on side projects,
-                    <strong>ASSESS</strong> = feeling out and evaluating, <strong>HOLD</strong> (outer) = avoiding or breaking habits.
+                    My technology landscape organized by expertise level and category. <strong>HOLD</strong> (center) = avoiding or breaking habits,
+                    <strong>ASSESS</strong> = feeling out and evaluating, <strong>TRIAL</strong> = in use on side projects,
+                    <strong>ADOPT</strong> = production-ready and actively using, <strong>MAINTAIN</strong> (outer, custom ring) = daily use at work/projects.
                     Click any technology for details. ▲ indicates new additions.
                     <em>Note: MAINTAIN ring is a custom addition to the standard ThoughtWorks Tech Radar format.</em>
                 </p>
@@ -324,11 +324,11 @@
                 { name: "techniques" }
               ],
               rings: [
-                { name: "maintain", color: "var(--radar-maintain)" },
-                { name: "adopt", color: "var(--radar-adopt)" },
-                { name: "trial", color: "var(--radar-trial)" },
+                { name: "hold", color: "var(--radar-hold)" },
                 { name: "assess", color: "var(--radar-assess)" },
-                { name: "hold", color: "var(--radar-hold)" }
+                { name: "trial", color: "var(--radar-trial)" },
+                { name: "adopt", color: "var(--radar-adopt)" },
+                { name: "maintain", color: "var(--radar-maintain)" }
               ],
               entries: data.map(d => ({
                 quadrant: d.quadrant,

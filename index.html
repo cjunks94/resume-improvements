@@ -17,6 +17,9 @@
     <!-- Mobile menu script -->
     <script src="scripts.js" defer></script>
 
+    <!-- Carousel script -->
+    <script src="carousel.js" defer></script>
+
     <!-- No-JS fallback: If JavaScript is disabled, show navigation normally -->
     <noscript>
         <style>
@@ -82,19 +85,54 @@
 
         <!-- Hero Section -->
         <section id="hero" class="hero-section">
-            <hgroup class="hero-section__header">
-                <h1 class="hero-section__title">Christopher Junker</h1>
-                <p class="hero-section__subtitle">Senior Software Engineer | Full-Stack & Distributed Systems Specialist</p>
-            </hgroup>
-            <p class="hero-section__summary">
-                Accomplished Senior Software Engineer with 7+ years building scalable, observable web applications
-                at 2U, processing high-volume user data for 10,000+ users. Expertise in Go, Ruby on Rails, React,
-                AWS/Kubernetes, and event-driven architectures. Seeking to drive innovation at scale, leveraging
-                experience in production reliability, event streaming, distributed tracing, and Kubernetes orchestration.
-            </p>
-            <p class="hero-section__location">
-                <span role="img" aria-label="Location">📍</span> Brooklyn, NY | Open to NYC-based roles
-            </p>
+            <div class="hero-section__content">
+                <div class="hero-section__text">
+                    <hgroup class="hero-section__header">
+                        <h1 class="hero-section__title">Christopher Junker</h1>
+                        <p class="hero-section__subtitle">Senior Software Engineer | Full-Stack & Distributed Systems Specialist</p>
+                    </hgroup>
+                    <p class="hero-section__summary">
+                        Accomplished Senior Software Engineer with 7+ years building scalable, observable web applications
+                        at 2U, processing high-volume user data for 10,000+ users. Expertise in Go, Ruby on Rails, React,
+                        AWS/Kubernetes, and event-driven architectures. Seeking to drive innovation at scale, leveraging
+                        experience in production reliability, event streaming, distributed tracing, and Kubernetes orchestration.
+                    </p>
+                    <p class="hero-section__location">
+                        <span role="img" aria-label="Location">📍</span> Brooklyn, NY | Open to NYC-based roles
+                    </p>
+                </div>
+                <div class="hero-section__carousel">
+                    <div class="carousel-container">
+                        <div class="carousel-slides">
+                            <!-- Placeholder images - you'll replace these with actual screenshots -->
+                            <div class="carousel-slide active">
+                                <img src="images/carousel/profile.jpg" alt="Christopher Junker - Software Engineer" loading="lazy">
+                                <p class="carousel-caption">Christopher Junker</p>
+                            </div>
+                            <div class="carousel-slide">
+                                <img src="images/carousel/sqs-ui.png" alt="AWS SQS Monitoring UI - Real-time queue management" loading="lazy">
+                                <p class="carousel-caption">AWS SQS Monitoring UI</p>
+                            </div>
+                            <div class="carousel-slide">
+                                <img src="images/carousel/bb-bounce.png" alt="BB-Bounce Brick Breaker Game" loading="lazy">
+                                <p class="carousel-caption">BB-Bounce Brick Breaker</p>
+                            </div>
+                            <div class="carousel-slide">
+                                <img src="images/carousel/tech-radar.png" alt="Interactive Tech Radar Visualization" loading="lazy">
+                                <p class="carousel-caption">Tech Radar Visualization</p>
+                            </div>
+                        </div>
+                        <button class="carousel-btn carousel-btn--prev" aria-label="Previous slide">‹</button>
+                        <button class="carousel-btn carousel-btn--next" aria-label="Next slide">›</button>
+                        <div class="carousel-indicators">
+                            <button class="carousel-indicator active" aria-label="Go to slide 1" data-slide="0"></button>
+                            <button class="carousel-indicator" aria-label="Go to slide 2" data-slide="1"></button>
+                            <button class="carousel-indicator" aria-label="Go to slide 3" data-slide="2"></button>
+                            <button class="carousel-indicator" aria-label="Go to slide 4" data-slide="3"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </section>
 
         <!-- About & Contact Section (Side-by-Side) -->

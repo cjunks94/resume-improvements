@@ -60,9 +60,25 @@ html {
 body {
     line-height: 1.7;
 
-    /* Note: Dotted background removed for WCAG compliance */
+    /* Railway-style dotted grid background */
+    background-image: radial-gradient(circle, rgba(128, 128, 128, 0.15) 1px, transparent 1px);
+    background-size: 24px 24px;
+    background-attachment: fixed;
+}
 
-    /* Even subtle patterns affect contrast ratio calculations */
+/* Dark mode dot adjustment */
+@media (prefers-color-scheme: dark) {
+    body:not([data-theme="light"]) {
+        background-image: radial-gradient(circle, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+        background-size: 24px 24px;
+        background-attachment: fixed;
+    }
+}
+
+[data-theme="dark"] body {
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+    background-size: 24px 24px;
+    background-attachment: fixed;
 }
 
 .section-title {

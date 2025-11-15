@@ -472,12 +472,12 @@ body {
     opacity: 0;
 }
 
-.carousel-container:hover .carousel-btn {
-    opacity: 1;
-}
-
 .carousel-btn:hover {
     background: rgba(0, 0, 0, 0.7);
+}
+
+.carousel-container:hover .carousel-btn {
+    opacity: 1;
 }
 
 .carousel-btn--prev {

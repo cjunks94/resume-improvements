@@ -62,6 +62,7 @@ body {
     line-height: 1.7;
 
     /* Note: Dotted background removed for WCAG compliance */
+
     /* Background patterns interfere with color contrast calculations */
 }
 

@@ -821,6 +821,111 @@ body {
 }
 
 /* ==========================================================================
+   Architecture Diagrams Section
+   ========================================================================== */
+#architecture {
+    margin-bottom: var(--spacing-lg);
+}
+
+#architecture .architecture-section__intro {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto var(--spacing-lg);
+    color: var(--color-secondary);
+    font-size: 1.05rem;
+    line-height: 1.6;
+}
+
+.architecture-diagram {
+    background: var(--card-background-color);
+    border: 1px solid var(--card-border-color);
+    border-radius: 12px;
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.architecture-diagram__header {
+    text-align: center;
+    margin-bottom: var(--spacing-md);
+    padding-bottom: var(--spacing-sm);
+    border-bottom: 2px solid var(--color-primary);
+}
+
+.architecture-diagram__title {
+    font-size: 1.75rem;
+    margin-bottom: var(--spacing-xs);
+    color: var(--color-primary);
+}
+
+.architecture-diagram__subtitle {
+    font-size: 1.1rem;
+    color: var(--color-secondary);
+    margin: 0;
+}
+
+.architecture-diagram__content {
+    display: grid;
+    gap: var(--spacing-lg);
+}
+
+/* Mermaid diagram container */
+.architecture-diagram__content .mermaid {
+    background: #1e1e1e;
+    padding: var(--spacing-md);
+    border-radius: 8px;
+    overflow-x: auto;
+    min-height: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.architecture-diagram__description {
+    padding: var(--spacing-md);
+}
+
+#architecture .architecture-diagram__description h4 {
+    color: var(--color-primary);
+    margin-top: var(--spacing-md);
+    margin-bottom: var(--spacing-sm);
+    font-size: 1.3rem;
+}
+
+#architecture .architecture-diagram__description h4:first-child {
+    margin-top: 0;
+}
+
+.architecture-diagram__description ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.architecture-diagram__description li {
+    padding: var(--spacing-sm);
+    margin-bottom: var(--spacing-sm);
+    background: rgba(0, 102, 204, 0.05);
+    border-left: 3px solid var(--color-primary);
+    border-radius: 4px;
+}
+
+.architecture-diagram__description li strong {
+    color: var(--color-primary);
+}
+
+/* Desktop layout: diagram and description side-by-side */
+@media (min-width: 1024px) {
+    .architecture-diagram__content {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .architecture-diagram__content .mermaid {
+        grid-row: 1 / -1;
+    }
+}
+
+/* ==========================================================================
    Resume Section
    ========================================================================== */
 .resume-section {

@@ -498,8 +498,9 @@ body {
 .about-contact-wrapper {
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-lg);
-    margin-bottom: var(--spacing-lg);
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
+    font-size: 0.85rem;
 }
 
 /* ==========================================================================
@@ -509,12 +510,18 @@ body {
     flex: 1;
 }
 
+.about-section .section-title {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
 .about-section__content {
     max-width: 100%;
 }
 
 .about-section__paragraph {
-    margin-bottom: var(--spacing-md);
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
 }
 
 /* ==========================================================================
@@ -871,20 +878,33 @@ body {
     flex: 1;
 }
 
+.contact-section .section-title {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
 .contact-section__description {
-    margin-bottom: var(--spacing-md);
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
 }
 
 .contact-links {
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-sm);
-    margin-bottom: var(--spacing-md);
+    gap: 0.4rem;
+    margin-bottom: 0.5rem;
+}
+
+.contact-links a {
+    font-size: 0.8rem;
+    padding: 0.4rem 0.8rem;
 }
 
 .contact-section__info {
     text-align: center;
     color: var(--color-secondary);
+    font-size: 0.75rem;
+    margin-top: 0.5rem;
 }
 
 /* ==========================================================================
@@ -1011,13 +1031,22 @@ select:focus {
     /* About & Contact: Side-by-side layout */
     .about-contact-wrapper {
         flex-direction: row;
-        gap: var(--spacing-md);
+        gap: var(--spacing-sm);
+        max-width: 85%;
+        margin-left: auto;
+        margin-right: auto;
     }
 
     .about-section,
     .contact-section {
         flex: 1;
         max-width: 48%;
+    }
+
+    .contact-links {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
     }
 
     /* Button groups: horizontal layout on desktop */

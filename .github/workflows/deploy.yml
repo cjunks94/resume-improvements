@@ -94,7 +94,7 @@ jobs:
           publish_branch: gh-pages
           publish_dir: .
           cname: staging.cjunker.dev
-          force_orphan: false
+          force_orphan: true
           keep_files: false
           exclude_assets: '.github,node_modules,tests,package*.json,.gitignore,.stylelintrc.json,.htmlvalidate.json,decisions,TODO.md,CLAUDE.md'
       - name: Wait for deployment and verify CNAME

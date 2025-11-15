@@ -17,6 +17,9 @@
     <!-- Mobile menu script -->
     <script src="scripts.js" defer></script>
 
+    <!-- Carousel script -->
+    <script src="carousel.js" defer></script>
+
     <!-- No-JS fallback: If JavaScript is disabled, show navigation normally -->
     <noscript>
         <style>
@@ -82,19 +85,70 @@
 
         <!-- Hero Section -->
         <section id="hero" class="hero-section">
-            <hgroup class="hero-section__header">
-                <h1 class="hero-section__title">Christopher Junker</h1>
-                <p class="hero-section__subtitle">Senior Software Engineer | Full-Stack & Distributed Systems Specialist</p>
-            </hgroup>
-            <p class="hero-section__summary">
-                Accomplished Senior Software Engineer with 7+ years building scalable, observable web applications
-                at 2U, processing high-volume user data for 10,000+ users. Expertise in Go, Ruby on Rails, React,
-                AWS/Kubernetes, and event-driven architectures. Seeking to drive innovation at scale, leveraging
-                experience in production reliability, event streaming, distributed tracing, and Kubernetes orchestration.
-            </p>
-            <p class="hero-section__location">
-                <span role="img" aria-label="Location">📍</span> Brooklyn, NY | Open to NYC-based roles
-            </p>
+            <div class="hero-section__content">
+                <div class="hero-section__text">
+                    <hgroup class="hero-section__header">
+                        <h1 class="hero-section__title">Christopher Junker</h1>
+                        <p class="hero-section__subtitle">Senior Software Engineer | Full-Stack & Distributed Systems Specialist</p>
+                    </hgroup>
+                    <p class="hero-section__summary">
+                        Accomplished Senior Software Engineer with 7+ years building scalable, observable web applications
+                        at 2U, processing high-volume user data for 10,000+ users. Expertise in Go, Ruby on Rails, React,
+                        AWS/Kubernetes, and event-driven architectures. Seeking to drive innovation at scale, leveraging
+                        experience in production reliability, event streaming, distributed tracing, and Kubernetes orchestration.
+                    </p>
+                    <p class="hero-section__location">
+                        <span role="img" aria-label="Location">📍</span> Brooklyn, NY | Open to NYC-based roles
+                    </p>
+                </div>
+                <div class="hero-section__carousel">
+                    <div class="carousel-container">
+                        <div class="carousel-slides">
+                            <!-- SQS UI Screenshots -->
+                            <div class="carousel-slide active">
+                                <img src="images/carousel/Screenshot 2025-11-11 at 3.46.25 PM.png" alt="AWS SQS Monitoring UI - Dashboard View" loading="lazy">
+                                <p class="carousel-caption">AWS SQS Monitoring UI - Dashboard</p>
+                            </div>
+                            <div class="carousel-slide">
+                                <img src="images/carousel/Screenshot 2025-11-11 at 3.49.50 PM.png" alt="AWS SQS Monitoring UI - Queue Details" loading="lazy">
+                                <p class="carousel-caption">AWS SQS UI - Queue Details</p>
+                            </div>
+                            <div class="carousel-slide">
+                                <img src="images/carousel/Screenshot 2025-11-11 at 3.49.42 PM.png" alt="AWS SQS Monitoring UI - Messages View" loading="lazy">
+                                <p class="carousel-caption">AWS SQS UI - Messages</p>
+                            </div>
+                            <div class="carousel-slide">
+                                <img src="images/carousel/Screenshot 2025-11-11 at 3.46.45 PM.png" alt="AWS SQS Monitoring UI - DLQ Management" loading="lazy">
+                                <p class="carousel-caption">AWS SQS UI - DLQ Management</p>
+                            </div>
+                            <!-- BB-Bounce Brick Breaker Screenshots -->
+                            <div class="carousel-slide">
+                                <img src="images/carousel/Screenshot 2025-11-14 at 3.46.50 PM.png" alt="BB-Bounce Brick Breaker Game - Gameplay" loading="lazy">
+                                <p class="carousel-caption">BB-Bounce - Gameplay</p>
+                            </div>
+                            <div class="carousel-slide">
+                                <img src="images/carousel/Screenshot 2025-11-14 at 3.46.35 PM.png" alt="BB-Bounce Brick Breaker Game - Level Progress" loading="lazy">
+                                <p class="carousel-caption">BB-Bounce - Level Progress</p>
+                            </div>
+                            <div class="carousel-slide">
+                                <img src="images/carousel/Screenshot 2025-11-13 at 2.47.04 PM.png" alt="BB-Bounce Brick Breaker - Leaderboard" loading="lazy">
+                                <p class="carousel-caption">BB-Bounce - Leaderboard</p>
+                            </div>
+                        </div>
+                        <button class="carousel-btn carousel-btn--prev" aria-label="Previous slide">‹</button>
+                        <button class="carousel-btn carousel-btn--next" aria-label="Next slide">›</button>
+                        <div class="carousel-indicators">
+                            <button class="carousel-indicator active" aria-label="Go to slide 1" data-slide="0"></button>
+                            <button class="carousel-indicator" aria-label="Go to slide 2" data-slide="1"></button>
+                            <button class="carousel-indicator" aria-label="Go to slide 3" data-slide="2"></button>
+                            <button class="carousel-indicator" aria-label="Go to slide 4" data-slide="3"></button>
+                            <button class="carousel-indicator" aria-label="Go to slide 5" data-slide="4"></button>
+                            <button class="carousel-indicator" aria-label="Go to slide 6" data-slide="5"></button>
+                            <button class="carousel-indicator" aria-label="Go to slide 7" data-slide="6"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </section>
 
         <!-- About & Contact Section (Side-by-Side) -->
@@ -213,6 +267,23 @@
                            rel="noopener noreferrer">
                             View on GitHub →
                         </a>
+                    </footer>
+                </article>
+
+                <article class="project-card">
+                    <header class="project-card__header">
+                        <h3 class="project-card__title">TMJ Therapy Tracker</h3>
+                        <p class="project-card__tech">
+                            <small>Flutter • MediaPipe • SQLite</small>
+                        </p>
+                    </header>
+                    <p class="project-card__description">
+                        Mobile app for TMJ physical therapy with real-time jaw movement tracking using MediaPipe Face Mesh.
+                        Features local data persistence, progress analytics, and multi-platform support (iOS/Android/macOS)
+                        with comprehensive unit test coverage.
+                    </p>
+                    <footer class="project-card__footer">
+                        <span class="project-status">Contracted Project</span>
                     </footer>
                 </article>
 

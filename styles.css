@@ -55,6 +55,7 @@
    ========================================================================== */
 html {
     scroll-behavior: smooth;
+    scroll-padding-top: 80px; /* Offset for sticky navbar */
 }
 
 body {
@@ -62,7 +63,7 @@ body {
 
     /* Note: Dotted background removed for WCAG compliance */
 
-    /* Even subtle patterns affect contrast ratio calculations */
+    /* Background patterns interfere with color contrast calculations */
 }
 
 .section-title {
@@ -332,12 +333,22 @@ body {
    ========================================================================== */
 .hero-section {
     padding: var(--spacing-md) var(--spacing-sm);
-    text-align: center;
     background: var(--card-background-color);
     border: 1px solid var(--card-border-color);
     border-radius: 12px;
     margin-bottom: var(--spacing-lg);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.hero-section__content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+}
+
+.hero-section__text {
+    flex: 1;
+    text-align: center;
 }
 
 .hero-section__header {
@@ -368,14 +379,112 @@ body {
     color: var(--color-secondary);
 }
 
+.hero-section__carousel {
+    flex: 1;
+}
+
+/* ==========================================================================
+   Image Carousel
+   ========================================================================== */
+.carousel-container {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--card-background-color);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.carousel-slides {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+}
+
+.carousel-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.carousel-slide.active {
+    opacity: 1;
+}
+
+.carousel-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+}
+
+.carousel-caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #000000; /* Solid black for WCAG AA contrast */
+    color: #ffffff;
+    padding: 6px var(--spacing-sm);
+    text-align: center;
+    font-size: 0.8rem;
+    margin: 0;
+}
+
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.3);
+    color: white;
+    border: none;
+    font-size: 2rem;
+    padding: var(--spacing-sm) var(--spacing-md);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 10;
+    opacity: 0;
+}
+
+.carousel-btn:hover {
+    background: rgba(0, 0, 0, 0.7);
+}
+
+.carousel-container:hover .carousel-btn {
+    opacity: 1;
+}
+
+.carousel-btn--prev {
+    left: 0;
+}
+
+.carousel-btn--next {
+    right: 0;
+}
+
+.carousel-indicators {
+    display: none;
+}
+
 /* ==========================================================================
    About & Contact Wrapper (Side-by-Side Layout)
    ========================================================================== */
 .about-contact-wrapper {
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-lg);
-    margin-bottom: var(--spacing-lg);
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
+    font-size: 0.85rem;
 }
 
 /* ==========================================================================
@@ -385,12 +494,18 @@ body {
     flex: 1;
 }
 
+.about-section .section-title {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
 .about-section__content {
     max-width: 100%;
 }
 
 .about-section__paragraph {
-    margin-bottom: var(--spacing-md);
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
 }
 
 /* ==========================================================================
@@ -747,20 +862,33 @@ body {
     flex: 1;
 }
 
+.contact-section .section-title {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
 .contact-section__description {
-    margin-bottom: var(--spacing-md);
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
 }
 
 .contact-links {
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-sm);
-    margin-bottom: var(--spacing-md);
+    gap: 0.4rem;
+    margin-bottom: 0.5rem;
+}
+
+.contact-links a {
+    font-size: 0.8rem;
+    padding: 0.4rem 0.8rem;
 }
 
 .contact-section__info {
     text-align: center;
     color: var(--color-secondary);
+    font-size: 0.75rem;
+    margin-top: 0.5rem;
 }
 
 /* ==========================================================================
@@ -819,14 +947,24 @@ select:focus {
 }
 
 .site-footer__link {
-    color: var(--color-primary);
-    text-decoration: none;
+    color: #0052a3; /* Darker blue for WCAG AA contrast */
+    text-decoration: underline;
     transition: color var(--transition-speed) ease;
 }
 
 .site-footer__link:hover {
     color: var(--color-accent);
-    text-decoration: underline;
+}
+
+/* Dark mode footer link */
+@media (prefers-color-scheme: dark) {
+    .site-footer__link {
+        color: #66b3ff; /* Lighter blue for dark mode contrast */
+    }
+}
+
+[data-theme="dark"] .site-footer__link {
+    color: #66b3ff;
 }
 
 /* ==========================================================================
@@ -851,7 +989,23 @@ select:focus {
 /* Tablets and small laptops (769px+) */
 @media (min-width: 769px) {
     .hero-section {
-        padding: var(--spacing-xl) 0;
+        padding: var(--spacing-xl) var(--spacing-md);
+    }
+
+    .hero-section__content {
+        flex-direction: row;
+        align-items: center;
+        gap: var(--spacing-xl);
+    }
+
+    .hero-section__text {
+        flex: 1;
+        text-align: left;
+    }
+
+    .hero-section__carousel {
+        flex: 1;
+        max-width: 50%;
     }
 
     .hero-section__title {
@@ -864,18 +1018,28 @@ select:focus {
 
     .hero-section__summary {
         font-size: 1.1rem;
+        margin-left: 0;
+        margin-right: 0;
     }
 
     /* About & Contact: Side-by-side layout */
     .about-contact-wrapper {
         flex-direction: row;
-        gap: var(--spacing-md);
+        gap: var(--spacing-sm);
+        max-width: 85%;
+        margin-left: auto;
+        margin-right: auto;
     }
 
     .about-section,
     .contact-section {
         flex: 1;
         max-width: 48%;
+    }
+
+    .contact-links {
+        flex-flow: row wrap;
+        justify-content: center;
     }
 
     /* Button groups: horizontal layout on desktop */

@@ -964,14 +964,24 @@ select:focus {
 }
 
 .site-footer__link {
-    color: var(--color-primary);
-    text-decoration: none;
+    color: #0052a3; /* Darker blue for WCAG AA contrast */
+    text-decoration: underline;
     transition: color var(--transition-speed) ease;
 }
 
 .site-footer__link:hover {
     color: var(--color-accent);
-    text-decoration: underline;
+}
+
+/* Dark mode footer link */
+@media (prefers-color-scheme: dark) {
+    .site-footer__link {
+        color: #66b3ff; /* Lighter blue for dark mode contrast */
+    }
+}
+
+[data-theme="dark"] .site-footer__link {
+    color: #66b3ff;
 }
 
 /* ==========================================================================

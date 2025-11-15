@@ -13,7 +13,7 @@ function checkFileExists(filePath) {
 
 function validateSections(htmlPath) {
   const html = fs.readFileSync(htmlPath, 'utf8');
-  const requiredSections = ['hero', 'about', 'tech-radar', 'projects', 'contact'];
+  const requiredSections = ['hero', 'about', 'projects', 'architecture', 'tech-radar', 'contact'];
   const errors = [];
 
   requiredSections.forEach(section => {

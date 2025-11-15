@@ -914,10 +914,80 @@ body {
     color: var(--color-primary);
 }
 
+/* Collapsible architecture details */
+.architecture-details {
+    margin-top: var(--spacing-md);
+}
+
+.architecture-summary {
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: var(--color-primary);
+    padding: var(--spacing-sm);
+    background: rgba(0, 102, 204, 0.08);
+    border-radius: var(--border-radius);
+    border-left: 3px solid var(--color-primary);
+    transition: background var(--transition-speed) ease;
+    list-style: none;
+}
+
+.architecture-summary::-webkit-details-marker {
+    display: none;
+}
+
+.architecture-summary::before {
+    content: "▶";
+    display: inline-block;
+    margin-right: var(--spacing-xs);
+    transition: transform var(--transition-speed) ease;
+}
+
+.architecture-details[open] .architecture-summary::before {
+    transform: rotate(90deg);
+}
+
+.architecture-summary:hover {
+    background: rgba(0, 102, 204, 0.12);
+}
+
+.architecture-summary:focus {
+    outline: 3px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+.architecture-details__content {
+    padding: var(--spacing-md) var(--spacing-sm);
+}
+
+.architecture-details__content h4 {
+    font-size: 1rem;
+    margin-bottom: var(--spacing-sm);
+    color: var(--color-primary);
+}
+
+.architecture-list--compact {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: var(--spacing-xs);
+}
+
+.architecture-list--compact li {
+    padding: var(--spacing-xs);
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.architecture-list--compact strong {
+    color: var(--color-primary);
+}
+
 /* Desktop layout: diagram and description side-by-side */
 @media (min-width: 1024px) {
     .architecture-diagram__content {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 2fr 1fr;
     }
 
     .architecture-diagram__content .mermaid {

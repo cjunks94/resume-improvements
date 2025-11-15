@@ -442,22 +442,19 @@ graph TB
                     </script>
 
                     <div class="architecture-diagram__description">
-                        <h4>Key Architectural Decisions</h4>
-                        <ul>
-                            <li><strong>WebSocket for Real-Time Updates:</strong> Chose WebSocket over polling to reduce latency and server load. Messages appear instantly across all connected clients.</li>
-                            <li><strong>Single Binary Deployment:</strong> Embedded static assets in Go binary for zero-dependency deployment. Simplifies production rollouts to 15+ programs.</li>
-                            <li><strong>Goroutine-per-Connection:</strong> Leverages Go's lightweight concurrency model. Each WebSocket connection runs in its own goroutine, handling 100+ concurrent users efficiently.</li>
-                            <li><strong>Tag-Based Queue Discovery:</strong> Auto-filters queues using AWS tags (businessunit, product, env). Reduces noise for developers working on specific applications.</li>
-                            <li><strong>DLQ Retry Pattern:</strong> One-click retry moves failed messages from DLQ back to source queue. Critical for debugging production issues quickly.</li>
-                        </ul>
-
-                        <h4>Performance Characteristics</h4>
-                        <ul>
-                            <li>~50ms message latency (browser → SQS → browser)</li>
-                            <li>Supports 100+ concurrent WebSocket connections</li>
-                            <li>6MB binary size (including embedded frontend)</li>
-                            <li>Zero external runtime dependencies</li>
-                        </ul>
+                        <details class="architecture-details">
+                            <summary class="architecture-summary">Key Architectural Decisions & Performance</summary>
+                            <div class="architecture-details__content">
+                                <h4>Technical Decisions</h4>
+                                <ul class="architecture-list--compact">
+                                    <li><strong>WebSocket:</strong> Real-time updates, ~50ms latency</li>
+                                    <li><strong>Single Binary:</strong> 6MB deployment (embedded assets)</li>
+                                    <li><strong>Goroutine-per-Connection:</strong> 100+ concurrent users</li>
+                                    <li><strong>Tag-Based Discovery:</strong> AWS tag filtering (env, product)</li>
+                                    <li><strong>DLQ Retry:</strong> One-click failed message recovery</li>
+                                </ul>
+                            </div>
+                        </details>
                     </div>
                 </div>
             </article>

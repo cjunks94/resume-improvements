@@ -865,7 +865,8 @@ body {
 }
 
 .architecture-diagram__content {
-    display: grid;
+    display: flex;
+    flex-direction: column;
     gap: var(--spacing-lg);
 }
 
@@ -875,7 +876,7 @@ body {
     padding: var(--spacing-md);
     border-radius: 8px;
     overflow-x: auto;
-    min-height: 400px;
+    min-height: 500px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -984,15 +985,9 @@ body {
     color: var(--color-primary);
 }
 
-/* Desktop layout: diagram and description side-by-side */
-@media (min-width: 1024px) {
-    .architecture-diagram__content {
-        grid-template-columns: 2fr 1fr;
-    }
-
-    .architecture-diagram__content .mermaid {
-        grid-row: 1 / -1;
-    }
+/* Full-width diagram on all screen sizes */
+.architecture-diagram__content .mermaid {
+    width: 100%;
 }
 
 /* ==========================================================================

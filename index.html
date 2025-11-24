@@ -20,6 +20,9 @@
     <!-- Carousel script -->
     <script src="carousel.js" defer></script>
 
+    <!-- Modal script -->
+    <script src="modals.js" defer></script>
+
     <!-- No-JS fallback: If JavaScript is disabled, show navigation normally -->
     <noscript>
         <style>
@@ -48,7 +51,7 @@
     <script type="module">
         import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
         mermaid.initialize({
-            startOnLoad: true,
+            startOnLoad: false, // Don't auto-render, modal script will handle it
             theme: 'dark',
             themeVariables: {
                 primaryColor: '#0066cc',
@@ -59,6 +62,8 @@
                 tertiaryColor: '#c92a2a'
             }
         });
+        // Make mermaid available globally for modal script
+        window.mermaid = mermaid;
     </script>
 
     <!-- Umami Analytics - Environment-based tracking (see analytics-config.js) -->
@@ -90,7 +95,6 @@
                 <ul class="nav-list">
                     <li><a href="#about" class="nav-link">About</a></li>
                     <li><a href="#projects" class="nav-link">Projects</a></li>
-                    <li><a href="#architecture" class="nav-link">Architecture</a></li>
                     <li><a href="#tech-radar" class="nav-link">Tech Radar</a></li>
                     <li><a href="#contact" class="nav-link">Contact</a></li>
                 </ul>
@@ -278,7 +282,12 @@
                         Real-time SQS queue management with DLQ monitoring, message export, and 230+ tests
                         (80%+ coverage). Deployed as single binary serving 15+ production programs.
                     </p>
-                    <footer class="project-card__footer">
+                    <footer class="project-card__footer project-card__footer--stacked">
+                        <button class="project-card__link project-card__link--button"
+                                data-modal="sqs-architecture-modal"
+                                aria-label="View AWS SQS UI architecture diagram">
+                            📐 View Architecture →
+                        </button>
                         <a href="https://github.com/cjunks94/go-sqs-ui"
                            class="project-card__link"
                            target="_blank"
@@ -377,89 +386,6 @@
             </div>
         </section>
 
-        <!-- Architecture Diagrams Section -->
-        <section id="architecture" class="architecture-section">
-            <h2 class="section-title">System Architecture</h2>
-            <p class="architecture-section__intro">
-                Deep dives into the technical architecture of key projects, demonstrating
-                distributed systems design, real-time communication patterns, and cloud-native deployment strategies.
-            </p>
-
-            <article class="architecture-diagram">
-                <header class="architecture-diagram__header">
-                    <h3 class="architecture-diagram__title">AWS SQS Monitoring UI</h3>
-                    <p class="architecture-diagram__subtitle">Real-Time Queue Management System</p>
-                </header>
-
-                <div class="architecture-diagram__content">
-                    <div id="sqs-architecture-diagram" class="mermaid"></div>
-                    <script type="text/javascript">
-                        // SQS UI Architecture Diagram (Mermaid syntax)
-                        document.getElementById('sqs-architecture-diagram').textContent = `
-graph TB
-    subgraph "Client Layer"
-        Browser["🌐 Web Browser<br/>Vanilla JavaScript"]
-        WS_Client["WebSocket Client<br/>Real-time Updates"]
-    end
-
-    subgraph "Application Layer"
-        Server["🔷 Go HTTP Server<br/>:8080"]
-        WSHandler["WebSocket Handler<br/>gorilla/websocket"]
-        SQSService["SQS Service Layer<br/>Queue Operations"]
-        Static["Static File Server<br/>HTML/CSS/JS"]
-    end
-
-    subgraph "AWS Services"
-        SQS["📬 Amazon SQS<br/>Message Queues"]
-        DLQ["💀 Dead Letter Queues<br/>Failed Messages"]
-        Tags["🏷️ Queue Tags<br/>Filtering"]
-    end
-
-    subgraph "Features"
-        Export["📊 Export<br/>JSON/CSV"]
-        Batch["✅ Batch Operations<br/>Multi-select"]
-        Filter["🔍 Smart Filtering<br/>Real-time Search"]
-    end
-
-    Browser --> |HTTP GET| Server
-    Browser <--> |WSS| WSHandler
-    Server --> Static
-    WSHandler --> SQSService
-    SQSService --> |AWS SDK| SQS
-    SQSService --> |AWS SDK| DLQ
-    SQSService --> |ListQueueTags| Tags
-    Browser --> Export
-    Browser --> Batch
-    Browser --> Filter
-
-    SQS -.-> |Failed Messages| DLQ
-
-    style Server fill:#0066cc,stroke:#0052a3,stroke-width:3px,color:#fff
-    style SQS fill:#ff9900,stroke:#ec7211,stroke-width:2px,color:#000
-    style DLQ fill:#c92a2a,stroke:#a61e1e,stroke-width:2px,color:#fff
-    style WSHandler fill:#1e7e34,stroke:#155d27,stroke-width:2px,color:#fff
-`;
-                    </script>
-
-                    <div class="architecture-diagram__description">
-                        <details class="architecture-details">
-                            <summary class="architecture-summary">Key Architectural Decisions & Performance</summary>
-                            <div class="architecture-details__content">
-                                <h4>Technical Decisions</h4>
-                                <ul class="architecture-list--compact">
-                                    <li><strong>WebSocket:</strong> Real-time updates, ~50ms latency</li>
-                                    <li><strong>Single Binary:</strong> 6MB deployment (embedded assets)</li>
-                                    <li><strong>Goroutine-per-Connection:</strong> 100+ concurrent users</li>
-                                    <li><strong>Tag-Based Discovery:</strong> AWS tag filtering (env, product)</li>
-                                    <li><strong>DLQ Retry:</strong> One-click failed message recovery</li>
-                                </ul>
-                            </div>
-                        </details>
-                    </div>
-                </div>
-            </article>
-        </section>
-
         <!-- Tech Radar Section -->
         <section id="tech-radar" class="tech-radar-section">
             <h2 class="section-title">Tech Radar</h2>
@@ -534,5 +460,81 @@ graph TB
             </small>
         </p>
     </footer>
+
+    <!-- Architecture Diagram Modals -->
+    <div id="sqs-architecture-modal" class="arch-modal" role="dialog" aria-labelledby="sqs-modal-title" aria-hidden="true">
+        <div class="arch-modal__overlay"></div>
+        <div class="arch-modal__dialog">
+            <header class="arch-modal__header">
+                <h3 id="sqs-modal-title" class="arch-modal__title">AWS SQS Monitoring UI Architecture</h3>
+                <button class="arch-modal__close" aria-label="Close modal">✕</button>
+            </header>
+            <div class="arch-modal__content">
+                <p class="arch-modal__subtitle">Real-Time Queue Management System</p>
+                <div id="sqs-architecture-diagram" class="mermaid"></div>
+                <script type="text/javascript">
+                    // SQS UI Architecture Diagram (Mermaid syntax)
+                    document.getElementById('sqs-architecture-diagram').textContent = `
+graph TB
+    subgraph "Client Layer"
+        Browser["🌐 Web Browser<br/>Vanilla JavaScript"]
+        WS_Client["WebSocket Client<br/>Real-time Updates"]
+    end
+
+    subgraph "Application Layer"
+        Server["🔷 Go HTTP Server<br/>:8080"]
+        WSHandler["WebSocket Handler<br/>gorilla/websocket"]
+        SQSService["SQS Service Layer<br/>Queue Operations"]
+        Static["Static File Server<br/>HTML/CSS/JS"]
+    end
+
+    subgraph "AWS Services"
+        SQS["📬 Amazon SQS<br/>Message Queues"]
+        DLQ["💀 Dead Letter Queues<br/>Failed Messages"]
+        Tags["🏷️ Queue Tags<br/>Filtering"]
+    end
+
+    subgraph "Features"
+        Export["📊 Export<br/>JSON/CSV"]
+        Batch["✅ Batch Operations<br/>Multi-select"]
+        Filter["🔍 Smart Filtering<br/>Real-time Search"]
+    end
+
+    Browser --> |HTTP GET| Server
+    Browser <--> |WSS| WSHandler
+    Server --> Static
+    WSHandler --> SQSService
+    SQSService --> |AWS SDK| SQS
+    SQSService --> |AWS SDK| DLQ
+    SQSService --> |ListQueueTags| Tags
+    Browser --> Export
+    Browser --> Batch
+    Browser --> Filter
+
+    SQS -.-> |Failed Messages| DLQ
+
+    style Server fill:#0066cc,stroke:#0052a3,stroke-width:3px,color:#fff
+    style SQS fill:#ff9900,stroke:#ec7211,stroke-width:2px,color:#000
+    style DLQ fill:#c92a2a,stroke:#a61e1e,stroke-width:2px,color:#fff
+    style WSHandler fill:#1e7e34,stroke:#155d27,stroke-width:2px,color:#fff
+`;
+                </script>
+
+                <details class="arch-modal__details">
+                    <summary class="arch-modal__summary">Key Architectural Decisions & Performance</summary>
+                    <div class="arch-modal__details-content">
+                        <h4>Technical Decisions</h4>
+                        <ul class="arch-modal__list">
+                            <li><strong>WebSocket:</strong> Real-time updates, ~50ms latency</li>
+                            <li><strong>Single Binary:</strong> 6MB deployment (embedded assets)</li>
+                            <li><strong>Goroutine-per-Connection:</strong> 100+ concurrent users</li>
+                            <li><strong>Tag-Based Discovery:</strong> AWS tag filtering (env, product)</li>
+                            <li><strong>DLQ Retry:</strong> One-click failed message recovery</li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

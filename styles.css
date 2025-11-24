@@ -1292,3 +1292,259 @@ select:focus {
         page-break-inside: avoid;
     }
 }
+
+/* ==========================================================================
+   Architecture Diagram Modals
+   ========================================================================== */
+
+/* Modal Container - Hidden by default */
+.arch-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-md);
+}
+
+/* Show modal when active */
+.arch-modal.active {
+    display: flex;
+}
+
+/* Modal Overlay/Backdrop */
+.arch-modal__overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(4px);
+    animation: modal-fade-in 0.3s ease;
+}
+
+/* Modal Dialog Box */
+.arch-modal__dialog {
+    position: relative;
+    width: 100%;
+    max-width: 1200px;
+    max-height: 90vh;
+    background: var(--card-background-color);
+    border-radius: 12px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    animation: modal-slide-up 0.3s ease;
+    z-index: 1001;
+}
+
+/* Modal Header */
+.arch-modal__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--spacing-md);
+    border-bottom: 2px solid var(--color-primary);
+    background: var(--card-background-color);
+}
+
+.arch-modal__title {
+    margin: 0;
+    font-size: 1.5rem;
+    color: var(--color-primary);
+}
+
+.arch-modal__close {
+    background: transparent;
+    border: 2px solid var(--color-secondary);
+    color: var(--color-secondary);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    flex-shrink: 0;
+}
+
+.arch-modal__close:hover {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    color: #fff;
+    transform: rotate(90deg);
+}
+
+.arch-modal__close:focus {
+    outline: 3px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+/* Modal Content */
+.arch-modal__content {
+    padding: var(--spacing-md);
+    overflow-y: auto;
+    flex: 1;
+}
+
+.arch-modal__subtitle {
+    font-size: 1.1rem;
+    color: var(--color-secondary);
+    margin-bottom: var(--spacing-md);
+    text-align: center;
+}
+
+/* Mermaid diagram container */
+.arch-modal__content .mermaid {
+    margin: var(--spacing-md) 0;
+    background: transparent;
+    padding: var(--spacing-md);
+    border-radius: 8px;
+    overflow-x: auto;
+}
+
+/* Details/Summary for architectural decisions */
+.arch-modal__details {
+    margin-top: var(--spacing-lg);
+    padding: var(--spacing-md);
+    background: var(--card-background-color);
+    border: 1px solid var(--card-border-color);
+    border-radius: 8px;
+}
+
+.arch-modal__summary {
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: var(--color-primary);
+    cursor: pointer;
+    padding: var(--spacing-sm);
+    list-style: none;
+    user-select: none;
+}
+
+.arch-modal__summary::-webkit-details-marker {
+    display: none;
+}
+
+.arch-modal__summary::before {
+    content: '▶';
+    display: inline-block;
+    margin-right: var(--spacing-xs);
+    transition: transform 0.2s ease;
+}
+
+.arch-modal__details[open] .arch-modal__summary::before {
+    transform: rotate(90deg);
+}
+
+.arch-modal__summary:hover {
+    color: var(--color-accent);
+}
+
+.arch-modal__details-content {
+    padding: var(--spacing-md) var(--spacing-sm);
+}
+
+.arch-modal__details-content h4 {
+    margin-top: 0;
+    margin-bottom: var(--spacing-sm);
+    color: var(--color-primary);
+}
+
+.arch-modal__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.arch-modal__list li {
+    padding: var(--spacing-xs) 0;
+    line-height: 1.6;
+}
+
+/* Button styling for "View Architecture" */
+.project-card__link--button {
+    background: transparent;
+    border: 2px solid var(--color-primary);
+    color: var(--color-primary);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-weight: 600;
+    transition: all var(--transition-speed) ease;
+    text-align: left;
+    font-size: inherit;
+    font-family: inherit;
+    width: 100%;
+}
+
+.project-card__link--button:hover {
+    background: var(--color-primary);
+    color: #fff;
+    text-decoration: none;
+}
+
+.project-card__link--button:focus {
+    outline: 3px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+/* Modal Animations */
+@keyframes modal-fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes modal-slide-up {
+    from {
+        opacity: 0;
+        transform: translateY(50px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+    .arch-modal__overlay,
+    .arch-modal__dialog {
+        animation: none;
+    }
+
+    .arch-modal__close {
+        transition: none;
+    }
+
+    .arch-modal__close:hover {
+        transform: none;
+    }
+}
+
+/* Responsive adjustments for modals */
+@media (max-width: 768px) {
+    .arch-modal {
+        padding: var(--spacing-sm);
+    }
+
+    .arch-modal__dialog {
+        max-height: 95vh;
+    }
+
+    .arch-modal__title {
+        font-size: 1.2rem;
+    }
+
+    .arch-modal__header,
+    .arch-modal__content {
+        padding: var(--spacing-sm);
+    }
+}

@@ -741,19 +741,19 @@ body {
 
 .projects-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr));
     gap: var(--spacing-md);
+    align-items: stretch;
 }
 
 .project-card {
     display: flex;
     flex-direction: column;
-    height: 100%;
     background: var(--card-background-color);
     border: 1px solid var(--card-border-color);
     border-radius: 12px;
     padding: var(--spacing-md);
-    transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+    transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease, border-color var(--transition-speed) ease;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
@@ -785,25 +785,33 @@ body {
 
 .project-card__footer {
     margin-top: auto;
+    min-height: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: var(--spacing-xs);
 }
 
 .project-card__footer--stacked {
     display: flex;
     flex-direction: column;
     gap: var(--spacing-xs);
-    align-items: flex-start;
+    align-items: stretch;
 }
 
 .project-card__link {
     color: var(--color-primary);
     text-decoration: none;
     font-weight: 600;
-    transition: color var(--transition-speed) ease;
+    transition: color var(--transition-speed) ease, background-color var(--transition-speed) ease;
+    display: inline-block;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--border-radius);
 }
 
 .project-card__link:hover {
     color: var(--color-accent);
-    text-decoration: underline;
+    background-color: rgba(0, 102, 204, 0.05);
 }
 
 .project-status {
@@ -814,6 +822,7 @@ body {
     border-radius: var(--border-radius);
     font-size: 0.875rem;
     font-weight: 600;
+    align-self: flex-start;
 }
 
 .project-status--coming-soon {
@@ -1474,17 +1483,20 @@ select:focus {
     border-radius: var(--border-radius);
     cursor: pointer;
     font-weight: 600;
-    transition: all var(--transition-speed) ease;
+    transition: background-color var(--transition-speed) ease,
+                color var(--transition-speed) ease,
+                border-color var(--transition-speed) ease;
     text-align: left;
     font-size: inherit;
     font-family: inherit;
     width: 100%;
+    display: block;
 }
 
 .project-card__link--button:hover {
     background: var(--color-primary);
     color: #fff;
-    text-decoration: none;
+    border-color: var(--color-primary);
 }
 
 .project-card__link--button:focus {

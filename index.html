@@ -8,11 +8,11 @@
     <meta name="keywords" content="software engineer, Go, Ruby on Rails, Kubernetes, AWS, distributed systems, observability, Datadog">
     <title>Christopher Junker | Senior Software Engineer</title>
 
-    <!-- Pico CSS for base styling -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
-
-    <!-- Custom styles -->
+    <!-- Brutalist Theme System (Modular CSS) -->
     <link rel="stylesheet" href="styles.css">
+
+    <!-- Theme Switcher (Forest/Blueprint/Industrial) -->
+    <script src="theme-switcher.js"></script>
 
     <!-- Mobile menu script -->
     <script src="scripts.js" defer></script>
@@ -23,23 +23,28 @@
     <!-- Modal script -->
     <script src="modals.js" defer></script>
 
-    <!-- No-JS fallback: If JavaScript is disabled, show navigation normally -->
+    <!-- No-JS fallback: Show navigation if JavaScript is disabled -->
     <noscript>
         <style>
-            .menu-toggle {
-                display: none !important;
+            /* Higher specificity selectors to override without !important */
+            html body .site-header .nav-toggle { display: none; }
+            html body .site-header .main-nav {
+                position: static;
+                transform: none;
+                width: 100%;
+                max-width: none;
+                height: auto;
+                background: transparent;
+                border: none;
+                box-shadow: none;
+                padding: 0;
             }
-            .site-nav__links {
-                position: static !important;
-                transform: none !important;
-                flex-direction: column !important;
-                background: transparent !important;
-                padding: var(--spacing-sm) 0 !important;
+            html body .site-header .nav-list {
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: var(--space-sm);
             }
-            .site-nav__links li {
-                width: 100% !important;
-                text-align: left !important;
-            }
+            html body .theme-switcher { display: none; }
         </style>
     </noscript>
 

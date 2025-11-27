@@ -178,7 +178,7 @@
             </div>
         </section>
 
-        <!-- About & Contact Section (Side-by-Side) -->
+        <!-- About & Contact Section (Side-by-Side) - Clean Pico Style -->
         <div class="about-contact-wrapper">
             <!-- About Section -->
             <section id="about" class="about-section">
@@ -205,7 +205,7 @@
                         <a href="mailto:cjunks94@gmail.com"
                            role="button"
                            class="btn btn--primary">
-                            <span role="img" aria-label="Email">📧</span> Email
+                            Email
                         </a>
                         <a href="https://github.com/cjunks94"
                            target="_blank"
@@ -224,12 +224,12 @@
                         <a href="resume-versions/christopher-junker-resume-datadog-v4-gdocs.txt"
                            role="button"
                            class="btn btn--secondary">
-                            <span role="img" aria-label="Document">📄</span> Resume (TXT)
+                            Resume (TXT)
                         </a>
                         <a href="resume-10-25.docx"
                            role="button"
                            class="btn btn--secondary">
-                            <span role="img" aria-label="Document">📄</span> Resume (DOCX)
+                            Resume (DOCX)
                         </a>
                     </div>
 
@@ -244,149 +244,156 @@
         </div>
 
         <!-- Projects Section -->
-        <section id="projects" class="projects-section">
-            <h2 class="section-title">Featured Projects</h2>
+        <section id="projects" class="brutal-card-v2 brutal-card-v2--grid">
+            <div class="brutal-card-v2__header">
+                <h2 class="brutal-card-v2__title">FEATURED_PROJECTS</h2>
+            </div>
 
             <div class="projects-grid">
-                <article class="project-card">
-                    <header class="project-card__header">
-                        <h3 class="project-card__title">BB-Bounce Brick Breaker</h3>
+                <article class="brutal-card-v2 brutal-card-v2--halftone">
+                    <div class="brutal-card-v2__header">
+                        <h3 class="brutal-card-v2__title">BB_BOUNCE</h3>
+                    </div>
+                    <div class="brutal-card-v2__content">
                         <p class="project-card__tech">
                             <small>HTML5 Canvas • Node.js/Express • PostgreSQL</small>
                         </p>
-                    </header>
-                    <p class="project-card__description">
-                        Retro arcade brick breaker game with vanilla JavaScript, 60 FPS canvas rendering,
-                        server-side score validation, and PostgreSQL leaderboards. Deployed to Railway with
-                        anti-cheat mechanisms and real-time highscore tracking.
-                    </p>
-                    <footer class="project-card__footer project-card__footer--stacked">
-                        <a href="https://brickbreaker.cjunker.dev"
-                           class="project-card__link project-card__link--button"
-                           target="_blank"
-                           rel="noopener noreferrer">
-                            Play Live Game →
-                        </a>
-                        <a href="https://github.com/cjunks94/bb-bounce"
-                           class="project-card__link"
-                           target="_blank"
-                           rel="noopener noreferrer">
-                            View on GitHub →
-                        </a>
-                    </footer>
+                        <p>
+                            Retro arcade brick breaker game with vanilla JavaScript, 60 FPS canvas rendering,
+                            server-side score validation, and PostgreSQL leaderboards. Deployed to Railway with
+                            anti-cheat mechanisms and real-time highscore tracking.
+                        </p>
+                        <div style="display: flex; flex-direction: column; gap: var(--space-xs); margin-top: var(--space-md);">
+                            <a href="https://brickbreaker.cjunker.dev"
+                               class="brutal-card-v2__action"
+                               target="_blank"
+                               rel="noopener noreferrer">
+                                Play Live Game
+                            </a>
+                            <a href="https://github.com/cjunks94/bb-bounce"
+                               class="project-card__link"
+                               target="_blank"
+                               rel="noopener noreferrer">
+                                View on GitHub →
+                            </a>
+                        </div>
+                    </div>
                 </article>
 
-                <article class="project-card">
-                    <header class="project-card__header">
-                        <h3 class="project-card__title">AWS SQS Monitoring UI</h3>
+                <article class="brutal-card-v2 brutal-card-v2--halftone">
+                    <div class="brutal-card-v2__header">
+                        <h3 class="brutal-card-v2__title">SQS_MONITOR_UI</h3>
+                    </div>
+                    <div class="brutal-card-v2__content">
                         <p class="project-card__tech">
                             <small>Go • WebSocket • Production Tool</small>
                         </p>
-                    </header>
-                    <p class="project-card__description">
-                        Real-time SQS queue management with DLQ monitoring, message export, and 230+ tests
-                        (80%+ coverage). Deployed as single binary serving 15+ production programs.
-                    </p>
-                    <footer class="project-card__footer project-card__footer--stacked">
-                        <button class="project-card__link project-card__link--button"
-                                data-modal="sqs-architecture-modal"
-                                aria-label="View AWS SQS UI architecture diagram">
-                            View Architecture →
-                        </button>
-                        <a href="https://github.com/cjunks94/go-sqs-ui"
-                           class="project-card__link"
-                           target="_blank"
-                           rel="noopener noreferrer">
-                            View on GitHub →
-                        </a>
-                    </footer>
+                        <p>
+                            Real-time SQS queue management with DLQ monitoring, message export, and 230+ tests
+                            (80%+ coverage). Deployed as single binary serving 15+ production programs.
+                        </p>
+                        <div style="display: flex; flex-direction: column; gap: var(--space-xs); margin-top: var(--space-md);">
+                            <button class="brutal-card-v2__action"
+                                    data-modal="sqs-architecture-modal"
+                                    aria-label="View AWS SQS UI architecture diagram">
+                                View Architecture
+                            </button>
+                            <a href="https://github.com/cjunks94/go-sqs-ui"
+                               class="project-card__link"
+                               target="_blank"
+                               rel="noopener noreferrer">
+                                View on GitHub →
+                            </a>
+                        </div>
+                    </div>
                 </article>
 
-                <article class="project-card">
-                    <header class="project-card__header">
-                        <h3 class="project-card__title">TMJ Therapy Tracker</h3>
+                <article class="brutal-card-v2 brutal-card-v2--hatching">
+                    <div class="brutal-card-v2__header">
+                        <h3 class="brutal-card-v2__title">TMJ_TRACKER</h3>
+                    </div>
+                    <div class="brutal-card-v2__content">
                         <p class="project-card__tech">
                             <small>Flutter • MediaPipe • SQLite</small>
                         </p>
-                    </header>
-                    <p class="project-card__description">
-                        Mobile app for TMJ physical therapy with real-time jaw movement tracking using MediaPipe Face Mesh.
-                        Features local data persistence, progress analytics, and multi-platform support (iOS/Android/macOS)
-                        with comprehensive unit test coverage.
-                    </p>
-                    <footer class="project-card__footer">
-                        <span class="project-status">Contracted Project</span>
-                    </footer>
+                        <p>
+                            Mobile app for TMJ physical therapy with real-time jaw movement tracking using MediaPipe Face Mesh.
+                            Features local data persistence, progress analytics, and multi-platform support (iOS/Android/macOS)
+                            with comprehensive unit test coverage.
+                        </p>
+                        <span class="project-status" style="margin-top: var(--space-md);">Contracted Project</span>
+                    </div>
                 </article>
 
-                <article class="project-card">
-                    <header class="project-card__header">
-                        <h3 class="project-card__title">Salesforce Debug Service</h3>
+                <article class="brutal-card-v2 brutal-card-v2--hatching">
+                    <div class="brutal-card-v2__header">
+                        <h3 class="brutal-card-v2__title">SF_DEBUG_SVC</h3>
+                    </div>
+                    <div class="brutal-card-v2__content">
                         <p class="project-card__tech">
                             <small>Go • React/TypeScript • Kubernetes</small>
                         </p>
-                    </header>
-                    <p class="project-card__description">
-                        Internal development tool for Salesforce-AMT sync debugging with Kubernetes deployment and ATM sidecar
-                        integration. Validates data consistency and field mappings across environments for 2U developers.
-                    </p>
-                    <footer class="project-card__footer">
-                        <span class="project-status">Internal Tool @ 2U</span>
-                    </footer>
+                        <p>
+                            Internal development tool for Salesforce-AMT sync debugging with Kubernetes deployment and ATM sidecar
+                            integration. Validates data consistency and field mappings across environments for 2U developers.
+                        </p>
+                        <span class="project-status" style="margin-top: var(--space-md);">Internal Tool @ 2U</span>
+                    </div>
                 </article>
 
-                <article class="project-card">
-                    <header class="project-card__header">
-                        <h3 class="project-card__title">Portfolio Website</h3>
+                <article class="brutal-card-v2">
+                    <div class="brutal-card-v2__header">
+                        <h3 class="brutal-card-v2__title">PORTFOLIO_SITE</h3>
+                    </div>
+                    <div class="brutal-card-v2__content">
                         <p class="project-card__tech">
                             <small>HTML5 • CSS • D3.js • Railway</small>
                         </p>
-                    </header>
-                    <p class="project-card__description">
-                        Responsive portfolio site with interactive tech radar visualization, mobile-first design,
-                        WCAG-compliant accessibility, and automated CI/CD deployment to Railway. Features custom
-                        navigation patterns and scroll-based animations.
-                    </p>
-                    <footer class="project-card__footer">
+                        <p>
+                            Responsive portfolio site with interactive tech radar visualization, mobile-first design,
+                            WCAG-compliant accessibility, and automated CI/CD deployment to Railway. Features custom
+                            navigation patterns and scroll-based animations.
+                        </p>
                         <a href="https://github.com/cjunks94/resume-improvements"
-                           class="project-card__link"
+                           class="brutal-card-v2__action"
+                           style="margin-top: var(--space-md);"
                            target="_blank"
                            rel="noopener noreferrer">
-                            View on GitHub →
+                            View on GitHub
                         </a>
-                    </footer>
+                    </div>
                 </article>
 
-                <article class="project-card">
-                    <header class="project-card__header">
-                        <h3 class="project-card__title">Observable Search Engine</h3>
+                <article class="brutal-card-v2">
+                    <div class="brutal-card-v2__header">
+                        <h3 class="brutal-card-v2__title">SEARCH_ENGINE</h3>
+                    </div>
+                    <div class="brutal-card-v2__content">
                         <p class="project-card__tech">
                             <small>Elasticsearch • Rails • AWS/K8s</small>
                         </p>
-                    </header>
-                    <p class="project-card__description">
-                        Admin-facing indexing tool deployed on AWS/K8s, serving 1K+ users with 60% faster
-                        selection times through real-time search and indexing.
-                    </p>
-                    <footer class="project-card__footer">
-                        <span class="project-status">Production @ 2U</span>
-                    </footer>
+                        <p>
+                            Admin-facing indexing tool deployed on AWS/K8s, serving 1K+ users with 60% faster
+                            selection times through real-time search and indexing.
+                        </p>
+                        <span class="project-status" style="margin-top: var(--space-md);">Production @ 2U</span>
+                    </div>
                 </article>
 
-                <article class="project-card">
-                    <header class="project-card__header">
-                        <h3 class="project-card__title">Async Data Pipeline Migrator</h3>
+                <article class="brutal-card-v2">
+                    <div class="brutal-card-v2__header">
+                        <h3 class="brutal-card-v2__title">DATA_MIGRATOR</h3>
+                    </div>
+                    <div class="brutal-card-v2__content">
                         <p class="project-card__tech">
                             <small>Python • AWS • AI/ML</small>
                         </p>
-                    </header>
-                    <p class="project-card__description">
-                        Automated legacy-to-modern data transfer for 500K+ records with AI-based anomaly detection,
-                        reducing migration errors by 50%.
-                    </p>
-                    <footer class="project-card__footer">
-                        <span class="project-status">Production @ 2U</span>
-                    </footer>
+                        <p>
+                            Automated legacy-to-modern data transfer for 500K+ records with AI-based anomaly detection,
+                            reducing migration errors by 50%.
+                        </p>
+                        <span class="project-status" style="margin-top: var(--space-md);">Production @ 2U</span>
+                    </div>
                 </article>
             </div>
         </section>

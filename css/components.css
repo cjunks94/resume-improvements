@@ -30,7 +30,7 @@ body {
     position: sticky;
     top: 0;
     background: var(--c-surface);
-    border: var(--border-thick) solid var(--c-ink);
+    border: var(--border-thick) solid var(--c-border);
     box-shadow: var(--shadow-sm) var(--c-shadow);
     z-index: var(--z-sticky);
     padding: var(--space-md) var(--space-lg);
@@ -62,7 +62,7 @@ body {
     gap: var(--space-xs);
     padding: var(--space-xs) var(--space-sm);
     background: var(--c-surface);
-    border: var(--border-thick) solid var(--c-ink);
+    border: var(--border-thick) solid var(--c-border);
     color: var(--c-ink);
     font-family: var(--font-mono);
     font-weight: 700;
@@ -142,7 +142,7 @@ body {
     height: 100vh;
     height: 100dvh;
     background: var(--c-surface);
-    border-right: var(--border-thick) solid var(--c-ink);
+    border-right: var(--border-thick) solid var(--c-border);
     box-shadow: var(--shadow-lg) var(--c-shadow);
     transform: translateX(-100%);
     transition: transform var(--transition-slow);
@@ -209,7 +209,7 @@ body {
     cursor: pointer;
     background: var(--c-surface);
     color: var(--c-ink);
-    border: var(--border-thick) solid var(--c-ink);
+    border: var(--border-thick) solid var(--c-border);
     box-shadow: var(--shadow-md) var(--c-shadow);
     transition: transform var(--transition-fast), box-shadow var(--transition-fast);
 }
@@ -266,7 +266,7 @@ body {
 
 /* Brutal Card - Outer decorative frame */
 .brutal-card {
-    border: var(--border-thick) solid var(--c-ink);
+    border: var(--border-thick) solid var(--c-border);
     padding: var(--space-lg);
     margin-bottom: var(--space-xl);
     display: flex;
@@ -277,7 +277,7 @@ body {
 /* Content Block - Inner readable zone */
 .content-block {
     background-color: var(--c-surface);
-    border: var(--border-thick) solid var(--c-ink);
+    border: var(--border-thick) solid var(--c-border);
     padding: var(--space-lg);
     box-shadow: var(--shadow-sm) rgba(0,0,0,0.05);
 }
@@ -298,7 +298,7 @@ body {
 /* Outer Container - Holds the pattern */
 .brutal-card-v2 {
     position: relative;
-    border: var(--border-thick) solid var(--c-ink);
+    border: var(--border-thick) solid var(--c-border);
     padding: var(--space-lg);
     margin-bottom: var(--space-xl);
     display: flex;
@@ -335,7 +335,7 @@ body {
 /* Separated Header Box */
 .brutal-card-v2__header {
     background-color: var(--c-surface);
-    border: var(--border-thick) solid var(--c-ink);
+    border: var(--border-thick) solid var(--c-border);
     padding: var(--space-md) var(--space-lg);
     margin: calc(var(--space-md) * -1);
     margin-bottom: var(--space-sm);
@@ -361,7 +361,7 @@ body {
 /* Inner Content Block - White for readability */
 .brutal-card-v2__content {
     background-color: var(--c-surface);
-    border: var(--border-thick) solid var(--c-ink);
+    border: var(--border-thick) solid var(--c-border);
     padding: var(--space-lg);
 }
 
@@ -379,7 +379,7 @@ body {
     display: inline-block;
     background-color: var(--c-surface);
     color: var(--c-ink);
-    border: var(--border-thick) solid var(--c-ink);
+    border: var(--border-thick) solid var(--c-border);
     padding: var(--space-sm) var(--space-lg);
     font-family: var(--font-mono);
     font-weight: 700;
@@ -421,7 +421,7 @@ body {
     font-weight: 700;
     font-size: var(--text-sm);
     text-transform: uppercase;
-    border: var(--border-thick) solid var(--c-ink);
+    border: var(--border-thick) solid var(--c-border);
     border-bottom: none;
     position: relative;
     top: calc(var(--border-thick) * -1);
@@ -431,7 +431,7 @@ body {
 
 .brutal-card-v2--tabbed .brutal-card-v2__body {
     background: var(--c-surface);
-    border: var(--border-thick) solid var(--c-ink);
+    border: var(--border-thick) solid var(--c-border);
     padding: var(--space-lg);
     position: relative;
     z-index: 1;
@@ -505,7 +505,7 @@ body {
     display: flex;
     flex-direction: column;
     background: var(--c-surface);
-    border: var(--border-thick) solid var(--c-ink);
+    border: var(--border-thick) solid var(--c-border);
     box-shadow: var(--shadow-md) var(--c-shadow);
     padding: var(--space-lg);
     transition: transform var(--transition-fast), box-shadow var(--transition-fast);
@@ -519,7 +519,7 @@ body {
 .project-card__header {
     margin-bottom: var(--space-md);
     padding-bottom: var(--space-sm);
-    border-bottom: var(--border-thin) solid var(--c-ink);
+    border-bottom: var(--border-thin) solid var(--c-border);
 }
 
 .project-card__title {
@@ -614,7 +614,7 @@ body {
     font-weight: bold;
     font-size: var(--text-sm);
     text-transform: uppercase;
-    border: var(--border-thick) solid var(--c-ink);
+    border: var(--border-thick) solid var(--c-border);
     border-bottom: none;
     margin-bottom: calc(var(--border-thick) * -1);
     position: relative;
@@ -623,7 +623,7 @@ body {
 
 .folder-body {
     background: var(--c-surface);
-    border: var(--border-thick) solid var(--c-ink);
+    border: var(--border-thick) solid var(--c-border);
     padding: var(--space-lg);
     box-shadow: var(--shadow-md) var(--c-shadow);
     position: relative;
@@ -652,7 +652,7 @@ body {
     padding: var(--space-sm);
     font-size: var(--text-base);
     font-family: inherit;
-    border: var(--border-thick) solid var(--c-ink);
+    border: var(--border-thick) solid var(--c-border);
     background: var(--c-surface);
     box-shadow: var(--shadow-sm) rgba(0,0,0,0.2);
     transition: all var(--transition-fast);
@@ -674,7 +674,7 @@ body {
    ========================================================================== */
 .toast {
     display: flex;
-    border: var(--border-thick) solid var(--c-ink);
+    border: var(--border-thick) solid var(--c-border);
     background: var(--c-surface);
     max-width: 100%;
     margin-bottom: var(--space-lg);
@@ -684,7 +684,7 @@ body {
 .toast-strip {
     width: 30px;
     flex-shrink: 0;
-    border-right: var(--border-thick) solid var(--c-ink);
+    border-right: var(--border-thick) solid var(--c-border);
 }
 
 .toast-body {
@@ -709,7 +709,7 @@ body {
    ========================================================================== */
 .hero-section {
     background: var(--c-surface);
-    border: var(--border-thick) solid var(--c-ink);
+    border: var(--border-thick) solid var(--c-border);
     box-shadow: var(--shadow-lg) var(--c-shadow);
     padding: var(--space-xl);
     margin-bottom: var(--space-2xl);
@@ -768,7 +768,7 @@ body {
     width: 100%;
     max-width: 800px;
     margin: 0 auto;
-    border: var(--border-thick) solid var(--c-ink);
+    border: var(--border-thick) solid var(--c-border);
     box-shadow: var(--shadow-md) var(--c-shadow);
     overflow: hidden;
     background: var(--c-surface);
@@ -825,7 +825,7 @@ body {
     transform: translateY(-50%);
     background: var(--c-ink);
     color: var(--c-surface);
-    border: var(--border-thick) solid var(--c-ink);
+    border: var(--border-thick) solid var(--c-border);
     font-size: var(--text-2xl);
     padding: var(--space-xs) var(--space-md);
     cursor: pointer;
@@ -873,7 +873,7 @@ body {
 .about-section,
 .contact-section {
     background: var(--c-surface);
-    border: var(--border-thin) solid var(--c-ink);
+    border: var(--border-thin) solid var(--c-border);
     box-shadow: 3px 3px 0 var(--c-shadow);
     padding: var(--space-lg);
     transition: box-shadow var(--transition-fast), transform var(--transition-fast);
@@ -936,7 +936,7 @@ body {
     margin: 0 auto var(--space-xl);
     padding: var(--space-lg);
     background: var(--c-surface);
-    border: var(--border-thin) solid var(--c-ink);
+    border: var(--border-thin) solid var(--c-border);
     box-shadow: 3px 3px 0 var(--c-shadow);
     overflow-x: auto;
 }
@@ -964,7 +964,7 @@ body {
     margin: 0 auto var(--space-xl);
     padding: var(--space-lg);
     background: var(--c-surface);
-    border: var(--border-thin) solid var(--c-ink);
+    border: var(--border-thin) solid var(--c-border);
     box-shadow: 3px 3px 0 var(--c-shadow);
 }
 
@@ -1062,7 +1062,7 @@ body {
 #radar-tooltip {
     position: absolute;
     background: var(--c-surface);
-    border: var(--border-thick) solid var(--c-ink);
+    border: var(--border-thick) solid var(--c-border);
     padding: var(--space-md);
     max-width: 350px;
     box-shadow: var(--shadow-md) var(--c-shadow);
@@ -1116,7 +1116,7 @@ body {
     max-width: 1200px;
     max-height: 90vh;
     background: var(--c-surface);
-    border: var(--border-thick) solid var(--c-ink);
+    border: var(--border-thick) solid var(--c-border);
     box-shadow: var(--shadow-lg) var(--c-shadow);
     overflow: hidden;
     display: flex;
@@ -1141,7 +1141,7 @@ body {
 
 .arch-modal__close {
     background: transparent;
-    border: var(--border-thick) solid var(--c-ink);
+    border: var(--border-thick) solid var(--c-border);
     color: var(--c-ink);
     width: 40px;
     height: 40px;
@@ -1184,7 +1184,7 @@ body {
     margin-top: var(--space-xl);
     padding: var(--space-lg);
     background: var(--c-surface-alt);
-    border: var(--border-thin) solid var(--c-ink);
+    border: var(--border-thin) solid var(--c-border);
 }
 
 .arch-modal__summary {
@@ -1244,7 +1244,7 @@ body {
     top: var(--space-lg);
     right: var(--space-lg);
     background: var(--c-surface);
-    border: var(--border-thick) solid var(--c-ink);
+    border: var(--border-thick) solid var(--c-border);
     padding: var(--space-sm);
     display: flex;
     gap: var(--space-sm);
@@ -1265,7 +1265,7 @@ body {
     width: 30px;
     height: 30px;
     border-radius: 50%;
-    border: var(--border-thin) solid var(--c-ink);
+    border: var(--border-thin) solid var(--c-border);
     cursor: pointer;
     transition: transform var(--transition-fast);
     padding: 0;
@@ -1276,7 +1276,7 @@ body {
 }
 
 .color-dot:focus {
-    outline: 3px solid var(--c-ink);
+    outline: 3px solid var(--c-border);
     outline-offset: 2px;
 }
 
@@ -1291,7 +1291,7 @@ body {
     margin-top: var(--space-2xl);
     padding: var(--space-lg) 0;
     text-align: center;
-    border-top: var(--border-thick) solid var(--c-ink);
+    border-top: var(--border-thick) solid var(--c-border);
 }
 
 .site-footer__text {

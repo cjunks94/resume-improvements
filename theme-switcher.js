@@ -33,7 +33,7 @@
     };
 
     const STORAGE_KEY = 'preferred-theme';
-    const DEFAULT_THEME = 'forest';
+    const DEFAULT_THEME = 'blueprint';
 
     /**
      * Get the currently active theme from localStorage or default

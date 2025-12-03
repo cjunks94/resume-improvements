@@ -1,0 +1,239 @@
+/* ==========================================================================
+   THEME VARIABLES - Color System
+
+   All theme colors are defined here using CSS custom properties.
+   Components reference these variables, making theme swapping easy.
+
+   To create a new theme:
+   1. Add a new [data-theme="themename"] block
+   2. Define all --c-* variables
+   3. Add the theme to the theme switcher
+
+   MODULARITY: To completely replace the theme system, swap this file.
+   ========================================================================== */
+
+/* ==========================================================================
+   BLUEPRINT THEME (Default)
+
+   Inspiration: Technical drawings, architect blueprints, graph paper
+   ========================================================================== */
+:root {
+    /* Primary Colors */
+    --c-accent: #0044CC;       /* Blueprint Blue */
+    --c-accent-hover: #003399;  /* Darker blue for hover */
+    --c-accent-light: #3366DD;  /* Lighter blue */
+
+    /* Surface Colors */
+    --c-bg: #E8EAF6;           /* Cool Graph-Paper Blue */
+    --c-surface: #FFFFFF;       /* White */
+    --c-surface-alt: #F0F2FA;   /* Light blue-grey */
+
+    /* Ink/Text Colors */
+    --c-ink: #001040;           /* Deep Navy Ink */
+    --c-ink-light: #3D4666;     /* Muted navy */
+    --c-ink-muted: #7080A0;     /* Light navy */
+
+    /* Border Color - Softer than ink for less harsh lines */
+    --c-border: #3D4666;        /* Muted navy for borders */
+
+    /* Semantic Colors */
+    --c-success: #2E7D32;       /* Green */
+    --c-error: #C62828;         /* Red */
+    --c-warning: #F57C00;       /* Orange */
+    --c-info: #0044CC;          /* Same as accent */
+
+    /* Derived Shadow Color */
+    --c-shadow: var(--c-ink);
+
+    /* Tech Radar Colors */
+    --radar-maintain: #0d2066;
+    --radar-adopt: #003840;
+    --radar-trial: #3d3800;
+    --radar-assess: #5a3809;
+    --radar-hold: #5a1a1a;
+    --radar-new: #0d2066;
+}
+
+/* ==========================================================================
+   FOREST THEME
+
+   Inspiration: Muted forest green, creamy paper, print-inspired
+   ========================================================================== */
+[data-theme="forest"] {
+    /* Primary Colors */
+    --c-accent: #3D6649;      /* Muted Forest Green */
+    --c-accent-hover: #2d4d37; /* Darker green for hover */
+    --c-accent-light: #4a7a58; /* Lighter green for subtle use */
+
+    /* Surface Colors */
+    --c-bg: #f4f1de;          /* Creamy Beige (page background) */
+    --c-surface: #ffffff;      /* Pure White (content areas) */
+    --c-surface-alt: #f9f8f3;  /* Slightly off-white (secondary surfaces) */
+
+    /* Ink/Text Colors */
+    --c-ink: #121212;          /* Off-Black (primary text, borders) */
+    --c-ink-light: #5e5e5e;    /* Grey (secondary text) */
+    --c-ink-muted: #888888;    /* Light grey (placeholder, disabled) */
+
+    /* Border Color */
+    --c-border: #5e5e5e;       /* Softer than pure black */
+
+    /* Semantic Colors */
+    --c-success: #3D6649;      /* Same as accent for consistency */
+    --c-error: #D9534F;        /* Alert Red */
+    --c-warning: #E8A838;      /* Warning Orange */
+    --c-info: #5B9BD5;         /* Info Blue */
+
+    /* Tech Radar Colors (Light Mode - WCAG AAA) */
+    --radar-maintain: #1a3009;
+    --radar-adopt: #003840;
+    --radar-trial: #3d3800;
+    --radar-assess: #5a3809;
+    --radar-hold: #5a1a1a;
+    --radar-new: #1a3009;
+}
+
+/* ==========================================================================
+   INDUSTRIAL THEME
+
+   Inspiration: Safety signage, construction, high-visibility
+   ========================================================================== */
+[data-theme="industrial"] {
+    /* Primary Colors */
+    --c-accent: #E65100;       /* Safety Orange */
+    --c-accent-hover: #BF4400;  /* Darker orange */
+    --c-accent-light: #FF7D33;  /* Lighter orange */
+
+    /* Surface Colors */
+    --c-bg: #FFF8E1;           /* Manila Folder Yellow */
+    --c-surface: #FFFFFF;       /* White */
+    --c-surface-alt: #FFFCF0;   /* Cream */
+
+    /* Ink/Text Colors */
+    --c-ink: #212121;           /* Standard Grey-Black */
+    --c-ink-light: #5D5D5D;     /* Medium grey */
+    --c-ink-muted: #9E9E9E;     /* Light grey */
+
+    /* Border Color */
+    --c-border: #5D5D5D;        /* Softer than pure black */
+
+    /* Semantic Colors */
+    --c-success: #388E3C;       /* Green */
+    --c-error: #D32F2F;         /* Red */
+    --c-warning: #E65100;       /* Same as accent */
+    --c-info: #1976D2;          /* Blue */
+
+    /* Tech Radar Colors */
+    --radar-maintain: #7a3500;
+    --radar-adopt: #003840;
+    --radar-trial: #3d3800;
+    --radar-assess: #5a3809;
+    --radar-hold: #5a1a1a;
+    --radar-new: #7a3500;
+}
+
+/* ==========================================================================
+   DARK MODE VARIANTS
+
+   Automatically apply dark mode when system preference is set
+   ========================================================================== */
+@media (prefers-color-scheme: dark) {
+    /* Blueprint Dark (Default) */
+    :root:not([data-theme]) {
+        --c-accent: #4d88ff;
+        --c-accent-hover: #3377ff;
+        --c-accent-light: #6699ff;
+
+        --c-bg: #0d1117;
+        --c-surface: #161b22;
+        --c-surface-alt: #21262d;
+
+        --c-ink: #c9d1d9;
+        --c-ink-light: #8b949e;
+        --c-ink-muted: #6e7681;
+
+        /* Softer border color for dark mode - key change! */
+        --c-border: #30363d;
+
+        --c-shadow: #010409;
+
+        --radar-maintain: #4d88ff;
+        --radar-adopt: #009eb0;
+        --radar-trial: #c7ba00;
+        --radar-assess: #ff9d4d;
+        --radar-hold: #e09b96;
+        --radar-new: #4d88ff;
+    }
+
+    /* Forest Dark */
+    [data-theme="forest"] {
+        --c-accent: #5ba300;
+        --c-accent-hover: #4a8600;
+        --c-accent-light: #6cb800;
+
+        --c-bg: #1a1a18;
+        --c-surface: #242422;
+        --c-surface-alt: #2d2d2a;
+
+        --c-ink: #e8e6e0;
+        --c-ink-light: #b8b6b0;
+        --c-ink-muted: #787876;
+
+        --c-border: #4a4a46;
+        --c-shadow: #000000;
+
+        --radar-maintain: #5ba300;
+        --radar-adopt: #009eb0;
+        --radar-trial: #c7ba00;
+        --radar-assess: #ff9d4d;
+        --radar-hold: #e09b96;
+        --radar-new: #5ba300;
+    }
+
+    /* Industrial Dark */
+    [data-theme="industrial"] {
+        --c-accent: #ff8a33;
+        --c-accent-hover: #ff7a1a;
+        --c-accent-light: #ff9a4d;
+
+        --c-bg: #1a1815;
+        --c-surface: #252220;
+        --c-surface-alt: #302c28;
+
+        --c-ink: #f0ece6;
+        --c-ink-light: #b8b4ae;
+        --c-ink-muted: #807c76;
+
+        --c-border: #4a4540;
+        --c-shadow: #000000;
+
+        --radar-maintain: #ff8a33;
+        --radar-adopt: #009eb0;
+        --radar-trial: #c7ba00;
+        --radar-assess: #ff9d4d;
+        --radar-hold: #e09b96;
+        --radar-new: #ff8a33;
+    }
+}
+
+/* ==========================================================================
+   EXPLICIT DARK THEME OVERRIDE
+
+   Use [data-mode="dark"] to force dark mode regardless of system preference
+   ========================================================================== */
+[data-mode="dark"] {
+    --c-accent: #4d88ff;
+    --c-accent-hover: #3377ff;
+    --c-accent-light: #6699ff;
+
+    --c-bg: #0d1117;
+    --c-surface: #161b22;
+    --c-surface-alt: #21262d;
+
+    --c-ink: #c9d1d9;
+    --c-ink-light: #8b949e;
+    --c-ink-muted: #6e7681;
+
+    --c-border: #30363d;
+    --c-shadow: #010409;
+}

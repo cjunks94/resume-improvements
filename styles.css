@@ -18,16 +18,16 @@
    ========================================================================== */
 
 /* 1. Foundation - Reset, typography, spacing */
-@import url('css/base.css');
+@import 'css/base.css';
 
 /* 2. Theme Colors - All theme definitions */
-@import url('css/themes/variables.css');
+@import 'css/themes/variables.css';
 
 /* 3. Patterns - Brutalist background textures (optional - can remove) */
-@import url('css/patterns.css');
+@import 'css/patterns.css';
 
 /* 4. Components - All UI component styles */
-@import url('css/components.css');
+@import 'css/components.css';
 
 /* ==========================================================================
    LOCAL OVERRIDES

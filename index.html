@@ -131,8 +131,17 @@
                 <div class="hero-section__carousel">
                     <div class="carousel-container">
                         <div class="carousel-slides">
-                            <!-- SQS UI Screenshots -->
+                            <!-- Railway Infrastructure Screenshots -->
                             <div class="carousel-slide active">
+                                <img src="images/carousel/railway-infrastructure.png" alt="Railway Infrastructure - Full Deployment Overview" loading="lazy">
+                                <p class="carousel-caption">Railway Infrastructure - 6 Services Deployed</p>
+                            </div>
+                            <div class="carousel-slide">
+                                <img src="images/carousel/babble-buddy-railway.png" alt="Babble Buddy - Railway Multi-Service Architecture" loading="lazy">
+                                <p class="carousel-caption">Babble Buddy - Multi-Service Architecture</p>
+                            </div>
+                            <!-- SQS UI Screenshots -->
+                            <div class="carousel-slide">
                                 <img src="images/carousel/Screenshot 2025-11-11 at 3.46.25 PM.png" alt="AWS SQS Monitoring UI - Dashboard View" loading="lazy">
                                 <p class="carousel-caption">AWS SQS Monitoring UI - Dashboard</p>
                             </div>
@@ -172,6 +181,8 @@
                             <button class="carousel-indicator" aria-label="Go to slide 5" data-slide="4"></button>
                             <button class="carousel-indicator" aria-label="Go to slide 6" data-slide="5"></button>
                             <button class="carousel-indicator" aria-label="Go to slide 7" data-slide="6"></button>
+                            <button class="carousel-indicator" aria-label="Go to slide 8" data-slide="7"></button>
+                            <button class="carousel-indicator" aria-label="Go to slide 9" data-slide="8"></button>
                         </div>
                     </div>
                 </div>
@@ -270,6 +281,11 @@
                                rel="noopener noreferrer">
                                 Live Demo
                             </a>
+                            <button class="brutal-card-v2__action"
+                                    data-modal="exportee-architecture-modal"
+                                    aria-label="View Exportee architecture diagram">
+                                View Architecture
+                            </button>
                             <a href="https://github.com/cjunks94/exportee"
                                class="project-card__link"
                                target="_blank"
@@ -300,6 +316,11 @@
                                rel="noopener noreferrer">
                                 Live Demo
                             </a>
+                            <button class="brutal-card-v2__action"
+                                    data-modal="babble-buddy-architecture-modal"
+                                    aria-label="View Babble Buddy architecture diagram">
+                                View Architecture
+                            </button>
                             <a href="https://github.com/cjunks94/babble-buddy"
                                class="project-card__link"
                                target="_blank"
@@ -601,6 +622,166 @@ graph TB
                             <li><strong>Goroutine-per-Connection:</strong> 100+ concurrent users</li>
                             <li><strong>Tag-Based Discovery:</strong> AWS tag filtering (env, product)</li>
                             <li><strong>DLQ Retry:</strong> One-click failed message recovery</li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+        </div>
+    </div>
+
+    <!-- Exportee Architecture Modal -->
+    <div id="exportee-architecture-modal" class="arch-modal" role="dialog" aria-labelledby="exportee-modal-title" aria-hidden="true">
+        <div class="arch-modal__overlay"></div>
+        <div class="arch-modal__dialog">
+            <header class="arch-modal__header">
+                <h3 id="exportee-modal-title" class="arch-modal__title">Exportee Data Export Engine</h3>
+                <button class="arch-modal__close" aria-label="Close modal">✕</button>
+            </header>
+            <div class="arch-modal__content">
+                <p class="arch-modal__subtitle">Self-Hosted Data Export & Transformation Platform</p>
+                <div id="exportee-architecture-diagram" class="mermaid"></div>
+                <script type="text/javascript">
+                    document.getElementById('exportee-architecture-diagram').textContent = `
+graph TB
+    subgraph "Frontend"
+        UI["🖥️ React Dashboard<br/>TypeScript"]
+    end
+
+    subgraph "Backend Services"
+        API["🔷 FastAPI Server<br/>Async Python 3.12"]
+        Validators["🛡️ Query Validators<br/>Read-Only Enforcement"]
+        Widgets["⚙️ Widget Engine<br/>Data Transformations"]
+        Audit["📋 Audit Service<br/>HIPAA/FERPA/GDPR"]
+        Scheduler["⏰ APScheduler<br/>Cron Jobs"]
+    end
+
+    subgraph "Data Layer"
+        PG["🐘 PostgreSQL<br/>App Database"]
+        Sources["📊 Data Sources<br/>MySQL/PG/SQLite"]
+    end
+
+    subgraph "Security Features"
+        PII["🔐 PII Detection<br/>Auto-Masking"]
+        Encrypt["🔒 GPG/AES256<br/>File Encryption"]
+        Auth["🎫 Token Auth<br/>Rate Limiting"]
+    end
+
+    subgraph "Export Formats"
+        CSV["📄 CSV"]
+        JSON["📋 JSON"]
+        Excel["📊 Excel"]
+    end
+
+    UI --> |REST API| API
+    API --> Validators
+    Validators --> Sources
+    API --> Widgets
+    Widgets --> PII
+    API --> Audit
+    Audit --> PG
+    Scheduler --> API
+    API --> Encrypt
+    Encrypt --> CSV
+    Encrypt --> JSON
+    Encrypt --> Excel
+    Auth --> API
+
+    style API fill:#0066cc,stroke:#0052a3,stroke-width:3px,color:#fff
+    style PG fill:#336791,stroke:#254a6b,stroke-width:2px,color:#fff
+    style PII fill:#c92a2a,stroke:#a61e1e,stroke-width:2px,color:#fff
+    style Validators fill:#1e7e34,stroke:#155d27,stroke-width:2px,color:#fff
+`;
+                </script>
+
+                <details class="arch-modal__details">
+                    <summary class="arch-modal__summary">Key Features & Technical Decisions</summary>
+                    <div class="arch-modal__details-content">
+                        <h4>Technical Highlights</h4>
+                        <ul class="arch-modal__list">
+                            <li><strong>Read-Only Enforcement:</strong> Query validators prevent destructive SQL</li>
+                            <li><strong>PII Detection:</strong> Auto-detect and mask sensitive fields (SSN, email, etc.)</li>
+                            <li><strong>Compliance Logging:</strong> Full audit trail for HIPAA/FERPA/GDPR</li>
+                            <li><strong>Widget Pipeline:</strong> Chainable data transformations</li>
+                            <li><strong>Multi-DB Support:</strong> PostgreSQL, MySQL, SQLite sources</li>
+                            <li><strong>Railway Deployed:</strong> PostgreSQL + FastAPI on Railway</li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+        </div>
+    </div>
+
+    <!-- Babble Buddy Architecture Modal -->
+    <div id="babble-buddy-architecture-modal" class="arch-modal" role="dialog" aria-labelledby="babble-buddy-modal-title" aria-hidden="true">
+        <div class="arch-modal__overlay"></div>
+        <div class="arch-modal__dialog">
+            <header class="arch-modal__header">
+                <h3 id="babble-buddy-modal-title" class="arch-modal__title">Babble Buddy AI Chat Widget</h3>
+                <button class="arch-modal__close" aria-label="Close modal">✕</button>
+            </header>
+            <div class="arch-modal__content">
+                <p class="arch-modal__subtitle">Embeddable AI Chatbot with Self-Hosted LLM Backend</p>
+                <div id="babble-buddy-architecture-diagram" class="mermaid"></div>
+                <script type="text/javascript">
+                    document.getElementById('babble-buddy-architecture-diagram').textContent = `
+graph TB
+    subgraph "Client Applications"
+        Host["🌐 Host Website<br/>Any Web App"]
+        Widget["💬 Chat Widget<br/>Vanilla TypeScript"]
+    end
+
+    subgraph "Agent Core API"
+        API["🔷 FastAPI Server<br/>Python 3.11"]
+        Auth["🎫 Token Auth<br/>Bearer Tokens"]
+        RateLimit["⏱️ Rate Limiter<br/>slowapi"]
+        Sessions["💾 Session Manager<br/>Conversation State"]
+    end
+
+    subgraph "AI Provider"
+        Ollama["🤖 Ollama<br/>Self-Hosted LLM"]
+        Model["🧠 CodeLlama/Llama3<br/>Local Inference"]
+    end
+
+    subgraph "Data Layer"
+        PG["🐘 PostgreSQL<br/>Token Storage"]
+    end
+
+    subgraph "Deployment"
+        Railway["🚂 Railway<br/>3 Services"]
+        Demo["📱 Demo Site"]
+        APIHost["🔗 API Endpoint<br/>babble-buddy-api.cjunker.dev"]
+    end
+
+    Host --> |Embed| Widget
+    Widget --> |SSE Stream| API
+    API --> Auth
+    Auth --> PG
+    API --> RateLimit
+    API --> Sessions
+    Sessions --> Ollama
+    Ollama --> Model
+    Railway --> Demo
+    Railway --> APIHost
+    Railway --> PG
+
+    style API fill:#0066cc,stroke:#0052a3,stroke-width:3px,color:#fff
+    style Ollama fill:#ff6b35,stroke:#e55a2b,stroke-width:2px,color:#fff
+    style Widget fill:#1e7e34,stroke:#155d27,stroke-width:2px,color:#fff
+    style PG fill:#336791,stroke:#254a6b,stroke-width:2px,color:#fff
+`;
+                </script>
+
+                <details class="arch-modal__details">
+                    <summary class="arch-modal__summary">Key Features & Technical Decisions</summary>
+                    <div class="arch-modal__details-content">
+                        <h4>Technical Highlights</h4>
+                        <ul class="arch-modal__list">
+                            <li><strong>SSE Streaming:</strong> Real-time token-by-token responses</li>
+                            <li><strong>Zero Dependencies:</strong> Vanilla TypeScript widget, no React/Vue required</li>
+                            <li><strong>Self-Hosted LLM:</strong> Ollama integration for privacy-first AI</li>
+                            <li><strong>Multi-Tenant:</strong> Token-based auth for multiple client apps</li>
+                            <li><strong>Themeable:</strong> CSS custom properties for brand matching</li>
+                            <li><strong>Railway Deployed:</strong> 3-service architecture (API + Demo + Postgres)</li>
                         </ul>
                     </div>
                 </details>

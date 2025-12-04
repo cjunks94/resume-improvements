@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SYSTEM.UI_V2 - Design System Demo</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="theme-switcher.js"></script>
+</head>
+<body>
+    <main class="container" style="padding-top: var(--space-2xl);">
+
+        <!-- Page Header -->
+        <header style="margin-bottom: var(--space-2xl);">
+            <div style="display: inline-block; background: var(--c-ink); color: var(--c-surface); padding: var(--space-sm) var(--space-lg); font-family: var(--font-mono); font-weight: 700; font-size: var(--text-2xl); text-transform: uppercase; border: var(--border-thick) solid var(--c-ink);">
+                SYSTEM.UI_V2
+            </div>
+            <p style="margin-top: var(--space-md); color: var(--c-ink-light);">
+                Print-Inspired Neo-Brutalism. Accessible. High Contrast.
+            </p>
+        </header>
+
+        <!-- Two Column Layout -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-xl); align-items: start;">
+
+            <!-- Left Column -->
+            <div>
+                <!-- LOGIN FORM - Tabbed Card Style -->
+                <article class="brutal-card-v2 brutal-card-v2--tabbed">
+                    <div class="brutal-card-v2__tab">LOGIN_SECURE.EXE</div>
+                    <div class="brutal-card-v2__body">
+                        <div class="form-group">
+                            <label class="form-label">Username</label>
+                            <input type="text" class="brutal-input" value="test" placeholder="Enter username">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Password</label>
+                            <input type="password" class="brutal-input" value="password123" placeholder="Enter password">
+                        </div>
+                        <button class="btn btn--primary btn--full">Authenticate</button>
+                    </div>
+                </article>
+
+                <!-- TOAST ALERTS -->
+                <div class="toast">
+                    <div class="toast-strip strip-success"></div>
+                    <div class="toast-body">
+                        <strong>System Ready</strong>
+                        <span>Connection established securely.</span>
+                    </div>
+                </div>
+
+                <div class="toast">
+                    <div class="toast-strip strip-error"></div>
+                    <div class="toast-body">
+                        <strong>Upload Failed</strong>
+                        <span>Check your internet connection.</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div>
+                <!-- HALFTONE MODE CARD -->
+                <article class="brutal-card-v2 brutal-card-v2--halftone">
+                    <div class="brutal-card-v2__header">
+                        <h2 class="brutal-card-v2__title">HALFTONE_MODE</h2>
+                    </div>
+                    <div class="brutal-card-v2__content">
+                        <p>
+                            This layout uses the <strong>Container vs. Content</strong> strategy. The
+                            background is a busy pattern, but the text lives comfortably
+                            inside a solid white box.
+                        </p>
+                        <p>
+                            This ensures compliance with WCAG contrast ratios while
+                            keeping the "Retro Print" vibe intact.
+                        </p>
+                        <button class="brutal-card-v2__action">Learn More</button>
+                    </div>
+                </article>
+
+                <!-- ARCHITECTURAL LINES CARD -->
+                <article class="brutal-card-v2 brutal-card-v2--hatching">
+                    <div class="brutal-card-v2__header">
+                        <h2 class="brutal-card-v2__title">ARCHITECTURAL_LINES</h2>
+                    </div>
+                    <div class="brutal-card-v2__content">
+                        <p>
+                            Using hatching patterns creates depth without relying on generic
+                            drop-shadows. Combined with monospaced headers, it feels like
+                            a technical schematic.
+                        </p>
+                    </div>
+                </article>
+            </div>
+        </div>
+
+        <!-- Additional Pattern Demos -->
+        <section style="margin-top: var(--space-2xl);">
+            <h2 class="section-title">Pattern Variants</h2>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--space-lg);">
+
+                <!-- Grid Pattern Card -->
+                <article class="brutal-card-v2 brutal-card-v2--grid">
+                    <div class="brutal-card-v2__header">
+                        <h3 class="brutal-card-v2__title">GRID_PAPER</h3>
+                    </div>
+                    <div class="brutal-card-v2__content">
+                        <p>
+                            Blueprint/graph paper aesthetic. Perfect for technical content,
+                            data visualizations, or engineering-focused sections.
+                        </p>
+                    </div>
+                </article>
+
+                <!-- Standard Card (no pattern) -->
+                <article class="brutal-card-v2">
+                    <div class="brutal-card-v2__header">
+                        <h3 class="brutal-card-v2__title">STANDARD</h3>
+                    </div>
+                    <div class="brutal-card-v2__content">
+                        <p>
+                            Clean variant without pattern. Use when you need maximum
+                            focus on content or for simpler layouts.
+                        </p>
+                        <button class="brutal-card-v2__action">Action</button>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- Comparison: Old vs New -->
+        <section style="margin-top: var(--space-2xl);">
+            <h2 class="section-title">Before & After Comparison</h2>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-xl);">
+                <!-- OLD Style -->
+                <div>
+                    <h3 style="font-family: var(--font-mono); margin-bottom: var(--space-md); color: var(--c-ink-light);">BEFORE (v1)</h3>
+                    <article class="project-card">
+                        <header class="project-card__header">
+                            <h3 class="project-card__title">Sample Project</h3>
+                            <p class="project-card__tech">
+                                <small>Go • WebSocket • Production</small>
+                            </p>
+                        </header>
+                        <p class="project-card__description">
+                            Single-layer card structure. Clean but doesn't capture
+                            the full print-inspired aesthetic from the mockups.
+                        </p>
+                        <footer class="project-card__footer">
+                            <a href="#" class="project-card__link">View Details</a>
+                        </footer>
+                    </article>
+                </div>
+
+                <!-- NEW Style -->
+                <div>
+                    <h3 style="font-family: var(--font-mono); margin-bottom: var(--space-md); color: var(--c-accent);">AFTER (v2)</h3>
+                    <article class="brutal-card-v2 brutal-card-v2--halftone">
+                        <div class="brutal-card-v2__header">
+                            <h3 class="brutal-card-v2__title">Sample Project</h3>
+                        </div>
+                        <div class="brutal-card-v2__content">
+                            <p style="color: var(--c-ink-light); font-size: var(--text-sm); margin-bottom: var(--space-sm);">
+                                Go • WebSocket • Production
+                            </p>
+                            <p>
+                                Two-layer structure with pattern background.
+                                Separated header creates visual hierarchy matching
+                                your SYSTEM.UI_V2 mockups.
+                            </p>
+                            <button class="brutal-card-v2__action">View Details</button>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- Usage Guide -->
+        <section style="margin-top: var(--space-2xl); margin-bottom: var(--space-2xl);">
+            <h2 class="section-title">Usage</h2>
+
+            <article class="brutal-card-v2 brutal-card-v2--hatching">
+                <div class="brutal-card-v2__header">
+                    <h3 class="brutal-card-v2__title">HTML_STRUCTURE</h3>
+                </div>
+                <div class="brutal-card-v2__content">
+                    <pre style="font-family: var(--font-mono); font-size: var(--text-sm); overflow-x: auto; white-space: pre-wrap;"><code>&lt;article class="brutal-card-v2 brutal-card-v2--halftone"&gt;
+    &lt;div class="brutal-card-v2__header"&gt;
+        &lt;h2 class="brutal-card-v2__title"&gt;TITLE_HERE&lt;/h2&gt;
+    &lt;/div&gt;
+    &lt;div class="brutal-card-v2__content"&gt;
+        &lt;p&gt;Your content here...&lt;/p&gt;
+        &lt;button class="brutal-card-v2__action"&gt;Action&lt;/button&gt;
+    &lt;/div&gt;
+&lt;/article&gt;</code></pre>
+                </div>
+            </article>
+
+            <div style="margin-top: var(--space-lg);">
+                <h3 style="font-family: var(--font-mono); margin-bottom: var(--space-md);">Available Modifiers:</h3>
+                <ul style="font-family: var(--font-mono); font-size: var(--text-sm);">
+                    <li style="margin-bottom: var(--space-xs);">.brutal-card-v2--halftone (green dots)</li>
+                    <li style="margin-bottom: var(--space-xs);">.brutal-card-v2--hatching (diagonal lines)</li>
+                    <li style="margin-bottom: var(--space-xs);">.brutal-card-v2--grid (graph paper)</li>
+                    <li style="margin-bottom: var(--space-xs);">.brutal-card-v2--tabbed (folder tab header)</li>
+                </ul>
+            </div>
+        </section>
+
+    </main>
+</body>
+</html>

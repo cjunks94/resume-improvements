@@ -1,0 +1,18 @@
+{
+  "defaults": {
+    "standard": "WCAG2AA",
+    "runners": ["axe"],
+    "chromeLaunchConfig": {
+      "args": ["--no-sandbox", "--disable-setuid-sandbox"]
+    },
+    "timeout": 10000,
+    "wait": 1000
+  },
+  "urls": [
+    {
+      "url": "http://localhost:8000/index.html",
+      "screenCapture": "screenshots/home.png",
+      "hideElements": "#radar"
+    }
+  ]
+}

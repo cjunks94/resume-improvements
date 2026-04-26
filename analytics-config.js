@@ -47,7 +47,7 @@ const ANALYTICS_CONFIG = {
   }
 
   // Load Umami tracking script
-  console.log(`[Umami Analytics] Loading analytics for ${environment} (${hostname})`);
+  // Analytics loaded silently — console.warn only on errors
   const script = document.createElement('script');
   script.defer = true;
   script.src = ANALYTICS_CONFIG.trackingUrl;

@@ -132,7 +132,6 @@
         }, 250);
     });
 
-    console.log('Mobile menu initialized');
 })();
 
 /**
@@ -169,5 +168,4 @@
     // Check initial state
     handleScroll();
 
-    console.log('Scroll header initialized');
 })();

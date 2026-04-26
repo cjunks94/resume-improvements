@@ -260,14 +260,14 @@ const radar_visualization = function(config) {
     });
 
     // Click handler - show description
-    blip.on("click", function() {
-      showTooltip(entry, d3.event);
+    blip.on("click", function(event) {
+      showTooltip(entry, event);
     });
 
-    blip.on("keydown", function() {
-      if (d3.event.key === "Enter" || d3.event.key === " ") {
-        d3.event.preventDefault();
-        showTooltip(entry, d3.event);
+    blip.on("keydown", function(event) {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        showTooltip(entry, event);
       }
     });
   });
@@ -317,8 +317,8 @@ function showTooltip(entry, event) {
   });
 
   // Close on Escape key
-  d3.select("body").on("keydown.tooltip", function() {
-    if (d3.event.key === "Escape") {
+  d3.select("body").on("keydown.tooltip", function(event) {
+    if (event.key === "Escape") {
       d3.select("#radar-tooltip").remove();
       d3.select("body").on("keydown.tooltip", null);
     }

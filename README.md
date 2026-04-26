@@ -1,8 +1,7 @@
 # Resume Improvement Project
 
-**Target Role**: Senior Software Engineer (Datadog)
-**Project Start**: October 20, 2025
-**Application Target**: October 27, 2025
+**Target Role**: Senior Software Engineer
+**Status**: Active portfolio — continuously updated
 
 ## Live Portfolio
 
@@ -66,9 +65,8 @@ resume-improvements/
 │   ├── validate.js         # Section presence tests
 │   └── check-links.js      # Link validation
 ├── projects/               # Code demonstrations and prototypes
-│   ├── go-microservice/
-│   ├── event-streaming/
-│   └── ml-anomaly-detection/
+│   └── rabbitmq-event-streaming/  # Architecture docs
+├── ../go-trading-system/   # [Separate repo] Bloomberg interview prep
 ├── blog-posts/             # Technical writing and thought leadership
 ├── certifications/         # Progress on professional certifications
 └── resume-versions/        # Tailored resume iterations
@@ -81,6 +79,12 @@ resume-improvements/
 - [ ] Create 2-3 demonstrable GitHub projects
 - [ ] Establish connections with 3-5 Datadog engineers
 - [ ] Submit optimized resume application by October 27, 2025
+
+## Related Projects
+
+| Project | Description | Repo |
+|---------|-------------|------|
+| **[go-trading-system](../go-trading-system)** | Real-time stock trading simulation in Go (WebSocket streaming, order matching, P&L tracking) | Separate repo |
 
 ## Key Technologies
 

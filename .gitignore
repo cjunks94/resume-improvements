@@ -16,6 +16,7 @@ Thumbs.db
 # IDE
 .vscode/
 .idea/
+.claude/
 *.swp
 *.swo
 *~
@@ -26,6 +27,14 @@ Thumbs.db
 
 # Accessibility testing
 screenshots/
+
+# Resume drafts and career strategy (sensitive/personal)
+resume-draft-*.md
+resume-1page.md
+career-extraction-prompt.md
+recruiter-message-template.md
+resume-versions/CHANGES_*.md
+resume-versions/POLISH_NOTES_*.md
 
 # Umami Analytics
 umami/.env

@@ -309,8 +309,8 @@ body {
 /* Pattern Variants - Apply to .brutal-card-v2 */
 .brutal-card-v2--halftone {
     background-color: var(--c-accent);
-    background-image: radial-gradient(var(--c-ink) 18%, transparent 18%);
-    background-size: 6px 6px;
+    background-image: radial-gradient(var(--c-ink) 10%, transparent 10%);
+    background-size: 8px 8px;
 }
 
 .brutal-card-v2--hatching {

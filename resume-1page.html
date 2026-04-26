@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Christopher Junker - Resume</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-size: 11pt;
+      line-height: 1.4;
+      color: #333;
+      max-width: 8.5in;
+      margin: 0 auto;
+      padding: 0.5in;
+    }
+    h1 {
+      font-size: 20pt;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .contact {
+      font-size: 10pt;
+      color: #555;
+      margin-bottom: 16px;
+    }
+    h2 {
+      font-size: 11pt;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 1px solid #333;
+      padding-bottom: 3px;
+      margin: 16px 0 10px 0;
+    }
+    .skills {
+      font-size: 10pt;
+      color: #444;
+    }
+    .job { margin-bottom: 14px; }
+    .job-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 2px;
+    }
+    .company { font-weight: 600; font-size: 11pt; }
+    .location { font-size: 10pt; color: #555; }
+    .title-line {
+      display: flex;
+      justify-content: space-between;
+      font-style: italic;
+      font-size: 10pt;
+      margin-bottom: 6px;
+    }
+    ul {
+      margin-left: 16px;
+      margin-top: 4px;
+    }
+    li {
+      margin-bottom: 5px;
+      font-size: 10.5pt;
+    }
+    .education-item {
+      font-size: 10.5pt;
+      margin-bottom: 3px;
+    }
+    .edu-school { font-weight: 600; }
+
+    @media print {
+      body { padding: 0.4in; }
+      @page { margin: 0; size: letter; }
+    }
+  </style>
+</head>
+<body>
+
+<h1>CHRISTOPHER JUNKER</h1>
+<div class="contact">Brooklyn, NY &bull; 631-827-5831 &bull; cjunks94@gmail.com &bull; www.cjunker.dev &bull; github.com/cjunks94 &bull; linkedin.com/in/christopher-junker-218aabba</div>
+
+<h2>Skills</h2>
+<div class="skills">
+  Ruby, Python, Go, TypeScript, SQL | Rails, Celery, Tornado | AWS (EC2, Lambda, S3, RDS, IAM, Secrets Manager, SQS/SNS, CloudWatch, DocumentDB), Kubernetes, Docker, Terraform, Linux | Kafka, Datadog, PagerDuty, Elasticsearch, PostgreSQL, MySQL, Redis | System Design, Microservices, Event-Driven Architecture, Serverless | Git, GitHub Actions, CI/CD, TDD, Agile
+</div>
+
+<h2>Experience</h2>
+
+<div class="job">
+  <div class="job-header">
+    <span class="company">2U</span>
+    <span class="location">Brooklyn, NY</span>
+  </div>
+  <div class="title-line">
+    <span>Senior Software Engineer (Team Lead)</span>
+    <span>Aug 2022 – Present</span>
+  </div>
+  <ul>
+    <li>Led 8-person team (2 FTEs + 6 contractors) owning 3 production systems: multi-tenant Rails CRM, Python data export platform (70+ global university partners), and payment gateway routing to 4 providers; onboarded and mentored 15+ engineers over tenure</li>
+    <li>Led cross-functional architecture reviews spanning product design, code review, and third-party integrations; authored SLAs and CDE architecture diagrams; partnered with Security and SRE on tooling and compliance</li>
+    <li>Maintained self-managed Kubernetes on EC2; designed S3 lifecycle policies with tiered IAM permissions for sensitive document retention and DB backups</li>
+    <li>Led Ruby 2.7 → 3.2 and Rails 5 → 7 upgrades as strategic tech debt reduction; zero-downtime deployments across all services</li>
+    <li>Reduced CI runtime from 105 min to 16 min (85%) through parallelization and test infrastructure optimization</li>
+    <li>Architected PCI-compliant secrets rotation using AWS Secrets Manager with pre-cutover validation, automating 100+ credentials across payments, partner integrations, and APIs</li>
+    <li>Automated manual partner data exports into Python/Celery service delivering 350+ scheduled jobs; optimized batch queries against 1B+ records with Redis caching and connection pooling</li>
+    <li>Managed 70+ AWS Lambda functions with isolated IAM for FERPA-compliant partner data transfers</li>
+    <li>Built Datadog dashboards and CloudWatch alerting surfacing regressions in <5 min; owned SLA monitoring, incident response, postmortems, and PagerDuty primary oncall rotation</li>
+    <li>Part of company-wide Claude pilot; helped team adopt AI-assisted development and AI-first Epic planning</li>
+  </ul>
+</div>
+
+<div class="job">
+  <div class="title-line">
+    <span>Software Engineer</span>
+    <span>Aug 2018 – Jul 2022</span>
+  </div>
+  <ul>
+    <li>Migrated 4B+ records across 13 tables from Python/MongoDB to Rails/MySQL with zero downtime; built fault-tolerant ETL with idempotent recovery and live schema changes via Percona toolkit</li>
+    <li>Built throttled ETL API with rate limiting, cursor pagination, and structured logging to prevent downstream saturation during partner data syncs</li>
+    <li>Implemented Elasticsearch indexing enabling full-text search across previously slow SQL-dependent queries</li>
+  </ul>
+</div>
+
+<h2>Education</h2>
+<div class="education-item"><span class="edu-school">Villanova University</span> — B.S. Computer Science (Minor: Business)</div>
+<div class="education-item"><span class="edu-school">Flatiron School</span> — Full-Stack Web Development Immersion</div>
+
+</body>
+</html>

@@ -12,29 +12,7 @@
 
 ## Analytics
 
-**Dashboard**: [umami.cjunker.dev](https://umami.cjunker.dev) - Self-hosted Umami analytics
-
-**Stack**:
-- **Frontend**: Privacy-friendly tracking script (no cookies, GDPR compliant)
-- **Backend**: Umami v2.13.2 in Docker (82MB Alpine-based image)
-- **Database**: PostgreSQL 16 Alpine
-- **Hosting**: Railway.app (free tier, $0/month)
-- **Security**: Cloudflare Access with GitHub OAuth (zero-trust)
-- **Features**: Custom event tracking, heatmaps, tech radar interactions
-
-**Deployment**:
-```yaml
-→ 82 MB container | 1.8s startup | Auto-HTTPS | Daily backups
-→ Zero maintenance | $0/month hosting | SOC2-ready
-```
-
-**Custom Events Tracked**:
-- Tech Radar: Click interactions, legend toggles
-- Downloads: Resume, CSV exports, documentation
-- Navigation: Page views, session analytics
-- Performance: Load times, error tracking
-
-See [umami/RAILWAY_DEPLOYMENT.md](umami/RAILWAY_DEPLOYMENT.md) for deployment guide.
+Analytics temporarily paused. Umami config preserved in `umami/` for future re-enablement. Using Railway built-in metrics in the interim.
 
 ## Project Overview
 

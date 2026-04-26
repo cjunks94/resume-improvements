@@ -63,7 +63,7 @@ jobs:
           cname: cjunker.dev
           force_orphan: true
           keep_files: true
-          exclude_assets: '.github,node_modules,tests,package*.json,.gitignore,.stylelintrc.json,.htmlvalidate.json,decisions,TODO.md,CLAUDE.md'
+          exclude_assets: '.github,node_modules,tests,package*.json,.gitignore,.stylelintrc.json,.htmlvalidate.json,decisions,TODO.md,CLAUDE.md,analytics-config.js,umami,healthcheck'
       - name: Summary
         run: |
           cat <<EOF >> $GITHUB_STEP_SUMMARY
@@ -96,7 +96,7 @@ jobs:
           cname: staging.cjunker.dev
           force_orphan: true
           keep_files: false
-          exclude_assets: '.github,node_modules,tests,package*.json,.gitignore,.stylelintrc.json,.htmlvalidate.json,decisions,TODO.md,CLAUDE.md'
+          exclude_assets: '.github,node_modules,tests,package*.json,.gitignore,.stylelintrc.json,.htmlvalidate.json,decisions,TODO.md,CLAUDE.md,analytics-config.js,umami,healthcheck'
       - name: Wait for deployment and verify CNAME
         run: |
           echo "Waiting for GitHub Pages deployment to complete..."

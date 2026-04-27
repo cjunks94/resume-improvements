@@ -288,7 +288,9 @@ code, pre, .mono {
         max-width: 100% !important;
     }
 
-    .no-print {
+    .no-print,
+    #village-canvas,
+    .village-toggle {
         /* Print: Hide non-printable elements */
         display: none !important;
     }

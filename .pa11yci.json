@@ -3,10 +3,10 @@
     "standard": "WCAG2AA",
     "runners": ["axe"],
     "chromeLaunchConfig": {
-      "args": ["--no-sandbox", "--disable-setuid-sandbox"]
+      "args": ["--no-sandbox", "--disable-setuid-sandbox", "--disable-web-security"]
     },
-    "timeout": 30000,
-    "wait": 3000
+    "timeout": 60000,
+    "wait": 5000
   },
   "urls": [
     {

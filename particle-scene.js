@@ -15,7 +15,7 @@
     var SPLIT_RADIUS = 0.15;
     var SPLIT_FORCE = 4.0;
     var FLOAT_AMPLITUDE = 0.4;
-    var SHAPE_RADIUS = 7;       // how big the shapes are — fills margins
+    var SHAPE_RADIUS = 10;      // how big the shapes are — fills margins and beyond
 
     var scene, camera, points;
     var positions, targets, velocities, particleColors;
@@ -132,8 +132,9 @@
     window.SceneManager.register('particles', {
         init: function(renderer, canvas) {
             scene = new THREE.Scene();
-            camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 100);
-            camera.position.set(0, 0, 18);
+            scene.background = new THREE.Color('#0d1117');
+            camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
+            camera.position.set(0, 0, 14);
             camera.lookAt(0, 0, 0);
 
             buildShapeTargets();
@@ -203,7 +204,7 @@
                 targets[i3 + 2] = currentData[i].z + (nextData[i].z - currentData[i].z) * morphProgress;
             }
 
-            var mouseWorld = new THREE.Vector3(mouse.x * 9, -mouse.y * 7, 0);
+            var mouseWorld = new THREE.Vector3(mouse.x * 12, -mouse.y * 9, 0);
 
             for (var j = 0; j < PARTICLE_COUNT; j++) {
                 var j3 = j * 3;
@@ -247,8 +248,8 @@
         onClick: function(x, y) {
             for (var i = 0; i < PARTICLE_COUNT; i++) {
                 var i3 = i * 3;
-                var dx = positions[i3] - x * 9;
-                var dy = positions[i3 + 1] + y * 7;
+                var dx = positions[i3] - x * 12;
+                var dy = positions[i3 + 1] + y * 9;
                 var dist = Math.sqrt(dx * dx + dy * dy) || 1;
                 velocities[i3] += (dx / dist) * 0.8;
                 velocities[i3 + 1] += (dy / dist) * 0.8;

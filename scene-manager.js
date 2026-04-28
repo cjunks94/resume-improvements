@@ -155,6 +155,23 @@
             });
         }
 
+        // Focus mode button — hides DOM, shows only 3D
+        var focusBtn = document.createElement('button');
+        focusBtn.className = 'village-toggle';
+        focusBtn.setAttribute('aria-label', 'Toggle focus mode — hide content, show only 3D scene');
+        focusBtn.setAttribute('aria-pressed', 'false');
+        focusBtn.textContent = 'FOCUS';
+        container.appendChild(focusBtn);
+
+        var focusMode = false;
+        focusBtn.addEventListener('click', function() {
+            focusMode = !focusMode;
+            document.body.classList.toggle('scene-focus', focusMode);
+            focusBtn.classList.toggle('active', focusMode);
+            focusBtn.setAttribute('aria-pressed', focusMode ? 'true' : 'false');
+            focusBtn.textContent = focusMode ? 'FOCUS [ON]' : 'FOCUS';
+        });
+
         return { container: container, updateAll: updateAll };
     }
 

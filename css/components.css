@@ -1343,7 +1343,17 @@ body.village-active {
     display: flex;
     flex-direction: column;
     gap: var(--space-xs);
-    z-index: var(--z-base);
+    z-index: calc(var(--z-sticky) + 1);
+}
+
+/* Focus mode — hide all content, show only 3D scene + toggles */
+body.scene-focus .site-header,
+body.scene-focus .site-main,
+body.scene-focus .site-footer,
+body.scene-focus .theme-switcher {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
 }
 
 .village-toggle {

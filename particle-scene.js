@@ -8,34 +8,44 @@
     'use strict';
     if (typeof THREE === 'undefined' || !window.SceneManager) return;
 
-    var PARTICLE_COUNT = 800;
-    var SHAPE_HOLD = 3.0;       // seconds to hold each shape
-    var SHAPE_TRANSITION = 2.0; // seconds to morph between shapes
+    var PARTICLE_COUNT = 2000;
+    var SHAPE_HOLD = 3.0;
+    var SHAPE_TRANSITION = 2.0;
     var CYCLE_TIME = SHAPE_HOLD + SHAPE_TRANSITION;
-    var SPLIT_RADIUS = 0.15;    // normalized mouse radius for split effect
-    var SPLIT_FORCE = 3.0;      // how hard particles push away from cursor
-    var FLOAT_AMPLITUDE = 0.3;  // gentle floating motion
+    var SPLIT_RADIUS = 0.15;
+    var SPLIT_FORCE = 4.0;
+    var FLOAT_AMPLITUDE = 0.4;
+    var SHAPE_RADIUS = 7;       // how big the shapes are — fills margins
 
     var scene, camera, points;
-    var positions, targets, velocities, basePositions;
+    var positions, targets, velocities, particleColors;
     var mouse = { x: 0, y: 0 };
     var scrollOffset = 0;
-    var currentShape = 0;
     var shapeTime = 0;
-    var inkColor;
+
+    // Color palette — muted but varied
+    var PALETTE = [
+        new THREE.Color('#3D6649'),  // forest green (accent)
+        new THREE.Color('#5B9BD5'),  // soft blue
+        new THREE.Color('#D9534F'),  // muted red
+        new THREE.Color('#E8A838'),  // warm amber
+        new THREE.Color('#7B68A8'),  // soft purple
+        new THREE.Color('#4A7A58'),  // light green
+        new THREE.Color('#C0956C'),  // tan
+    ];
 
     // ========================================================================
-    // SHAPE GENERATORS — return array of {x, y, z} positions
+    // SHAPE GENERATORS
     // ========================================================================
     function generateCircle(count, radius) {
         var pts = [];
         for (var i = 0; i < count; i++) {
             var angle = (i / count) * Math.PI * 2;
-            var r = radius * (0.7 + Math.random() * 0.3);
+            var r = radius * (0.5 + Math.random() * 0.5);
             pts.push({
                 x: Math.cos(angle) * r,
                 y: Math.sin(angle) * r,
-                z: (Math.random() - 0.5) * 1.5
+                z: (Math.random() - 0.5) * 3
             });
         }
         return pts;
@@ -43,29 +53,42 @@
 
     function generateTriangle(count, size) {
         var pts = [];
-        // Three edges of a triangle
         var verts = [
-            { x: 0, y: size * 0.8 },
-            { x: -size * 0.7, y: -size * 0.5 },
-            { x: size * 0.7, y: -size * 0.5 }
+            { x: 0, y: size * 0.85 },
+            { x: -size * 0.75, y: -size * 0.55 },
+            { x: size * 0.75, y: -size * 0.55 }
         ];
         for (var i = 0; i < count; i++) {
             var edge = i % 3;
             var t = (Math.floor(i / 3) / Math.floor(count / 3));
-            t += (Math.random() - 0.5) * 0.05;
+            t += (Math.random() - 0.5) * 0.08;
             var next = (edge + 1) % 3;
-            pts.push({
-                x: verts[edge].x + (verts[next].x - verts[edge].x) * t,
-                y: verts[edge].y + (verts[next].y - verts[edge].y) * t,
-                z: (Math.random() - 0.5) * 1.5
-            });
+            // Fill interior too — some particles inside
+            var fill = Math.random();
+            if (fill < 0.3) {
+                // Interior point
+                var a = Math.random(), b = Math.random();
+                if (a + b > 1) { a = 1 - a; b = 1 - b; }
+                var c = 1 - a - b;
+                pts.push({
+                    x: verts[0].x * a + verts[1].x * b + verts[2].x * c,
+                    y: verts[0].y * a + verts[1].y * b + verts[2].y * c,
+                    z: (Math.random() - 0.5) * 3
+                });
+            } else {
+                pts.push({
+                    x: verts[edge].x + (verts[next].x - verts[edge].x) * t,
+                    y: verts[edge].y + (verts[next].y - verts[edge].y) * t,
+                    z: (Math.random() - 0.5) * 3
+                });
+            }
         }
         return pts;
     }
 
     function generateSquare(count, size) {
         var pts = [];
-        var half = size * 0.6;
+        var half = size * 0.65;
         var verts = [
             { x: -half, y: half },
             { x: half, y: half },
@@ -73,15 +96,25 @@
             { x: -half, y: -half }
         ];
         for (var i = 0; i < count; i++) {
-            var edge = i % 4;
-            var t = (Math.floor(i / 4) / Math.floor(count / 4));
-            t += (Math.random() - 0.5) * 0.05;
-            var next = (edge + 1) % 4;
-            pts.push({
-                x: verts[edge].x + (verts[next].x - verts[edge].x) * t,
-                y: verts[edge].y + (verts[next].y - verts[edge].y) * t,
-                z: (Math.random() - 0.5) * 1.5
-            });
+            var fill = Math.random();
+            if (fill < 0.3) {
+                // Interior
+                pts.push({
+                    x: (Math.random() - 0.5) * size * 1.2,
+                    y: (Math.random() - 0.5) * size * 1.2,
+                    z: (Math.random() - 0.5) * 3
+                });
+            } else {
+                var edge = i % 4;
+                var t = (Math.floor(i / 4) / Math.floor(count / 4));
+                t += (Math.random() - 0.5) * 0.08;
+                var next = (edge + 1) % 4;
+                pts.push({
+                    x: verts[edge].x + (verts[next].x - verts[edge].x) * t,
+                    y: verts[edge].y + (verts[next].y - verts[edge].y) * t,
+                    z: (Math.random() - 0.5) * 3
+                });
+            }
         }
         return pts;
     }
@@ -90,7 +123,7 @@
     var shapeData = [];
 
     function buildShapeTargets() {
-        shapeData = shapes.map(function(fn) { return fn(PARTICLE_COUNT, 4); });
+        shapeData = shapes.map(function(fn) { return fn(PARTICLE_COUNT, SHAPE_RADIUS); });
     }
 
     // ========================================================================
@@ -98,21 +131,17 @@
     // ========================================================================
     window.SceneManager.register('particles', {
         init: function(renderer, canvas) {
-            var colors = SceneManager.getColors();
-            inkColor = new THREE.Color(colors.ink);
-
             scene = new THREE.Scene();
             camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 100);
-            camera.position.set(0, 0, 12);
+            camera.position.set(0, 0, 18);
             camera.lookAt(0, 0, 0);
 
             buildShapeTargets();
 
-            // Initialize particle positions to first shape
             positions = new Float32Array(PARTICLE_COUNT * 3);
             targets = new Float32Array(PARTICLE_COUNT * 3);
             velocities = new Float32Array(PARTICLE_COUNT * 3);
-            basePositions = new Float32Array(PARTICLE_COUNT * 3);
+            var colorsArr = new Float32Array(PARTICLE_COUNT * 3);
 
             var firstShape = shapeData[0];
             for (var i = 0; i < PARTICLE_COUNT; i++) {
@@ -123,49 +152,50 @@
                 targets[i3] = firstShape[i].x;
                 targets[i3 + 1] = firstShape[i].y;
                 targets[i3 + 2] = firstShape[i].z;
-                basePositions[i3] = firstShape[i].x;
-                basePositions[i3 + 1] = firstShape[i].y;
-                basePositions[i3 + 2] = firstShape[i].z;
+
+                // Assign color from palette
+                var col = PALETTE[Math.floor(Math.random() * PALETTE.length)];
+                colorsArr[i3] = col.r;
+                colorsArr[i3 + 1] = col.g;
+                colorsArr[i3 + 2] = col.b;
             }
+            particleColors = colorsArr;
 
             var geometry = new THREE.BufferGeometry();
             geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            geometry.setAttribute('color', new THREE.BufferAttribute(colorsArr, 3));
 
             var material = new THREE.PointsMaterial({
-                color: inkColor,
-                size: 0.06,
-                sizeAttenuation: true
+                size: 0.12,
+                sizeAttenuation: true,
+                vertexColors: true,
+                transparent: true,
+                opacity: 0.85
             });
 
             points = new THREE.Points(geometry, material);
             scene.add(points);
-
-            currentShape = 0;
             shapeTime = 0;
         },
 
         animate: function(elapsed) {
             if (!points) return;
-
             shapeTime += 0.016;
 
-            // Determine current and next shape
             var cyclePos = shapeTime % (CYCLE_TIME * shapes.length);
             var shapeIndex = Math.floor(cyclePos / CYCLE_TIME);
             var timeInCycle = cyclePos - shapeIndex * CYCLE_TIME;
             var nextIndex = (shapeIndex + 1) % shapes.length;
 
-            // Compute morph progress (0 = current shape, 1 = next shape)
             var morphProgress = 0;
             if (timeInCycle > SHAPE_HOLD) {
                 morphProgress = (timeInCycle - SHAPE_HOLD) / SHAPE_TRANSITION;
-                morphProgress = morphProgress * morphProgress * (3 - 2 * morphProgress); // smoothstep
+                morphProgress = morphProgress * morphProgress * (3 - 2 * morphProgress);
             }
 
             var currentData = shapeData[shapeIndex];
             var nextData = shapeData[nextIndex];
 
-            // Update target positions (morph between shapes)
             for (var i = 0; i < PARTICLE_COUNT; i++) {
                 var i3 = i * 3;
                 targets[i3] = currentData[i].x + (nextData[i].x - currentData[i].x) * morphProgress;
@@ -173,26 +203,22 @@
                 targets[i3 + 2] = currentData[i].z + (nextData[i].z - currentData[i].z) * morphProgress;
             }
 
-            // Project mouse into 3D space for split effect
-            var mouseWorld = new THREE.Vector3(mouse.x * 6, -mouse.y * 4, 0);
+            var mouseWorld = new THREE.Vector3(mouse.x * 9, -mouse.y * 7, 0);
 
-            // Update positions — lerp toward targets + split from mouse + float
             for (var j = 0; j < PARTICLE_COUNT; j++) {
                 var j3 = j * 3;
 
-                // Target with floating
-                var floatX = Math.sin(elapsed * 0.5 + j * 0.1) * FLOAT_AMPLITUDE * 0.3;
-                var floatY = Math.cos(elapsed * 0.3 + j * 0.07) * FLOAT_AMPLITUDE * 0.3;
+                var floatX = Math.sin(elapsed * 0.4 + j * 0.08) * FLOAT_AMPLITUDE * 0.4;
+                var floatY = Math.cos(elapsed * 0.25 + j * 0.06) * FLOAT_AMPLITUDE * 0.4;
 
                 var tx = targets[j3] + floatX;
                 var ty = targets[j3 + 1] + floatY;
                 var tz = targets[j3 + 2];
 
-                // Mouse split force
                 var dx = positions[j3] - mouseWorld.x;
                 var dy = positions[j3 + 1] - mouseWorld.y;
                 var dist = Math.sqrt(dx * dx + dy * dy);
-                var splitRange = SPLIT_RADIUS * 12; // scale to world units
+                var splitRange = SPLIT_RADIUS * 18;
 
                 if (dist < splitRange && dist > 0.01) {
                     var force = (1 - dist / splitRange) * SPLIT_FORCE;
@@ -200,60 +226,39 @@
                     velocities[j3 + 1] += (dy / dist) * force * 0.016;
                 }
 
-                // Apply velocity with damping
-                velocities[j3] *= 0.92;
-                velocities[j3 + 1] *= 0.92;
-                velocities[j3 + 2] *= 0.92;
+                velocities[j3] *= 0.93;
+                velocities[j3 + 1] *= 0.93;
+                velocities[j3 + 2] *= 0.93;
 
-                // Lerp to target + velocity
-                positions[j3] = THREE.MathUtils.lerp(positions[j3], tx, 0.04) + velocities[j3];
-                positions[j3 + 1] = THREE.MathUtils.lerp(positions[j3 + 1], ty, 0.04) + velocities[j3 + 1];
-                positions[j3 + 2] = THREE.MathUtils.lerp(positions[j3 + 2], tz, 0.04) + velocities[j3 + 2];
+                positions[j3] = THREE.MathUtils.lerp(positions[j3], tx, 0.035) + velocities[j3];
+                positions[j3 + 1] = THREE.MathUtils.lerp(positions[j3 + 1], ty, 0.035) + velocities[j3 + 1];
+                positions[j3 + 2] = THREE.MathUtils.lerp(positions[j3 + 2], tz, 0.035) + velocities[j3 + 2];
             }
 
             points.geometry.attributes.position.needsUpdate = true;
 
-            // Subtle camera shift from scroll
-            camera.position.y = -scrollOffset * 2;
-            camera.lookAt(0, -scrollOffset * 2, 0);
+            camera.position.y = -scrollOffset * 3;
+            camera.lookAt(0, -scrollOffset * 3, 0);
         },
 
-        onMouseMove: function(x, y) {
-            mouse.x = x;
-            mouse.y = y;
-        },
-
-        onScroll: function(offset) {
-            scrollOffset = offset;
-        },
+        onMouseMove: function(x, y) { mouse.x = x; mouse.y = y; },
+        onScroll: function(offset) { scrollOffset = offset; },
 
         onClick: function(x, y) {
-            // Burst — push all particles outward briefly
             for (var i = 0; i < PARTICLE_COUNT; i++) {
                 var i3 = i * 3;
-                var dx = positions[i3] - x * 6;
-                var dy = positions[i3 + 1] + y * 4;
+                var dx = positions[i3] - x * 9;
+                var dy = positions[i3 + 1] + y * 7;
                 var dist = Math.sqrt(dx * dx + dy * dy) || 1;
-                velocities[i3] += (dx / dist) * 0.5;
-                velocities[i3 + 1] += (dy / dist) * 0.5;
+                velocities[i3] += (dx / dist) * 0.8;
+                velocities[i3 + 1] += (dy / dist) * 0.8;
             }
         },
 
-        resize: function(w, h) {
-            if (camera) { camera.aspect = w / h; camera.updateProjectionMatrix(); }
-        },
-
+        resize: function(w, h) { if (camera) { camera.aspect = w / h; camera.updateProjectionMatrix(); } },
         getScene: function() { return scene; },
         getCamera: function() { return camera; },
-
-        updateColors: function(c) {
-            inkColor = new THREE.Color(c.ink);
-            if (points) points.material.color.set(inkColor);
-        },
-
-        destroy: function() {
-            scene = null; camera = null; points = null;
-            positions = null; targets = null; velocities = null;
-        }
+        updateColors: function() { /* particles use their own palette */ },
+        destroy: function() { scene = null; camera = null; points = null; positions = null; targets = null; velocities = null; }
     });
 })();

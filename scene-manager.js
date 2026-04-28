@@ -137,48 +137,48 @@
     }
 
     // ========================================================================
-    // TOGGLE / SWITCHER BUTTON
+    // SCENE TOGGLE BUTTONS (one per scene, mutually exclusive)
     // ========================================================================
-    function createToggle() {
-        var btn = document.createElement('button');
-        btn.className = 'village-toggle';
-        btn.setAttribute('aria-label', 'Cycle background scene');
-        document.body.appendChild(btn);
+    var buttons = {};
 
-        function updateLabel() {
-            if (!isRunning) {
-                btn.textContent = '3D [OFF]';
-            } else {
-                btn.textContent = (activeSceneName || '').toUpperCase() + ' [ON]';
-            }
+    function createButtons() {
+        var container = document.createElement('div');
+        container.className = 'scene-toggles';
+        document.body.appendChild(container);
+
+        function updateAll() {
+            Object.keys(buttons).forEach(function(name) {
+                var isActive = isRunning && activeSceneName === name;
+                buttons[name].textContent = name.toUpperCase() + (isActive ? ' [ON]' : '');
+                buttons[name].classList.toggle('active', isActive);
+                buttons[name].setAttribute('aria-pressed', isActive ? 'true' : 'false');
+            });
         }
 
+        return { container: container, updateAll: updateAll };
+    }
+
+    function addButton(name, controls) {
+        var btn = document.createElement('button');
+        btn.className = 'village-toggle';
+        btn.setAttribute('aria-label', 'Toggle ' + name + ' background');
+        btn.setAttribute('aria-pressed', 'false');
+        btn.textContent = name.toUpperCase();
+        controls.container.appendChild(btn);
+        buttons[name] = btn;
+
         btn.addEventListener('click', function() {
-            if (!isRunning) {
-                // Turn on — resume current scene
-                startScene();
-                updateLabel();
-                return;
-            }
-
-            // Cycle to next scene, or turn off after last
-            var names = getSceneNames();
-            var idx = names.indexOf(activeSceneName);
-            var next = idx + 1;
-
-            if (next >= names.length) {
-                // Cycled through all — turn off
+            if (isRunning && activeSceneName === name) {
+                // Turn off
                 stopScene();
                 localStorage.setItem('scene-active', 'off');
-                updateLabel();
             } else {
-                switchScene(names[next]);
-                updateLabel();
+                // Switch to this scene
+                switchScene(name);
+                startScene();
             }
+            controls.updateAll();
         });
-
-        updateLabel();
-        return { btn: btn, updateLabel: updateLabel };
     }
 
     function startScene() {
@@ -219,22 +219,23 @@
         var saved = localStorage.getItem('scene-active');
 
         initRenderer();
-        var toggle = createToggle();
+        var controls = createButtons();
 
         // Wait for scenes to register (they load via defer too)
         setTimeout(function() {
             var names = getSceneNames();
             if (names.length === 0) return;
 
+            // Create a button for each registered scene
+            names.forEach(function(name) { addButton(name, controls); });
+
             if (saved === 'off') {
-                // Start with first scene but paused
                 switchScene(names[0]);
                 stopScene();
-                toggle.updateLabel();
+                controls.updateAll();
                 return;
             }
 
-            // Restore saved scene or default to first
             var startWith = (saved && scenes[saved]) ? saved : names[0];
             switchScene(startWith);
 
@@ -249,7 +250,7 @@
             });
 
             startScene();
-            toggle.updateLabel();
+            controls.updateAll();
         }, 50);
     }
 

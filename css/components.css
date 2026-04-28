@@ -1320,7 +1320,75 @@ body {
 }
 
 /* ==========================================================================
-   15. RESPONSIVE DESIGN
+   15. VILLAGE SCENE (3D Background)
+   ========================================================================== */
+#village-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    pointer-events: auto;
+}
+
+body.village-active {
+    background-color: transparent;
+}
+
+.scene-toggles {
+    position: fixed;
+    bottom: var(--space-lg);
+    left: var(--space-lg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+    z-index: var(--z-base);
+}
+
+.village-toggle {
+    background: var(--c-surface);
+    border: var(--border-thick) solid var(--c-border);
+    padding: var(--space-xs) var(--space-sm);
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: var(--text-sm);
+    text-transform: uppercase;
+    color: var(--c-ink);
+    cursor: pointer;
+    box-shadow: var(--shadow-sm) var(--c-shadow);
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.village-toggle.active {
+    background: var(--c-accent);
+    color: var(--c-surface);
+    border-color: var(--c-accent);
+}
+
+.village-toggle:hover {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 var(--c-shadow);
+}
+
+.village-toggle:active {
+    transform: translate(4px, 4px);
+    box-shadow: none;
+}
+
+.site-footer {
+    background: var(--c-bg);
+}
+
+@media (max-width: 768px) {
+    .village-toggle {
+        bottom: var(--space-lg);
+        left: var(--space-md);
+    }
+}
+
+/* ==========================================================================
+   16. RESPONSIVE DESIGN
    ========================================================================== */
 
 /* Tablets and up (769px+) */

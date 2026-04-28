@@ -29,6 +29,7 @@
     var canvas, renderer;
     var animationId = null;
     var isRunning = false;
+    var isPaused = false;
     var elapsed = 0;
     var mouse = { x: 0, y: 0 };
     var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -73,7 +74,9 @@
             return;
         }
 
-        activeScene.animate(elapsed);
+        if (!isPaused) {
+            activeScene.animate(elapsed);
+        }
         renderer.render(activeScene.getScene(), activeScene.getCamera());
     }
 
@@ -149,7 +152,13 @@
         function updateAll() {
             Object.keys(buttons).forEach(function(name) {
                 var isActive = isRunning && activeSceneName === name;
-                buttons[name].textContent = name.toUpperCase() + (isActive ? ' [ON]' : '');
+                var label = name.toUpperCase();
+                if (isActive && isPaused) {
+                    label += ' [PAUSED]';
+                } else if (isActive) {
+                    label += ' [ON]';
+                }
+                buttons[name].textContent = label;
                 buttons[name].classList.toggle('active', isActive);
                 buttons[name].setAttribute('aria-pressed', isActive ? 'true' : 'false');
             });
@@ -186,11 +195,19 @@
 
         btn.addEventListener('click', function() {
             if (isRunning && activeSceneName === name) {
-                // Turn off
-                stopScene();
-                localStorage.setItem('scene-active', 'off');
+                if (!isPaused) {
+                    // ON → PAUSED
+                    isPaused = true;
+                    if (activeScene && activeScene.pause) activeScene.pause();
+                } else {
+                    // PAUSED → OFF
+                    isPaused = false;
+                    stopScene();
+                    localStorage.setItem('scene-active', 'off');
+                }
             } else {
-                // Switch to this scene
+                // Switch to this scene (or turn on from off)
+                isPaused = false;
                 switchScene(name);
                 startScene();
             }

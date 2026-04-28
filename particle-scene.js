@@ -9,8 +9,8 @@
     if (typeof THREE === 'undefined' || !window.SceneManager) return;
 
     var PARTICLE_COUNT = 2000;
-    var SHAPE_HOLD = 3.0;
-    var SHAPE_TRANSITION = 2.0;
+    var SHAPE_HOLD = 4.5;
+    var SHAPE_TRANSITION = 3.0;
     var CYCLE_TIME = SHAPE_HOLD + SHAPE_TRANSITION;
     var SPLIT_RADIUS = 0.15;
     var SPLIT_FORCE = 4.0;

@@ -260,6 +260,7 @@
         getScene: function() { return scene; },
         getCamera: function() { return camera; },
         updateColors: function() { /* particles use their own palette */ },
+        pause: function() { /* shapeTime freezes via manager skipping animate() */ },
         destroy: function() { scene = null; camera = null; points = null; positions = null; targets = null; velocities = null; }
     });
 })();

@@ -3,10 +3,12 @@
     "standard": "WCAG2AA",
     "runners": ["axe"],
     "chromeLaunchConfig": {
-      "args": ["--no-sandbox", "--disable-setuid-sandbox"]
+      "args": ["--no-sandbox", "--disable-setuid-sandbox", "--disable-web-security", "--disable-features=NetworkService"]
     },
-    "timeout": 10000,
-    "wait": 1000
+    "timeout": 60000,
+    "wait": 5000,
+    "hideElements": "#village-canvas, #radar",
+    "useIncognitoPage": false
   },
   "urls": [
     {

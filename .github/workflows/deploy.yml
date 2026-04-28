@@ -39,7 +39,7 @@ jobs:
       - run: npm ci
       - run: npm run lint
       - run: npm test
-      - run: npm run serve & sleep 5
+      - run: npx serve -l 8000 . & sleep 5
       - run: npm run test:a11y
 
   deploy-production:

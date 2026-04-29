@@ -261,6 +261,30 @@
         getCamera: function() { return camera; },
         updateColors: function() { /* particles use their own palette */ },
         pause: function() { /* shapeTime freezes via manager skipping animate() */ },
+        animatePaused: function(elapsed) {
+            // Mouse split + velocity only — no shape morphing
+            if (!points) return;
+            var mouseWorld = new THREE.Vector3(mouse.x * 12, -mouse.y * 9, 0);
+            for (var j = 0; j < PARTICLE_COUNT; j++) {
+                var j3 = j * 3;
+                var dx = positions[j3] - mouseWorld.x;
+                var dy = positions[j3 + 1] - mouseWorld.y;
+                var dist = Math.sqrt(dx * dx + dy * dy);
+                var splitRange = SPLIT_RADIUS * 18;
+                if (dist < splitRange && dist > 0.01) {
+                    var force = (1 - dist / splitRange) * SPLIT_FORCE;
+                    velocities[j3] += (dx / dist) * force * 0.016;
+                    velocities[j3 + 1] += (dy / dist) * force * 0.016;
+                }
+                velocities[j3] *= 0.93;
+                velocities[j3 + 1] *= 0.93;
+                velocities[j3 + 2] *= 0.93;
+                positions[j3] = THREE.MathUtils.lerp(positions[j3], targets[j3], 0.035) + velocities[j3];
+                positions[j3 + 1] = THREE.MathUtils.lerp(positions[j3 + 1], targets[j3 + 1], 0.035) + velocities[j3 + 1];
+                positions[j3 + 2] = THREE.MathUtils.lerp(positions[j3 + 2], targets[j3 + 2], 0.035) + velocities[j3 + 2];
+            }
+            points.geometry.attributes.position.needsUpdate = true;
+        },
         destroy: function() { scene = null; camera = null; points = null; positions = null; targets = null; velocities = null; }
     });
 })();

@@ -76,6 +76,8 @@
 
         if (!isPaused) {
             activeScene.animate(elapsed);
+        } else if (activeScene.animatePaused) {
+            activeScene.animatePaused(elapsed);
         }
         renderer.render(activeScene.getScene(), activeScene.getCamera());
     }

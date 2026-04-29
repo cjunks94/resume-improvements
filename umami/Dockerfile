@@ -3,7 +3,7 @@
 # Author: Chris Junker (optimized 2025-11-11)
 # Size: ~73 MB | Startup: ~1.4s | Security: A+ | Zero trust build
 
-ARG NODE_VERSION=20
+ARG NODE_VERSION=24
 ARG UMAMI_VERSION=v2.13.2
 ARG TARGETARCH
 

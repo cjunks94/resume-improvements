@@ -29,7 +29,7 @@ Self-hosted Umami analytics for cjunker.dev with zero-cost hosting and Cloudflar
 
 ## Docker Images
 
-- **Umami**: Optimized multi-stage build (Node 20 Alpine) - **~73MB** (down from 82MB, -11%)
+- **Umami**: Optimized multi-stage build (Node 24 Alpine) - **~73MB** (down from 82MB, -11%)
 - **PostgreSQL**: `postgres:16-alpine` (~240MB)
 - **Total stack size**: ~313MB (vs 1GB+ with standard images)
 

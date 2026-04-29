@@ -8,8 +8,7 @@ Heartbeat checker for the portfolio ecosystem. Runs as a Railway cron job — ex
 |---------|-----|----------|
 | Portfolio (prod) | https://cjunker.dev | 200 |
 | Portfolio (staging) | https://staging.cjunker.dev | 200 |
-| Umami Analytics | https://umami.cjunker.dev/api/heartbeat | 200 |
-| Umami Tracking | https://umami-tracking.cjunker.dev/api/heartbeat | 200 |
+| Blog (prod) | https://blog.cjunker.dev | 200 |
 
 ## Configuration
 

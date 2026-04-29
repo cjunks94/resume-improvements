@@ -14,13 +14,8 @@ const ENDPOINTS = [
     expect: 200,
   },
   {
-    name: "Umami Analytics",
-    url: "https://umami.cjunker.dev/api/heartbeat",
-    expect: 200,
-  },
-  {
-    name: "Umami Tracking",
-    url: "https://umami-tracking.cjunker.dev/api/heartbeat",
+    name: "Blog (prod)",
+    url: "https://blog.cjunker.dev",
     expect: 200,
   },
 ];

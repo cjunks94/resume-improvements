@@ -20,7 +20,7 @@
   "author": "Christopher Junker",
   "license": "MIT",
   "devDependencies": {
-    "htmlhint": "^1.1.4",
+    "htmlhint": "^1.9.2",
     "pa11y-ci": "^3.0.1",
     "stylelint": "^16.0.0",
     "stylelint-config-standard": "^36.0.0"

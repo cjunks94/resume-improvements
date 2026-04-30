@@ -22,7 +22,7 @@
   "devDependencies": {
     "htmlhint": "^1.9.2",
     "pa11y-ci": "^3.0.1",
-    "stylelint": "^16.0.0",
-    "stylelint-config-standard": "^36.0.0"
+    "stylelint": "^17.9.1",
+    "stylelint-config-standard": "^40.0.0"
   }
 }

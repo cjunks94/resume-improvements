@@ -23,6 +23,11 @@
         if (!(c.getContext('webgl') || c.getContext('experimental-webgl'))) return;
     } catch (e) { return; }
 
+    // Skip in headless browsers (pa11y/puppeteer). Decorative scene isn't
+    // useful for a11y testing and the WebGL animation can prevent
+    // networkidle0 from settling, stalling page navigation in CI.
+    if (/HeadlessChrome|Headless/.test(navigator.userAgent)) return;
+
     var scenes = {};
     var activeScene = null;
     var activeSceneName = null;

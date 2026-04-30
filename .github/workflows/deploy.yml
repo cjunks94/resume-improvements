@@ -41,10 +41,17 @@ jobs:
       - run: npm ci
       - run: npm run lint
       - run: npm test
-      # pa11y disabled — CDN scripts (Three.js, D3, Mermaid) stall headless Chrome in CI
-      # TODO: re-enable once CDN deps are self-hosted or loaded async
-      # - run: npx serve -l 8000 . & sleep 5
-      # - run: npm run test:a11y
+      # Three.js + D3 are vendored under /vendor; Mermaid is lazy-loaded
+      # inside modals.js on first modal open. Pa11y no longer stalls
+      # waiting on CDN responses in headless Chrome.
+      - name: Start static server
+        run: npx serve -l 8000 . &
+      - name: Wait for server
+        run: |
+          until curl -sf http://localhost:8000/index.html > /dev/null; do
+            sleep 1
+          done
+      - run: npm run test:a11y
 
   deploy-production:
     name: Deploy → Production (cjunker.dev)

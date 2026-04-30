@@ -489,11 +489,10 @@
             <h2 class="section-title">Tech Radar</h2>
             <article class="tech-radar-section__content">
                 <p class="tech-radar-section__description">
-                    My technology landscape organized by expertise level and category. <strong>HOLD</strong> (center) = avoiding or breaking habits,
-                    <strong>ASSESS</strong> = feeling out and evaluating, <strong>TRIAL</strong> = in use on side projects,
-                    <strong>ADOPT</strong> = production-ready and actively using, <strong>MAINTAIN</strong> (outer, custom ring) = daily use at work/projects.
-                    Click any technology for details. ▲ indicates new additions.
-                    <em>Note: MAINTAIN ring is a custom addition to the standard ThoughtWorks Tech Radar format.</em>
+                    My technology landscape, organized by expertise level. <strong>HOLD</strong> (center) = avoiding,
+                    <strong>ASSESS</strong> = exploring, <strong>TRIAL</strong> = using with good results,
+                    <strong>ADOPT</strong> (outer) = production-ready and recommended.
+                    Click any blip for details. ▲ indicates a new addition.
                 </p>
 
                 <!-- Interactive Tech Radar Visualization -->
@@ -523,8 +522,7 @@
                 { name: "hold", color: "var(--radar-hold)" },
                 { name: "assess", color: "var(--radar-assess)" },
                 { name: "trial", color: "var(--radar-trial)" },
-                { name: "adopt", color: "var(--radar-adopt)" },
-                { name: "maintain", color: "var(--radar-maintain)" }
+                { name: "adopt", color: "var(--radar-adopt)" }
               ],
               entries: data.map(d => ({
                 quadrant: d.quadrant,

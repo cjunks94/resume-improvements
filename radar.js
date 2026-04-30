@@ -16,6 +16,18 @@ const radar_visualization = function(config) {
     return color;
   };
 
+  // Deterministic 0..1 hash from a string seed.
+  // Keeps blip positions stable across page loads so the radar
+  // doesn't jitter every time it rerenders.
+  const seededRandom = function(seed) {
+    let h = 2166136261;
+    for (let i = 0; i < seed.length; i++) {
+      h ^= seed.charCodeAt(i);
+      h = Math.imul(h, 16777619);
+    }
+    return ((h >>> 0) % 100000) / 100000;
+  };
+
   // Configuration defaults
   const cfg = {
     svg_id: config.svg_id || "radar",
@@ -158,9 +170,9 @@ const radar_visualization = function(config) {
     const ringRadius = radius - (ringIndex * ringWidth) - ringWidth / 2;
     const quadrantAngle = quadrantAngles[quadrantIndex];
 
-    // Random position within quadrant and ring
-    const angleVariation = (Math.random() - 0.5) * 80; // +/- 40 degrees
-    const radiusVariation = (Math.random() - 0.5) * ringWidth * 0.6;
+    // Deterministic position within quadrant and ring (seeded by entry label)
+    const angleVariation = (seededRandom(entry.label + ":a") - 0.5) * 80; // +/- 40 degrees
+    const radiusVariation = (seededRandom(entry.label + ":r") - 0.5) * ringWidth * 0.6;
 
     const angle = (quadrantAngle + angleVariation - 90) * Math.PI / 180;
     const r = ringRadius + radiusVariation;

@@ -4,10 +4,45 @@
  * Handles opening and closing architecture diagram modals.
  * Modals can be opened by clicking buttons with data-modal attribute,
  * and closed by clicking the close button, overlay, or pressing Escape.
+ *
+ * Mermaid is lazy-loaded on first modal open to avoid blocking page load
+ * (mermaid is ~2MB and only ever needed when a modal is opened).
  */
 
 (function() {
     'use strict';
+
+    // Mermaid is loaded once on first modal open and cached.
+    let mermaidPromise = null;
+
+    function loadMermaid() {
+        if (!mermaidPromise) {
+            mermaidPromise = import('https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs')
+                .then(module => {
+                    const mermaid = module.default;
+                    mermaid.initialize({
+                        startOnLoad: false,
+                        theme: 'dark',
+                        themeVariables: {
+                            primaryColor: '#0066cc',
+                            primaryTextColor: '#fff',
+                            primaryBorderColor: '#0052a3',
+                            lineColor: '#5e5e5e',
+                            secondaryColor: '#1e7e34',
+                            tertiaryColor: '#c92a2a'
+                        }
+                    });
+                    window.mermaid = mermaid;
+                    return mermaid;
+                })
+                .catch(err => {
+                    console.warn('Mermaid load failed:', err);
+                    mermaidPromise = null; // allow retry
+                    throw err;
+                });
+        }
+        return mermaidPromise;
+    }
 
     // Wait for DOM to be ready
     if (document.readyState === 'loading') {
@@ -83,8 +118,8 @@
             setTimeout(() => closeButton.focus(), 100);
         }
 
-        // Trigger Mermaid to render diagrams if not already rendered
-        if (typeof mermaid !== 'undefined') {
+        // Lazy-load Mermaid on first open, then render diagrams in this modal
+        loadMermaid().then(mermaid => {
             try {
                 mermaid.run({
                     querySelector: `#${modalId} .mermaid`
@@ -92,7 +127,9 @@
             } catch (e) {
                 console.warn('Mermaid rendering error:', e);
             }
-        }
+        }).catch(() => {
+            // Already logged in loadMermaid()
+        });
     }
 
     /**

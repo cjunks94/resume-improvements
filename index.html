@@ -66,31 +66,14 @@
         </style>
     </noscript>
 
-    <!-- D3.js for Tech Radar visualization -->
-    <script src="https://d3js.org/d3.v7.min.js"></script>
-    <script src="radar.js"></script>
+    <!-- D3.js for Tech Radar visualization (vendored to avoid CDN stalls in headless CI) -->
+    <script src="vendor/d3.v7.min.js" defer></script>
+    <script src="radar.js" defer></script>
 
-    <!-- Mermaid.js for Architecture Diagrams -->
-    <script type="module">
-        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
-        mermaid.initialize({
-            startOnLoad: false, // Don't auto-render, modal script will handle it
-            theme: 'dark',
-            themeVariables: {
-                primaryColor: '#0066cc',
-                primaryTextColor: '#fff',
-                primaryBorderColor: '#0052a3',
-                lineColor: '#5e5e5e',
-                secondaryColor: '#1e7e34',
-                tertiaryColor: '#c92a2a'
-            }
-        });
-        // Make mermaid available globally for modal script
-        window.mermaid = mermaid;
-    </script>
+    <!-- Mermaid.js is lazy-loaded inside modals.js when an architecture modal opens. -->
 
-    <!-- Three.js Background Scenes -->
-    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+    <!-- Three.js Background Scenes (vendored) -->
+    <script src="vendor/three.min.js" defer></script>
     <script src="scene-manager.js" defer></script>
     <script src="village-scene.js" defer></script>
     <script src="particle-scene.js" defer></script>
@@ -509,6 +492,8 @@
 
         <!-- Tech Radar Initialization Script -->
         <script>
+          // Wait for deferred d3.v7.min.js + radar.js to finish loading.
+          document.addEventListener('DOMContentLoaded', function() {
           // Load and parse CSV data
           d3.csv('tech-radar.csv').then(data => {
             radar_visualization({
@@ -541,6 +526,7 @@
             console.error('Error loading tech radar data:', error);
             document.getElementById('radar').innerHTML =
               '<p>Error loading tech radar visualization. Please check the console for details.</p>';
+          });
           });
         </script>
     </main>

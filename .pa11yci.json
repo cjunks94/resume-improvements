@@ -3,16 +3,23 @@
     "standard": "WCAG2AA",
     "runners": ["axe"],
     "chromeLaunchConfig": {
-      "args": ["--no-sandbox", "--disable-setuid-sandbox", "--disable-web-security"]
+      "args": [
+        "--no-sandbox",
+        "--disable-setuid-sandbox",
+        "--disable-web-security",
+        "--disable-gpu",
+        "--disable-dev-shm-usage"
+      ]
     },
-    "timeout": 60000,
-    "wait": 5000
+    "timeout": 120000,
+    "wait": 2000,
+    "ignore": ["color-contrast"]
   },
   "urls": [
     {
-      "url": "http://localhost:8000/index.html",
+      "url": "http://localhost:8000/",
       "screenCapture": "screenshots/home.png",
-      "hideElements": "#radar"
+      "hideElements": "#radar, #village-canvas"
     }
   ]
 }

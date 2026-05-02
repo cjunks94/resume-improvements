@@ -35,6 +35,16 @@ body {
     z-index: var(--z-sticky);
     padding: var(--space-md) var(--space-lg);
     margin-bottom: var(--space-xl);
+    transition: box-shadow var(--transition-fast), padding var(--transition-fast);
+}
+
+/* Scrolled state — stronger shadow and slight blur backdrop so the
+   header reads cleanly over decorative WebGL/pattern backgrounds. */
+.site-header.scrolled {
+    box-shadow: var(--shadow-md) var(--c-shadow);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    padding: var(--space-sm) var(--space-lg);
 }
 
 .site-header__content {
@@ -1357,6 +1367,10 @@ body.scene-focus .theme-switcher {
 }
 
 .village-toggle {
+    /* Reserve space for the longest possible label (e.g. "PARTICLES [PAUSED]")
+       so width doesn't jitter when the label changes between states. #65 */
+    min-width: 18ch;
+    text-align: left;
     background: var(--c-surface);
     border: var(--border-thick) solid var(--c-border);
     padding: var(--space-xs) var(--space-sm);

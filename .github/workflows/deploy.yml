@@ -108,22 +108,26 @@ jobs:
           publish_branch: gh-pages
           publish_dir: .
           cname: staging.cjunker.dev
-          # Drop force_orphan + keep existing files so the CNAME file
-          # and Pages config persist across deploys. force_orphan was
-          # making GitHub treat each push as a fresh setup, dropping
-          # the custom domain back to null.
-          force_orphan: false
-          keep_files: true
+          force_orphan: true
+          keep_files: false
           exclude_assets: '.github,node_modules,tests,package*.json,.gitignore,.stylelintrc.json,.htmlvalidate.json,decisions,TODO.md,CLAUDE.md,analytics-config.js,umami,healthcheck'
-      - name: Verify CNAME landed
+      - name: Restore Pages config custom domain
+        # GitHub Pages drops the custom domain on the staging repo's Pages
+        # config (cname: null) after every force_orphan deploy, even though
+        # the CNAME file is correct. This forces it back via the API.
+        # Requires STAGING_PAGES_PAT (fine-grained PAT, Pages: Read+Write
+        # scoped to cjunks94/resume-improvements-staging).
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.STAGING_PAGES_PAT }}
         run: |
           sleep 10
-          echo "## Pages config after deploy" >> $GITHUB_STEP_SUMMARY
+          gh api -X PUT repos/cjunks94/resume-improvements-staging/pages \
+            -f cname=staging.cjunker.dev \
+            -F https_enforced=true
+          echo "## Pages config after restore" >> $GITHUB_STEP_SUMMARY
           gh api repos/cjunks94/resume-improvements-staging/pages \
-            --jq '{cname, status, html_url}' \
-            >> $GITHUB_STEP_SUMMARY || echo "(read access on staging repo not available — check manually)"
+            --jq '{cname, status, html_url, https_enforced}' \
+            >> $GITHUB_STEP_SUMMARY
       - name: Summary
         run: |
           cat <<EOF >> $GITHUB_STEP_SUMMARY

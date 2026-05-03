@@ -922,10 +922,14 @@ body {
     transition: box-shadow var(--transition-fast), transform var(--transition-fast);
 }
 
-.about-section:hover,
-.contact-section:hover {
-    box-shadow: 4px 4px 0 var(--c-shadow);
-    transform: translate(-1px, -1px);
+/* Hover transforms only on devices with reliable hover (skip touch
+   to avoid sticky hover-state after tap-then-tap-elsewhere). #15.3 */
+@media (hover: hover) and (pointer: fine) {
+    .about-section:hover,
+    .contact-section:hover {
+        box-shadow: 4px 4px 0 var(--c-shadow);
+        transform: translate(-1px, -1px);
+    }
 }
 
 .about-section__paragraph,

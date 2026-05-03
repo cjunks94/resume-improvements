@@ -108,14 +108,22 @@ jobs:
           publish_branch: gh-pages
           publish_dir: .
           cname: staging.cjunker.dev
-          force_orphan: true
-          keep_files: false
+          # Drop force_orphan + keep existing files so the CNAME file
+          # and Pages config persist across deploys. force_orphan was
+          # making GitHub treat each push as a fresh setup, dropping
+          # the custom domain back to null.
+          force_orphan: false
+          keep_files: true
           exclude_assets: '.github,node_modules,tests,package*.json,.gitignore,.stylelintrc.json,.htmlvalidate.json,decisions,TODO.md,CLAUDE.md,analytics-config.js,umami,healthcheck'
-      - name: Wait for deployment and verify CNAME
+      - name: Verify CNAME landed
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          echo "Waiting for GitHub Pages deployment to complete..."
           sleep 10
-          echo "✅ Deployment complete - CNAME should be preserved by action"
+          echo "## Pages config after deploy" >> $GITHUB_STEP_SUMMARY
+          gh api repos/cjunks94/resume-improvements-staging/pages \
+            --jq '{cname, status, html_url}' \
+            >> $GITHUB_STEP_SUMMARY || echo "(read access on staging repo not available — check manually)"
       - name: Summary
         run: |
           cat <<EOF >> $GITHUB_STEP_SUMMARY

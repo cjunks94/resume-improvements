@@ -18,6 +18,12 @@
         return;
     }
 
+    // Defensive: force closed state on every page load. Past regressions
+    // shipped HTML with aria-expanded="true", which made the first tap
+    // close the (visually-already-closed) menu. Issue #32.
+    menuToggle.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+
     /**
      * Toggle menu open/closed state
      */

@@ -14,7 +14,12 @@
 body {
     background-color: var(--c-bg);
     color: var(--c-ink);
-    padding: var(--space-xl);
+    /* Honor iPhone X+ safe-area-insets in landscape (notch / rounded corners).
+       The max() pattern keeps existing padding on devices without insets. */
+    padding-top: var(--space-xl);
+    padding-right: max(var(--space-xl), env(safe-area-inset-right));
+    padding-bottom: max(var(--space-xl), env(safe-area-inset-bottom));
+    padding-left: max(var(--space-xl), env(safe-area-inset-left));
     margin: 0;
 }
 
@@ -208,7 +213,12 @@ body {
    3. BUTTONS
    ========================================================================== */
 .btn {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    /* WCAG 2.5.5 — minimum 44x44 touch target. Use 48 for comfortable taps. */
+    min-height: 48px;
+    min-width: 48px;
     padding: var(--space-sm) var(--space-lg);
     font-family: var(--font-mono);
     font-weight: 700;
@@ -386,7 +396,11 @@ body {
 
 /* Action Button inside card - Hard shadow style */
 .brutal-card-v2__action {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    /* WCAG 2.5.5 — minimum 44x44 touch target. */
+    min-height: 48px;
     background-color: var(--c-surface);
     color: var(--c-ink);
     border: var(--border-thick) solid var(--c-border);
@@ -565,6 +579,10 @@ body {
 }
 
 .project-card__link {
+    display: inline-flex;
+    align-items: center;
+    /* WCAG 2.5.5 — minimum 44x44 touch target. */
+    min-height: 44px;
     color: var(--c-accent);
     font-weight: 600;
     padding: var(--space-xs) var(--space-sm);
@@ -842,6 +860,12 @@ body {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
+    /* WCAG 2.5.5 — minimum 44x44 touch target. */
+    min-width: 44px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background: var(--c-ink);
     color: var(--c-surface);
     border: var(--border-thick) solid var(--c-border);

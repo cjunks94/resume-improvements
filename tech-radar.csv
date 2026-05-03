@@ -6,6 +6,8 @@ TypeScript,adopt,languages-frameworks,FALSE,"Panoptrain real-time NYC subway tra
 React,adopt,languages-frameworks,FALSE,"Production frontend at 2U; React 19 in Panoptrain client with MapLibre GL integration"
 Hono,trial,languages-frameworks,TRUE,"Modern lightweight web framework powering Panoptrain server (TypeScript, edge-ready, minimal overhead)"
 Astro,trial,languages-frameworks,TRUE,"Static blog at blog.cjunker.dev — Astro 6 + MDX, Dockerfile build, Railway deployment"
+LangGraph,trial,languages-frameworks,TRUE,"Agentic LLM workflows — sibling TradingAgents graph in Agentic Portfolio produces 5-tier ratings parsed into trade decisions"
+Pydantic,trial,languages-frameworks,TRUE,"Runtime validation + structured config in Agentic Portfolio; type-safe agent input/output schemas"
 AWS,adopt,platforms,FALSE,"Daily: EC2, Lambda, S3, RDS, IAM, Secrets Manager, SQS/SNS, CloudWatch, DocumentDB"
 Kubernetes,adopt,platforms,FALSE,"Self-managed K8s on EC2 at 2U; Helm charts, HPA, rolling updates, liveness/readiness probes"
 Docker,adopt,platforms,FALSE,"Daily containerization across services; multi-stage builds (Umami image: 73MB Alpine, ~1.4s startup)"

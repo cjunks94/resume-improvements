@@ -315,6 +315,11 @@
                             and deterministic idempotency keys for safe re-runs. Paper-to-live swap by config change.
                         </p>
                         <div class="project-card__actions">
+                            <button class="brutal-card-v2__action"
+                                    data-modal="agentic-architecture-modal"
+                                    aria-label="View Agentic Portfolio architecture diagram">
+                                View Architecture
+                            </button>
                             <a href="https://github.com/cjunks94/agentic-portfolio"
                                class="project-card__link"
                                target="_blank"
@@ -378,6 +383,11 @@
                                rel="noopener noreferrer">
                                 Live Demo
                             </a>
+                            <button class="brutal-card-v2__action"
+                                    data-modal="exportee-architecture-modal"
+                                    aria-label="View Exportee-Rails architecture diagram">
+                                View Architecture
+                            </button>
                             <a href="https://github.com/cjunks94/exportee-rails"
                                class="project-card__link"
                                target="_blank"
@@ -680,6 +690,190 @@ graph TB
                             <li><strong>Goroutine-per-Connection:</strong> 100+ concurrent users</li>
                             <li><strong>Tag-Based Discovery:</strong> AWS tag filtering (env, product)</li>
                             <li><strong>DLQ Retry:</strong> One-click failed message recovery</li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+        </div>
+    </div>
+
+    <!-- Exportee-Rails Architecture Modal -->
+    <div id="exportee-architecture-modal" class="arch-modal" role="dialog" aria-labelledby="exportee-modal-title" aria-hidden="true">
+        <div class="arch-modal__overlay"></div>
+        <div class="arch-modal__dialog">
+            <header class="arch-modal__header">
+                <h3 id="exportee-modal-title" class="arch-modal__title">Exportee-Rails Architecture</h3>
+                <button class="arch-modal__close" aria-label="Close modal">✕</button>
+            </header>
+            <div class="arch-modal__content">
+                <p class="arch-modal__subtitle">Multi-tenant config-as-code data pipeline platform</p>
+                <div id="exportee-architecture-diagram" class="mermaid"></div>
+                <script type="text/javascript">
+                    document.getElementById('exportee-architecture-diagram').textContent = `
+graph TB
+    subgraph "User Layer"
+        Admin["👤 Admin / Editor / Viewer"]
+        Client["🔌 REST API Client"]
+    end
+
+    subgraph "Rails 7.2 (Multi-tenant, OrgScoped)"
+        Web["🚂 Hotwire (Turbo + Stimulus)"]
+        Pundit["🔐 Pundit RBAC"]
+        Defs["📝 YAML Pipeline Definitions<br/>(config-as-code)"]
+    end
+
+    subgraph "Background"
+        Sidekiq["⚙️ Sidekiq + sidekiq-cron"]
+        Runner["ExportRun Worker"]
+    end
+
+    subgraph "Source Connections (Lockbox-encrypted creds)"
+        PG["🐘 PostgreSQL"]
+        MySQL["🐬 MySQL"]
+        SF["☁️ Salesforce<br/>(Bulk API 2.0)"]
+    end
+
+    subgraph "Transform Pipeline"
+        Polars["⚡ Polars<br/>vectorized DataFrame<br/>(10–100× faster)"]
+        Widgets["🛡️ PII Widgets<br/>mask_email, mask_ssn,<br/>redact, rename, filter"]
+    end
+
+    subgraph "Output"
+        CSV["📄 CSV"]
+        R2["☁️ Cloudflare R2<br/>(via Active Storage)"]
+    end
+
+    subgraph "Append-only Audit"
+        Run["ExportRun + frozen<br/>CompiledDefinition"]
+        Sums["row counts, byte counts,<br/>SHA256 checksums,<br/>per-stage timing"]
+    end
+
+    Admin --> Web
+    Client --> Web
+    Web --> Pundit
+    Pundit --> Defs
+    Defs --> Sidekiq
+    Sidekiq --> Runner
+    Runner --> PG
+    Runner --> MySQL
+    Runner --> SF
+    PG --> Polars
+    MySQL --> Polars
+    SF --> Polars
+    Polars --> Widgets
+    Widgets --> CSV
+    CSV --> R2
+    Runner --> Run
+    Run --> Sums
+
+    style Web fill:#cc0000,stroke:#990000,stroke-width:3px,color:#fff
+    style Polars fill:#0066cc,stroke:#0052a3,stroke-width:2px,color:#fff
+    style Widgets fill:#1e7e34,stroke:#155d27,stroke-width:2px,color:#fff
+    style Run fill:#5e3a8e,stroke:#3d2660,stroke-width:2px,color:#fff
+`;
+                </script>
+
+                <details class="arch-modal__details">
+                    <summary class="arch-modal__summary">Key Architectural Decisions</summary>
+                    <div class="arch-modal__details-content">
+                        <h4>Why these choices</h4>
+                        <ul class="arch-modal__list">
+                            <li><strong>Rails over FastAPI:</strong> intentional rewrite for AI-tooling support and faster team onboarding</li>
+                            <li><strong>OrgScoped concern:</strong> tenant isolation enforced at the query layer, not per-controller</li>
+                            <li><strong>Frozen CompiledDefinition:</strong> every ExportRun snapshots its exact config — re-derivable + tamper-evident</li>
+                            <li><strong>Polars (optional):</strong> 10–100× speedup vs row-by-row, swappable per pipeline</li>
+                            <li><strong>Lockbox encryption:</strong> source credentials encrypted at rest, decrypted at runtime only</li>
+                            <li><strong>Streaming PostgreSQL COPY:</strong> low-memory extraction for large tables</li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+        </div>
+    </div>
+
+    <!-- Agentic Portfolio Architecture Modal -->
+    <div id="agentic-architecture-modal" class="arch-modal" role="dialog" aria-labelledby="agentic-modal-title" aria-hidden="true">
+        <div class="arch-modal__overlay"></div>
+        <div class="arch-modal__dialog">
+            <header class="arch-modal__header">
+                <h3 id="agentic-modal-title" class="arch-modal__title">Agentic Portfolio Architecture</h3>
+                <button class="arch-modal__close" aria-label="Close modal">✕</button>
+            </header>
+            <div class="arch-modal__content">
+                <p class="arch-modal__subtitle">LLM-driven paper trading with pluggable broker abstraction</p>
+                <div id="agentic-architecture-diagram" class="mermaid"></div>
+                <script type="text/javascript">
+                    document.getElementById('agentic-architecture-diagram').textContent = `
+graph TB
+    subgraph "Trigger"
+        Cron["⏰ Railway Cron<br/>(weekly schedule)"]
+        CLI["💻 Manual Typer CLI"]
+    end
+
+    subgraph "Agentic Layer (sibling repo)"
+        TA["🤖 TradingAgents Graph<br/>(LangGraph)"]
+        Out["📊 5-tier Rating<br/>Buy / Overweight / Hold /<br/>Underweight / Sell<br/>+ markdown thesis"]
+    end
+
+    subgraph "Strategy"
+        Advisor["🧠 Advisor<br/>(parses **Rating**: line)"]
+        Strategy["📐 Strategy<br/>(target weights per rating)"]
+        Runner["🏃 Runner<br/>(propose deltas, threshold trivials)"]
+    end
+
+    subgraph "Broker Abstraction (ADR-001)"
+        Iface["📋 Broker Interface<br/>place_order / get_positions /<br/>get_cash / mark_to_market"]
+        Paper["📈 PaperBroker<br/>(yfinance fills)"]
+        Live["💵 Live Broker<br/>(Alpaca / IBKR — config swap)"]
+    end
+
+    subgraph "Atomic Storage"
+        Port["💼 portfolio.json<br/>(temp + os.replace)"]
+        Orders["📜 orders.jsonl<br/>(append-only)"]
+        Decs["🗒️ decisions.jsonl"]
+        Eq["📊 equity.jsonl<br/>(snapshots + cost basis)"]
+    end
+
+    subgraph "Idempotency Key"
+        Key["{trade_date}:{ticker}:<br/>{side}:{shares_rounded}"]
+    end
+
+    Cron --> Runner
+    CLI --> Runner
+    Runner --> TA
+    TA --> Out
+    Out --> Advisor
+    Advisor --> Strategy
+    Strategy --> Runner
+    Runner --> Iface
+    Iface --> Paper
+    Iface -.-> Live
+    Paper --> Orders
+    Runner --> Port
+    Runner --> Decs
+    Runner --> Eq
+    Runner -.-> Key
+    Key -.-> Orders
+
+    style TA fill:#5e3a8e,stroke:#3d2660,stroke-width:3px,color:#fff
+    style Iface fill:#0066cc,stroke:#0052a3,stroke-width:2px,color:#fff
+    style Paper fill:#1e7e34,stroke:#155d27,stroke-width:2px,color:#fff
+    style Live fill:#888,stroke:#555,stroke-width:1px,stroke-dasharray:4,color:#fff
+    style Key fill:#ff9900,stroke:#cc7700,stroke-width:2px,color:#000
+`;
+                </script>
+
+                <details class="arch-modal__details">
+                    <summary class="arch-modal__summary">Key Architectural Decisions</summary>
+                    <div class="arch-modal__details-content">
+                        <h4>Why these choices</h4>
+                        <ul class="arch-modal__list">
+                            <li><strong>Broker interface (ADR-001):</strong> paper-to-live by config change, not rewrite — strategy and runner code never touch broker specifics</li>
+                            <li><strong>Deterministic idempotency keys:</strong> safe re-runs after crash; same date+ticker+side never double-executes</li>
+                            <li><strong>Atomic JSON writes:</strong> temp file + os.replace prevents partial-state corruption during crash</li>
+                            <li><strong>Append-only JSONL:</strong> orders / decisions / equity logs are immutable audit primitives</li>
+                            <li><strong>LangGraph parsing:</strong> regex on <code>**Rating**:</code> line — explicit contract with the agent's output, not eval()</li>
+                            <li><strong>Per-ticker error isolation:</strong> one failure doesn't kill the run; partial results persist</li>
                         </ul>
                     </div>
                 </details>

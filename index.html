@@ -104,6 +104,7 @@
                 <ul class="nav-list">
                     <li><a href="#about" class="nav-link">About</a></li>
                     <li><a href="#projects" class="nav-link">Projects</a></li>
+                    <li><a href="#decisions" class="nav-link">Decisions</a></li>
                     <li><a href="#tech-radar" class="nav-link">Tech Radar</a></li>
                     <li><a href="#contact" class="nav-link">Contact</a></li>
                     <li><a href="https://blog.cjunker.dev" class="nav-link" rel="noopener">Blog</a></li>
@@ -543,6 +544,113 @@
                     </div>
                 </article>
             </div>
+        </section>
+
+        <!-- Recent Decisions Section -->
+        <section id="decisions" class="brutal-card-v2">
+            <div class="brutal-card-v2__header">
+                <h2 class="brutal-card-v2__title">RECENT DECISIONS</h2>
+            </div>
+            <article class="brutal-card-v2__content">
+                <p>
+                    <small><em>How I think about trade-offs &mdash; the decisions
+                    behind the projects, not just the results.</em></small>
+                </p>
+
+                <div class="projects-grid">
+                    <article class="brutal-card-v2 brutal-card-v2--hatching">
+                        <div class="brutal-card-v2__header">
+                            <h3 class="brutal-card-v2__title">RAILWAY OVER K8S</h3>
+                        </div>
+                        <div class="brutal-card-v2__content">
+                            <p class="project-card__tech"><small>Exportee-Rails &middot; ADR-0001</small></p>
+                            <p>
+                                Picked Railway PaaS over Kubernetes for a 4-container app with one user. The "shows I know K8s"
+                                resume argument doesn't hold &mdash; reviewers see a Helm chart for low-traffic and think
+                                <em>over-engineered</em>, not <em>impressive</em>. Committed Docker Compose anyway for the self-hosting story.
+                            </p>
+                            <div class="project-card__actions">
+                                <a href="https://github.com/cjunks94/exportee-rails/blob/main/docs/adr/0001-deploy-strategy.md"
+                                   class="project-card__link"
+                                   target="_blank"
+                                   rel="noopener noreferrer"
+                                   aria-label="Read full ADR: Railway over K8s">
+                                    Read full ADR &rarr;
+                                </a>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="brutal-card-v2 brutal-card-v2--hatching">
+                        <div class="brutal-card-v2__header">
+                            <h3 class="brutal-card-v2__title">PLUGGABLE BROKER</h3>
+                        </div>
+                        <div class="brutal-card-v2__content">
+                            <p class="project-card__tech"><small>Agentic Portfolio &middot; ADR-001</small></p>
+                            <p>
+                                Designed a Broker interface so the strategy and runner code never touch broker specifics.
+                                Paper-to-live (PaperBroker &rarr; Alpaca/IBKR) becomes a config swap, not a rewrite.
+                                Trade-off accepted: an extra abstraction layer the day-1 paper trader doesn't need, paid for by future flexibility.
+                            </p>
+                            <div class="project-card__actions">
+                                <a href="https://github.com/cjunks94/agentic-portfolio/blob/main/docs/adr/ADR-001-broker-abstraction.md"
+                                   class="project-card__link"
+                                   target="_blank"
+                                   rel="noopener noreferrer"
+                                   aria-label="Read full ADR: Pluggable Broker Abstraction">
+                                    Read full ADR &rarr;
+                                </a>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="brutal-card-v2 brutal-card-v2--hatching">
+                        <div class="brutal-card-v2__header">
+                            <h3 class="brutal-card-v2__title">VENDORED CDN LIBS</h3>
+                        </div>
+                        <div class="brutal-card-v2__content">
+                            <p class="project-card__tech"><small>This portfolio &middot; PR #70</small></p>
+                            <p>
+                                Pa11y was disabled in CI because Three.js / D3 / Mermaid loaded from CDN stalled headless Chrome.
+                                Vendored Three.js + D3 locally (~950 KB) and lazy-loaded Mermaid on first modal open.
+                                Result: hermetic accessibility tests on every push, plus a real production perf win.
+                            </p>
+                            <div class="project-card__actions">
+                                <a href="https://github.com/cjunks94/resume-improvements/pull/70"
+                                   class="project-card__link"
+                                   target="_blank"
+                                   rel="noopener noreferrer"
+                                   aria-label="Read PR #70: Vendored CDN libs">
+                                    Read PR &rarr;
+                                </a>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="brutal-card-v2 brutal-card-v2--hatching">
+                        <div class="brutal-card-v2__header">
+                            <h3 class="brutal-card-v2__title">BRANCH-BASED DEPLOYS</h3>
+                        </div>
+                        <div class="brutal-card-v2__content">
+                            <p class="project-card__tech"><small>This portfolio &middot; ADR-003</small></p>
+                            <p>
+                                Master pushes deploy to production (cjunker.dev); feature branches deploy to staging
+                                (staging.cjunker.dev) via a separate gh-pages repo. Lets every PR get a real preview URL
+                                without disrupting prod. Skip-staging escape hatch for Dependabot PRs.
+                            </p>
+                            <div class="project-card__actions">
+                                <a href="https://github.com/cjunks94/resume-improvements/blob/master/decisions/003-branch-based-deployment-strategy.md"
+                                   class="project-card__link"
+                                   target="_blank"
+                                   rel="noopener noreferrer"
+                                   aria-label="Read full ADR: Branch-based Deploys">
+                                    Read full ADR &rarr;
+                                </a>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </article>
         </section>
 
         <!-- Tech Radar Section -->

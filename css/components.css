@@ -1443,10 +1443,22 @@ body.scene-focus .theme-switcher {
 
 /* Mobile: hide the FOCUS / VILLAGE / PARTICLES toggles — the decorative
    3D scene toggle is a desktop-only flourish; on mobile it just steals
-   real estate from content. */
+   real estate from content.
+
+   Safeguard: if body.scene-focus carried over from a desktop session
+   (or a resize event), the only exit control is .scene-toggles which
+   we just hid. Re-show core content unconditionally on mobile so the
+   user can never get locked out of an invisible-content state. */
 @media (max-width: 768px) {
     .scene-toggles {
         display: none;
+    }
+
+    body.scene-focus .site-header,
+    body.scene-focus .site-main,
+    body.scene-focus .site-footer {
+        opacity: 1;
+        pointer-events: auto;
     }
 }
 

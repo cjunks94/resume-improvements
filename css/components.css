@@ -23,6 +23,15 @@ body {
     margin: 0;
 }
 
+/* Mobile: tighten horizontal padding so cards fill the viewport.
+   32px each side was eating ~17% of an iPhone 13 mini width. */
+@media (max-width: 768px) {
+    body {
+        padding-right: max(var(--space-md), env(safe-area-inset-right));
+        padding-left: max(var(--space-md), env(safe-area-inset-left));
+    }
+}
+
 /* Main content area */
 .site-main {
     padding-top: var(--space-xl);
@@ -1299,12 +1308,12 @@ body {
     box-shadow: var(--shadow-sm) var(--c-shadow);
 }
 
-/* Mobile: Move theme switcher below header to avoid overlap */
+/* Mobile: hide theme switcher entirely — declutters narrow viewports.
+   Desktop users still get all three themes; mobile defaults to whichever
+   theme is saved (or the system default). */
 @media (max-width: 768px) {
     .theme-switcher {
-        top: auto;
-        bottom: var(--space-lg);
-        right: var(--space-md);
+        display: none;
     }
 }
 
@@ -1432,10 +1441,24 @@ body.scene-focus .theme-switcher {
     background: var(--c-bg);
 }
 
+/* Mobile: hide the FOCUS / VILLAGE / PARTICLES toggles — the decorative
+   3D scene toggle is a desktop-only flourish; on mobile it just steals
+   real estate from content.
+
+   Safeguard: if body.scene-focus carried over from a desktop session
+   (or a resize event), the only exit control is .scene-toggles which
+   we just hid. Re-show core content unconditionally on mobile so the
+   user can never get locked out of an invisible-content state. */
 @media (max-width: 768px) {
-    .village-toggle {
-        bottom: var(--space-lg);
-        left: var(--space-md);
+    .scene-toggles {
+        display: none;
+    }
+
+    body.scene-focus .site-header,
+    body.scene-focus .site-main,
+    body.scene-focus .site-footer {
+        opacity: 1;
+        pointer-events: auto;
     }
 }
 

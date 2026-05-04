@@ -346,29 +346,31 @@
 
                 <article class="brutal-card-v2 brutal-card-v2--halftone">
                     <div class="brutal-card-v2__header">
-                        <h3 class="brutal-card-v2__title">EXPORTEE</h3>
+                        <h3 class="brutal-card-v2__title">EXPORTEE_RAILS</h3>
                     </div>
                     <div class="brutal-card-v2__content">
                         <p class="project-card__tech">
-                            <small>Python/FastAPI • React • PostgreSQL • Docker</small>
+                            <small>Rails 7.2 &middot; Hotwire &middot; Sidekiq &middot; PostgreSQL &middot; Polars</small>
                         </p>
                         <p>
-                            Self-hosted data export and transformation engine with read-only database connections,
-                            PII detection/masking, widget-based transformations, and compliance audit logging
-                            (HIPAA/FERPA/GDPR). Supports multiple export formats with optional encryption.
+                            Multi-tenant, config-as-code data pipeline platform extracting from
+                            Postgres/MySQL/Salesforce, applying PII masking widgets and field mappings,
+                            then delivering CSV exports on schedule with append-only audit trails
+                            (frozen config + SHA256 checksums). 107 RSpec cases at 80%+ coverage,
+                            Pundit RBAC, vectorized Polars transforms (10&ndash;100&times; faster than row-by-row),
+                            REST API with OpenAPI spec.
+                        </p>
+                        <p>
+                            <small><em>Deliberate rewrite from the original Python/FastAPI version &mdash;
+                            same domain logic, swapped the stack to Rails for AI-tooling support and
+                            faster team onboarding.</em></small>
                         </p>
                         <div class="project-card__actions">
-                            <a href="https://exportee.cjunker.dev"
-                               class="brutal-card-v2__action"
-                               target="_blank"
-                               rel="noopener noreferrer">
-                                Live Demo
-                            </a>
-                            <a href="https://github.com/cjunks94/exportee"
+                            <a href="https://github.com/cjunks94/exportee-rails"
                                class="project-card__link"
                                target="_blank"
                                rel="noopener noreferrer">
-                                View on GitHub →
+                                View on GitHub &rarr;
                             </a>
                         </div>
                     </div>

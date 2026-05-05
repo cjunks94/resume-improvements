@@ -937,7 +937,7 @@ graph TB
     end
 
     subgraph "Strategy"
-        Advisor["🧠 Advisor<br/>(parses **Rating**: line)"]
+        Advisor["🧠 Advisor<br/>(parses Rating: line)"]
         Strategy["📐 Strategy<br/>(target weights per rating)"]
         Runner["🏃 Runner<br/>(propose deltas, threshold trivials)"]
     end
@@ -956,7 +956,7 @@ graph TB
     end
 
     subgraph "Idempotency Key"
-        Key["{trade_date}:{ticker}:<br/>{side}:{shares_rounded}"]
+        Key["(trade_date):(ticker):<br/>(side):(shares_rounded)"]
     end
 
     Cron --> Runner

@@ -1,0 +1,260 @@
+/* ==========================================================================
+   PATTERNS.CSS - Brutalist Background Patterns
+
+   Print-inspired textures that add visual interest without
+   compromising accessibility. Patterns use theme colors.
+
+   MODULARITY: To disable patterns, remove this file from imports.
+   To change pattern style, edit this file or swap with an alternate.
+   ========================================================================== */
+
+/* ==========================================================================
+   1. HALFTONE DOTS PATTERN
+
+   Classic print halftone effect with small dots
+   Use on accent-colored backgrounds
+   ========================================================================== */
+.pattern-dots {
+    background-color: var(--c-accent);
+    background-image: radial-gradient(var(--c-ink) 20%, transparent 20%);
+    background-size: 8px 8px;
+}
+
+/* Smaller, subtler dots variant */
+.pattern-dots-sm {
+    background-color: var(--c-accent);
+    background-image: radial-gradient(var(--c-ink) 15%, transparent 15%);
+    background-size: 6px 6px;
+}
+
+/* Larger dots for headers/banners */
+.pattern-dots-lg {
+    background-color: var(--c-accent);
+    background-image: radial-gradient(var(--c-ink) 25%, transparent 25%);
+    background-size: 12px 12px;
+}
+
+/* ==========================================================================
+   2. DIAGONAL LINES PATTERN (HATCHING)
+
+   Architectural hatching effect
+   Use on neutral/surface backgrounds
+   ========================================================================== */
+.pattern-lines {
+    background-color: var(--c-surface);
+    background-image: repeating-linear-gradient(
+        45deg,
+        var(--c-ink),
+        var(--c-ink) 1px,
+        transparent 1px,
+        transparent 6px
+    );
+}
+
+/* Denser lines for emphasis */
+.pattern-lines-dense {
+    background-color: var(--c-surface);
+    background-image: repeating-linear-gradient(
+        45deg,
+        var(--c-ink),
+        var(--c-ink) 1px,
+        transparent 1px,
+        transparent 4px
+    );
+}
+
+/* Wider spacing for subtle effect */
+.pattern-lines-sparse {
+    background-color: var(--c-surface);
+    background-image: repeating-linear-gradient(
+        45deg,
+        var(--c-ink-muted),
+        var(--c-ink-muted) 1px,
+        transparent 1px,
+        transparent 10px
+    );
+}
+
+/* Horizontal lines */
+.pattern-lines-horizontal {
+    background-color: var(--c-surface);
+    background-image: repeating-linear-gradient(
+        0deg,
+        var(--c-ink),
+        var(--c-ink) 1px,
+        transparent 1px,
+        transparent 6px
+    );
+}
+
+/* ==========================================================================
+   3. GRID PATTERN
+
+   Graph paper / blueprint grid effect
+   ========================================================================== */
+.pattern-grid {
+    background-color: var(--c-bg);
+    background-image:
+        linear-gradient(var(--c-ink-muted) 1px, transparent 1px),
+        linear-gradient(90deg, var(--c-ink-muted) 1px, transparent 1px);
+    background-size: 20px 20px;
+}
+
+/* Finer grid for technical look */
+.pattern-grid-fine {
+    background-color: var(--c-bg);
+    background-image:
+        linear-gradient(var(--c-ink-muted) 1px, transparent 1px),
+        linear-gradient(90deg, var(--c-ink-muted) 1px, transparent 1px);
+    background-size: 10px 10px;
+}
+
+/* ==========================================================================
+   4. CHECKERBOARD PATTERN
+   ========================================================================== */
+.pattern-checker {
+    background-color: var(--c-surface);
+    background-image:
+        linear-gradient(45deg, var(--c-surface-alt) 25%, transparent 25%),
+        linear-gradient(-45deg, var(--c-surface-alt) 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, var(--c-surface-alt) 75%),
+        linear-gradient(-45deg, transparent 75%, var(--c-surface-alt) 75%);
+    background-size: 20px 20px;
+    background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+}
+
+/* ==========================================================================
+   5. CROSS PATTERN
+
+   Plus signs / crosses scattered
+   ========================================================================== */
+.pattern-cross {
+    background-color: var(--c-surface);
+    background-image:
+        linear-gradient(var(--c-ink-muted) 2px, transparent 2px),
+        linear-gradient(90deg, var(--c-ink-muted) 2px, transparent 2px);
+    background-size: 40px 40px;
+    background-position: center center;
+}
+
+/* ==========================================================================
+   6. NOISE/GRAIN TEXTURE
+
+   Subtle paper grain effect using SVG data URI
+   ========================================================================== */
+.pattern-noise {
+    background-color: var(--c-bg);
+    /* Subtle noise overlay using filter */
+    position: relative;
+}
+
+.pattern-noise::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    pointer-events: none;
+}
+
+/* ==========================================================================
+   7. ACCENT STRIP PATTERNS
+
+   For use in toast alerts, status indicators, etc.
+   ========================================================================== */
+
+/* Success strip with dots */
+.strip-success {
+    background-color: var(--c-success);
+    background-image: radial-gradient(var(--c-ink) 25%, transparent 25%);
+    background-size: 4px 4px;
+}
+
+/* Error strip with diagonal lines */
+.strip-error {
+    background-color: var(--c-error);
+    background-image: repeating-linear-gradient(
+        45deg,
+        var(--c-ink),
+        var(--c-ink) 1px,
+        transparent 1px,
+        transparent 4px
+    );
+}
+
+/* Warning strip with horizontal lines */
+.strip-warning {
+    background-color: var(--c-warning);
+    background-image: repeating-linear-gradient(
+        0deg,
+        var(--c-ink),
+        var(--c-ink) 1px,
+        transparent 1px,
+        transparent 4px
+    );
+}
+
+/* Info strip with vertical lines */
+.strip-info {
+    background-color: var(--c-info);
+    background-image: repeating-linear-gradient(
+        90deg,
+        var(--c-ink),
+        var(--c-ink) 1px,
+        transparent 1px,
+        transparent 4px
+    );
+}
+
+/* ==========================================================================
+   8. RESPONSIVE PATTERNS
+
+   Reduce pattern complexity on smaller screens for performance
+   ========================================================================== */
+@media (max-width: 480px) {
+    .pattern-dots,
+    .pattern-dots-sm,
+    .pattern-dots-lg {
+        background-size: 10px 10px; /* Slightly larger for performance */
+    }
+
+    .pattern-grid,
+    .pattern-grid-fine {
+        background-size: 25px 25px; /* Coarser grid */
+    }
+}
+
+/* ==========================================================================
+   9. REDUCED MOTION (A11Y)
+
+   Disable animated patterns if user prefers reduced motion.
+   !important is intentional - user a11y preferences must override all styles.
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+    .pattern-animated {
+        /* A11Y: User preference must win */
+        animation: none !important;
+    }
+}
+
+/* ==========================================================================
+   10. PATTERN UTILITIES
+
+   Helper classes for pattern overlays
+   ========================================================================== */
+
+/* Make pattern background but keep content readable */
+.pattern-container {
+    position: relative;
+}
+
+.pattern-container > * {
+    position: relative;
+    z-index: 1;
+}
+
+/* Fade pattern at edges */
+.pattern-fade {
+    -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+    mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+}

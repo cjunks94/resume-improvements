@@ -1,0 +1,58 @@
+# Site Configuration
+# This file contains all configurable values used across the portfolio site.
+# Update these values as needed and manually apply changes to index.html.
+
+# Personal Information
+personal:
+  name: Christopher Junker
+  title: Senior Software Engineer
+  subtitle: Full-Stack & Distributed Systems Specialist
+  location: Brooklyn, NY
+  location_description: Open to NYC-based roles
+
+# Contact Information
+contact:
+  email: cjunks94@gmail.com
+  phone: 631-827-5831
+  github:
+    username: cjunks94
+    url: https://github.com/cjunks94
+  linkedin:
+    url: https://linkedin.com/in/christopher-junker-218aabba/
+  repository:
+    url: https://github.com/cjunks94/resume-improvements
+
+# Summary
+summary: |
+  Accomplished Senior Software Engineer with 7+ years building scalable, observable web applications
+  at 2U, processing high-volume user data for 10,000+ users. Expertise in Go, Ruby on Rails, React,
+  AWS/Kubernetes, and event-driven architectures. Seeking to drive innovation at scale, leveraging
+  experience in production reliability, event streaming, distributed tracing, and Kubernetes orchestration.
+
+# About Paragraphs
+about:
+  - |
+    I'm a senior software engineer with deep experience in building and scaling production systems.
+    My work spans from creating production Go microservices with 230+ tests to architecting
+    comprehensive observability infrastructure with Datadog APM and distributed tracing.
+  - |
+    As the primary on-call engineer and team lead for a platform serving 10,000+ users, I've
+    developed expertise in SLO monitoring, incident response, and post-mortem analysis. I'm
+    passionate about resilience patterns, distributed systems, and making complex infrastructure
+    observable and maintainable.
+
+# Resume Files
+resume:
+  text_version: resume-versions/christopher-junker-resume-datadog-v4-gdocs.txt
+  docx_version: resume-10-25.docx
+
+# External Links
+links:
+  tech_radar_csv: tech-radar.csv
+  tech_radar_md: TECH_RADAR.md
+
+# Site Metadata
+metadata:
+  description: Christopher Junker - Senior Software Engineer specializing in distributed systems, observability, and cloud-native technologies
+  keywords: software engineer, Go, Ruby on Rails, Kubernetes, AWS, distributed systems, observability, Datadog
+  year: 2025

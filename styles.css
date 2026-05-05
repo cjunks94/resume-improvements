@@ -1,0 +1,39 @@
+/* ==========================================================================
+   STYLES.CSS - Main Entry Point
+
+   This file imports all modular CSS files in the correct order.
+
+   MODULARITY GUIDE:
+   -----------------
+   To swap themes:     Replace css/themes/variables.css
+   To change patterns: Edit or replace css/patterns.css
+   To modify layout:   Edit css/components.css
+   To change fonts:    Edit css/base.css (typography section)
+
+   Layer Order (Cascade):
+   1. base.css          - Reset, typography, spacing
+   2. themes/variables  - Color definitions
+   3. patterns.css      - Background patterns
+   4. components.css    - All UI components
+   ========================================================================== */
+
+/* 1. Foundation - Reset, typography, spacing */
+@import 'css/base.css';
+
+/* 2. Theme Colors - All theme definitions */
+@import 'css/themes/variables.css';
+
+/* 3. Patterns - Brutalist background textures (optional - can remove) */
+@import 'css/patterns.css';
+
+/* 4. Components - All UI component styles */
+@import 'css/components.css';
+
+/* ==========================================================================
+   LOCAL OVERRIDES
+
+   Project-specific customizations that don't belong in modular files.
+   Keep this section minimal - prefer editing the modular files.
+   ========================================================================== */
+
+/* None currently - all styles are in modular files */

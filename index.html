@@ -938,7 +938,7 @@ graph TB
 
     subgraph "Strategy"
         Advisor["🧠 Advisor<br/>(parses Rating: line)"]
-        Strategy["📐 Strategy<br/>(target weights per rating)"]
+        Strat["📐 Strategy<br/>(target weights per rating)"]
         Runner["🏃 Runner<br/>(propose deltas, threshold trivials)"]
     end
 
@@ -964,8 +964,8 @@ graph TB
     Runner --> TA
     TA --> Out
     Out --> Advisor
-    Advisor --> Strategy
-    Strategy --> Runner
+    Advisor --> Strat
+    Strat --> Runner
     Runner --> Iface
     Iface --> Paper
     Iface -.-> Live

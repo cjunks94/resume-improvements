@@ -50,12 +50,23 @@
     }
 
     function isLightBg(hex) {
-        var c = hex.replace('#', '');
-        if (c.length === 3) c = c[0]+c[0]+c[1]+c[1]+c[2]+c[2];
-        if (c.length !== 6) return false;
-        var r = parseInt(c.slice(0, 2), 16);
-        var g = parseInt(c.slice(2, 4), 16);
-        var b = parseInt(c.slice(4, 6), 16);
+        var c = (hex || '').trim();
+        var r, g, b;
+        if (c.charAt(0) === '#') {
+            c = c.slice(1);
+            if (c.length === 3) c = c[0]+c[0]+c[1]+c[1]+c[2]+c[2];
+            if (c.length !== 6) return false;
+            r = parseInt(c.slice(0, 2), 16);
+            g = parseInt(c.slice(2, 4), 16);
+            b = parseInt(c.slice(4, 6), 16);
+        } else {
+            // Browsers can resolve a custom property to rgb()/rgba() — accept
+            // either form so light-theme detection still works.
+            var m = c.match(/^rgba?\(\s*([0-9.]+)[,\s]+([0-9.]+)[,\s]+([0-9.]+)/i);
+            if (!m) return false;
+            r = parseFloat(m[1]); g = parseFloat(m[2]); b = parseFloat(m[3]);
+        }
+        if (isNaN(r) || isNaN(g) || isNaN(b)) return false;
         // Perceived brightness (Rec.601). >140 ≈ light enough that the dark
         // palette would wash out.
         return (0.299 * r + 0.587 * g + 0.114 * b) > 140;

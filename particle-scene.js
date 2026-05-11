@@ -23,8 +23,9 @@
     var scrollOffset = 0;
     var shapeTime = 0;
 
-    // Color palette — muted but varied
-    var PALETTE = [
+    // Color palettes — picked per active theme bg so particles stay visible on
+    // both light and dark surfaces. Selection is driven by --c-bg luminance.
+    var DARK_PALETTE = [
         new THREE.Color('#3D6649'),  // forest green (accent)
         new THREE.Color('#5B9BD5'),  // soft blue
         new THREE.Color('#D9534F'),  // muted red
@@ -33,6 +34,36 @@
         new THREE.Color('#4A7A58'),  // light green
         new THREE.Color('#C0956C'),  // tan
     ];
+    var LIGHT_PALETTE = [
+        new THREE.Color('#1B4332'),  // deep forest
+        new THREE.Color('#1E40AF'),  // royal blue
+        new THREE.Color('#991B1B'),  // brick red
+        new THREE.Color('#B45309'),  // burnt amber
+        new THREE.Color('#5B21B6'),  // deep purple
+        new THREE.Color('#15803D'),  // emerald
+        new THREE.Color('#78350F'),  // dark brown
+    ];
+
+    function getThemeBg() {
+        var v = getComputedStyle(document.documentElement).getPropertyValue('--c-bg').trim();
+        return v || '#0d1117';
+    }
+
+    function isLightBg(hex) {
+        var c = hex.replace('#', '');
+        if (c.length === 3) c = c[0]+c[0]+c[1]+c[1]+c[2]+c[2];
+        if (c.length !== 6) return false;
+        var r = parseInt(c.slice(0, 2), 16);
+        var g = parseInt(c.slice(2, 4), 16);
+        var b = parseInt(c.slice(4, 6), 16);
+        // Perceived brightness (Rec.601). >140 ≈ light enough that the dark
+        // palette would wash out.
+        return (0.299 * r + 0.587 * g + 0.114 * b) > 140;
+    }
+
+    function activePalette() {
+        return isLightBg(getThemeBg()) ? LIGHT_PALETTE : DARK_PALETTE;
+    }
 
     // ========================================================================
     // SHAPE GENERATORS
@@ -132,7 +163,7 @@
     window.SceneManager.register('particles', {
         init: function(renderer, canvas) {
             scene = new THREE.Scene();
-            scene.background = new THREE.Color('#0d1117');
+            scene.background = new THREE.Color(getThemeBg());
             camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
             camera.position.set(0, 0, 14);
             camera.lookAt(0, 0, 0);
@@ -145,6 +176,7 @@
             var colorsArr = new Float32Array(PARTICLE_COUNT * 3);
 
             var firstShape = shapeData[0];
+            var palette = activePalette();
             for (var i = 0; i < PARTICLE_COUNT; i++) {
                 var i3 = i * 3;
                 positions[i3] = firstShape[i].x;
@@ -154,8 +186,8 @@
                 targets[i3 + 1] = firstShape[i].y;
                 targets[i3 + 2] = firstShape[i].z;
 
-                // Assign color from palette
-                var col = PALETTE[Math.floor(Math.random() * PALETTE.length)];
+                // Assign color from active-theme palette
+                var col = palette[Math.floor(Math.random() * palette.length)];
                 colorsArr[i3] = col.r;
                 colorsArr[i3 + 1] = col.g;
                 colorsArr[i3 + 2] = col.b;
@@ -259,7 +291,19 @@
         resize: function(w, h) { if (camera) { camera.aspect = w / h; camera.updateProjectionMatrix(); } },
         getScene: function() { return scene; },
         getCamera: function() { return camera; },
-        updateColors: function() { /* particles use their own palette */ },
+        updateColors: function() {
+            if (!scene || !points || !particleColors) return;
+            scene.background = new THREE.Color(getThemeBg());
+            var palette = activePalette();
+            for (var i = 0; i < PARTICLE_COUNT; i++) {
+                var i3 = i * 3;
+                var col = palette[Math.floor(Math.random() * palette.length)];
+                particleColors[i3]     = col.r;
+                particleColors[i3 + 1] = col.g;
+                particleColors[i3 + 2] = col.b;
+            }
+            points.geometry.attributes.color.needsUpdate = true;
+        },
         pause: function() { /* shapeTime freezes via manager skipping animate() */ },
         animatePaused: function(elapsed) {
             // Mouse split + velocity only — no shape morphing

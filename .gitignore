@@ -35,6 +35,7 @@ career-extraction-prompt.md
 recruiter-message-template.md
 resume-versions/CHANGES_*.md
 resume-versions/POLISH_NOTES_*.md
+interview-prep/
 
 # Umami Analytics
 umami/.env

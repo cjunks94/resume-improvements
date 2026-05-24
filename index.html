@@ -371,6 +371,39 @@
 
                 <article class="brutal-card-v2 brutal-card-v2--halftone">
                     <div class="brutal-card-v2__header">
+                        <h3 class="brutal-card-v2__title">NITPICK</h3>
+                    </div>
+                    <div class="brutal-card-v2__content">
+                        <p class="project-card__tech">
+                            <small>Go • Anthropic SDK • GitHub App • Railway</small>
+                        </p>
+                        <p>
+                            Self-hosted AI code reviewer with bring-your-own-LLM. Two transports
+                            (one-shot CLI / GitHub Action and a hosted webhook server) share a single
+                            core: diff parser, cached system prompt (1h ephemeral TTL), Anthropic provider,
+                            defensive JSON parser. Webhook returns 202 in &lt;10ms and runs the LLM async
+                            so GitHub's 10s timeout never bites; SIGTERM + 30s grace so Railway redeploys
+                            don't lose in-flight reviews.
+                        </p>
+                        <p>
+                            <small><em>Measured against 20 hand-labeled merged PRs &mdash; Sonnet 4.6 at
+                            F1 0.46, $0.029/PR; Haiku 4.5 at F1 0.25, $0.007/PR. Every prompt change is a
+                            commit on <code>eval/REPORT.md</code>; the git history of that file is the
+                            tuning log.</em></small>
+                        </p>
+                        <div class="project-card__actions">
+                            <a href="https://github.com/cjunks94/nitpick"
+                               class="project-card__link"
+                               target="_blank"
+                               rel="noopener noreferrer">
+                                View on GitHub &rarr;
+                            </a>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="brutal-card-v2 brutal-card-v2--halftone">
+                    <div class="brutal-card-v2__header">
                         <h3 class="brutal-card-v2__title">EXPORTEE_RAILS</h3>
                     </div>
                     <div class="brutal-card-v2__content">
@@ -658,6 +691,31 @@
                                    rel="noopener noreferrer"
                                    aria-label="Read full ADR: Branch-based Deploys">
                                     Read full ADR &rarr;
+                                </a>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="brutal-card-v2 brutal-card-v2--hatching">
+                        <div class="brutal-card-v2__header">
+                            <h3 class="brutal-card-v2__title">SILENCE FIRST</h3>
+                        </div>
+                        <div class="brutal-card-v2__content">
+                            <p class="project-card__tech"><small>nitpick &middot; prompt v2</small></p>
+                            <p>
+                                First-pass review prompt overflagged &mdash; F1 0.16 on a noisy 91% rate.
+                                Rewrote with a default-to-silence rule and a 90% confidence threshold; F1 climbed
+                                to 0.46 on Sonnet 4.6, noise dropped to 50%. The reverted alternative (looser threshold
+                                to lift Sonnet recall) crashed precision 0.50 &rarr; 0.14 with no recall gain &mdash; a
+                                committed data point. Reviewer trust is built by not crying wolf.
+                            </p>
+                            <div class="project-card__actions">
+                                <a href="https://github.com/cjunks94/nitpick/blob/main/eval/REPORT.md"
+                                   class="project-card__link"
+                                   target="_blank"
+                                   rel="noopener noreferrer"
+                                   aria-label="Read full eval report">
+                                    Read full eval &rarr;
                                 </a>
                             </div>
                         </div>

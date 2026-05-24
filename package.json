@@ -21,7 +21,7 @@
   "license": "MIT",
   "devDependencies": {
     "htmlhint": "^1.9.2",
-    "pa11y-ci": "^4.1.0",
+    "pa11y-ci": "^4.1.1",
     "stylelint": "^17.11.1",
     "stylelint-config-standard": "^40.0.0"
   }

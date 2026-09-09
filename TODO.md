@@ -1,6 +1,30 @@
-# TODO List: Resume Improvement Project for Senior Software Engineer Role (Datadog Target)
+# TODO List: Resume Improvement Project
 
-**Last Updated**: October 20, 2025, 2:00 PM EDT
+**Last Updated**: September 9, 2026
+
+---
+
+## Portfolio Design Review (cjunker.dev, 2026-09-09)
+
+Implemented from the design review of e655778; see `decisions/004-one-bordered-layer-and-opt-in-3d.md`.
+
+- [x] P0-1 Flatten nested `.brutal-card-v2` boxes; Projects/Decisions are plain sections
+- [x] P0-2 Tech radar: rings sized by area, copy matches render (ADOPT inner), index expanded on mobile with ring tags, blips no longer overlap
+- [x] P0-3 One hierarchy rule: thick border + shadow only on hero and buttons; halftone only as a band on 3 featured cards
+- [x] P1-4 Hero/About/meta copy rewritten (past tense at 2U, Staff/Senior NYC); contact buttons in hero; Resume in nav
+- [x] P1-5 Carousel removed; one screenshot per project card
+- [x] P1-6 Three.js lazy-loaded and default off; PNGs -> webp; `@import` chain -> `<link>` tags
+- [x] P1-7 Theme dots in header; scene toggles collapsed to one Background control (>= 1600px only)
+- [x] P1-8 Self-hosted JetBrains Mono; positive tracking on uppercase; tech lines not uppercase
+- [x] P2 Consistent card actions, proof-point copy, navy dark palette, dead CSS removed, phone number removed, `summary_large_image`, footer text
+- [ ] Regenerate `resume-versions/christopher-junker-resume.pdf` so title + LinkedIn slug (`chris-junker-218aabba`) match the site
+- [ ] Review the rewritten hero/About copy for voice before merging
+- [ ] `og-image.png` still shows the old design; re-capture after merge
+
+---
+
+## Original Datadog Sprint (October 2025)
+
 **Application Deadline**: October 27, 2025
 
 ---

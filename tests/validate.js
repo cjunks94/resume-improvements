@@ -57,7 +57,9 @@ function runTests() {
 
   try {
     const htmlPath = checkFileExists('index.html');
-    checkFileExists('styles.css');
+    checkFileExists('css/base.css');
+    checkFileExists('css/themes/variables.css');
+    checkFileExists('css/components.css');
     checkFileExists('modals.js');
 
     const sectionErrors = validateSections(htmlPath);

@@ -6,6 +6,13 @@
 
    MODULARITY: Components reference --c-* and structural variables.
    Change themes by swapping variables.css, not this file.
+
+   VISUAL HIERARCHY (one rule, applied everywhere):
+   - Thick border + hard shadow is reserved for the hero and for buttons.
+   - Cards, section frames, and panels get a thin border and no shadow.
+   - Card headers are typography (title + 2px accent rule), never a
+     second bordered box.
+   - The halftone texture appears only as a slim band on featured cards.
    ========================================================================== */
 
 /* ==========================================================================
@@ -14,12 +21,10 @@
 body {
     background-color: var(--c-bg);
     color: var(--c-ink);
+
     /* Honor iPhone X+ safe-area-insets in landscape (notch / rounded corners).
        The max() pattern keeps existing padding on devices without insets. */
-    padding-top: var(--space-xl);
-    padding-right: max(var(--space-xl), env(safe-area-inset-right));
-    padding-bottom: max(var(--space-xl), env(safe-area-inset-bottom));
-    padding-left: max(var(--space-xl), env(safe-area-inset-left));
+    padding: var(--space-xl) max(var(--space-xl), env(safe-area-inset-right)) max(var(--space-xl), env(safe-area-inset-bottom)) max(var(--space-xl), env(safe-area-inset-left));
     margin: 0;
 }
 
@@ -27,6 +32,7 @@ body {
    32px each side was eating ~17% of an iPhone 13 mini width. */
 @media (max-width: 768px) {
     body {
+        padding-top: var(--space-md);
         padding-right: max(var(--space-md), env(safe-area-inset-right));
         padding-left: max(var(--space-md), env(safe-area-inset-left));
     }
@@ -44,27 +50,25 @@ body {
     position: sticky;
     top: 0;
     background: var(--c-surface);
-    border: var(--border-thick) solid var(--c-border);
-    box-shadow: var(--shadow-sm) var(--c-shadow);
+    border: var(--border-thin) solid var(--c-border);
     z-index: var(--z-sticky);
-    padding: var(--space-md) var(--space-lg);
+    padding: var(--space-sm) var(--space-lg);
     margin-bottom: var(--space-xl);
     transition: box-shadow var(--transition-fast), padding var(--transition-fast);
 }
 
-/* Scrolled state — stronger shadow and slight blur backdrop so the
-   header reads cleanly over decorative WebGL/pattern backgrounds. */
+/* Scrolled state — small shadow and slight blur backdrop so the
+   header reads cleanly over decorative WebGL backgrounds. */
 .site-header.scrolled {
-    box-shadow: var(--shadow-md) var(--c-shadow);
+    box-shadow: var(--shadow-sm) var(--c-shadow);
     backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-    padding: var(--space-sm) var(--space-lg);
 }
 
 .site-header__content {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: var(--space-md);
     max-width: var(--container-max);
     margin: 0 auto;
 }
@@ -73,10 +77,11 @@ body {
 .site-brand {
     font-family: var(--font-mono);
     font-weight: 700;
-    font-size: var(--text-lg);
+    font-size: var(--text-base);
     text-transform: uppercase;
-    letter-spacing: var(--tracking-tight);
+    letter-spacing: var(--tracking-caps);
     color: var(--c-ink);
+    white-space: nowrap;
 }
 
 /* Navigation Toggle (Mobile) */
@@ -84,14 +89,16 @@ body {
     display: flex;
     align-items: center;
     gap: var(--space-xs);
+    min-height: 44px;
     padding: var(--space-xs) var(--space-sm);
     background: var(--c-surface);
-    border: var(--border-thick) solid var(--c-border);
+    border: var(--border-thin) solid var(--c-border);
     color: var(--c-ink);
     font-family: var(--font-mono);
     font-weight: 700;
     font-size: var(--text-sm);
     text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
     cursor: pointer;
     transition: all var(--transition-fast);
 }
@@ -113,7 +120,7 @@ body {
     position: relative;
     width: 20px;
     height: 14px;
-    background: linear-gradient(currentColor, currentColor) center/100% 2px no-repeat;
+    background: linear-gradient(currentcolor, currentcolor) center/100% 2px no-repeat;
     transition: all var(--transition-normal);
 }
 
@@ -124,7 +131,7 @@ body {
     left: 0;
     width: 100%;
     height: 2px;
-    background: currentColor;
+    background: currentcolor;
     transition: all var(--transition-normal);
 }
 
@@ -183,7 +190,7 @@ body {
     content: '';
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgb(0, 0, 0, 0.5);
     z-index: calc(var(--z-sticky) + 5);
 }
 
@@ -197,24 +204,30 @@ body {
 
 /* Navigation links */
 .nav-link {
-    display: block;
+    display: flex;
+    align-items: center;
     padding: var(--space-sm) var(--space-md);
     font-family: var(--font-mono);
     font-weight: 600;
     font-size: var(--text-base);
     text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
     color: var(--c-ink);
     border: var(--border-thin) solid transparent;
     transition: all var(--transition-fast);
     min-height: 48px;
-    display: flex;
-    align-items: center;
 }
 
 .nav-link:hover {
     background: var(--c-accent);
     color: var(--c-surface);
     border-color: var(--c-ink);
+}
+
+/* Resume link in the nav gets an outline so a recruiter spots it. */
+.nav-link--resume {
+    border-color: var(--c-accent);
+    color: var(--c-accent);
 }
 
 /* ==========================================================================
@@ -224,13 +237,15 @@ body {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+
     /* WCAG 2.5.5 — minimum 44x44 touch target. Use 48 for comfortable taps. */
     min-height: 48px;
     min-width: 48px;
     padding: var(--space-sm) var(--space-lg);
     font-family: var(--font-mono);
     font-weight: 700;
-    font-size: var(--text-base);
+    font-size: var(--text-sm);
+    letter-spacing: var(--tracking-caps);
     text-align: center;
     text-transform: uppercase;
     text-decoration: none;
@@ -238,41 +253,38 @@ body {
     background: var(--c-surface);
     color: var(--c-ink);
     border: var(--border-thick) solid var(--c-border);
-    box-shadow: var(--shadow-md) var(--c-shadow);
+    box-shadow: var(--shadow-sm) var(--c-shadow);
     transition: transform var(--transition-fast), box-shadow var(--transition-fast);
 }
 
 .btn:hover {
     transform: translate(2px, 2px);
-    box-shadow: calc(var(--shadow-offset) - 2px) calc(var(--shadow-offset) - 2px) 0 var(--c-shadow);
+    box-shadow: 2px 2px 0 var(--c-shadow);
 }
 
 .btn:active {
-    transform: translate(var(--shadow-offset), var(--shadow-offset));
+    transform: translate(4px, 4px);
     box-shadow: none;
 }
 
 /* Primary button - filled with accent */
-.btn--primary,
-.btn.primary {
+.btn--primary {
     background-color: var(--c-accent);
     color: var(--c-surface);
+    border-color: var(--c-accent);
 }
 
-.btn--primary:hover,
-.btn.primary:hover {
+.btn--primary:hover {
     background-color: var(--c-accent-hover);
 }
 
 /* Secondary button - outline style */
-.btn--secondary,
-.btn.secondary {
+.btn--secondary {
     background: transparent;
     color: var(--c-ink);
 }
 
-.btn--secondary:hover,
-.btn.secondary:hover {
+.btn--secondary:hover {
     background: var(--c-ink);
     color: var(--c-surface);
 }
@@ -284,149 +296,141 @@ body {
 
 /* Small button */
 .btn--sm {
+    min-height: 40px;
     padding: var(--space-xs) var(--space-md);
-    font-size: var(--text-sm);
+    font-size: var(--text-xs);
 }
 
 /* ==========================================================================
-   4. CARDS & CONTAINERS
+   4. CARDS
+
+   .brutal-card-v2 is the single card component. It is one bordered
+   layer: thin border, no shadow, solid surface. Card padding shrinks on
+   mobile via --card-pad so nested content never gets crushed.
    ========================================================================== */
-
-/* Brutal Card - Outer decorative frame */
-.brutal-card {
-    border: var(--border-thick) solid var(--c-border);
-    padding: var(--space-lg);
-    margin-bottom: var(--space-xl);
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-lg);
-}
-
-/* Content Block - Inner readable zone */
-.content-block {
-    background-color: var(--c-surface);
-    border: var(--border-thick) solid var(--c-border);
-    padding: var(--space-lg);
-    box-shadow: var(--shadow-sm) rgba(0,0,0,0.05);
-}
-
-.content-block.beige {
-    background-color: var(--c-bg);
-}
-
-/* ==========================================================================
-   4B. BRUTAL CARD V2 - Container vs. Content Pattern
-
-   Two-layer card structure inspired by print design:
-   - Outer container: Patterned background (dots, hatching)
-   - Inner content: Solid white for readability (WCAG compliant)
-   - Separated header: Lives in its own bordered box
-   ========================================================================== */
-
-/* Outer Container - Holds the pattern */
 .brutal-card-v2 {
+    --card-pad: var(--space-lg);
+
     position: relative;
-    border: var(--border-thick) solid var(--c-border);
-    padding: var(--space-lg);
-    margin-bottom: var(--space-xl);
     display: flex;
     flex-direction: column;
-    gap: var(--space-md);
+    gap: var(--space-sm);
+    background: var(--c-surface);
+    border: var(--border-thin) solid var(--c-border);
+    padding: var(--card-pad);
 }
 
-/* Pattern Variants - Apply to .brutal-card-v2 */
-.brutal-card-v2--halftone {
+@media (max-width: 768px) {
+    .brutal-card-v2 {
+        --card-pad: var(--space-md);
+    }
+}
+
+/* Featured cards: a slim halftone band across the top. This is the only
+   place the texture appears, so it reads as emphasis, not wallpaper. */
+.brutal-card-v2--featured {
+    border-top: none;
+    padding-top: calc(var(--card-pad) + 10px);
+}
+
+.brutal-card-v2--featured::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 10px;
     background-color: var(--c-accent);
-    background-image: radial-gradient(var(--c-ink) 10%, transparent 10%);
-    background-size: 8px 8px;
+    background-image: radial-gradient(var(--c-ink) 18%, transparent 18%);
+    background-size: 6px 6px;
+    background-position: 0 0;
+}
+
+/* Legacy pattern names kept as quiet variants, so any straggler markup
+   still renders a card rather than a wall of texture. */
+.brutal-card-v2--halftone {
+    border-top: var(--border-thin) solid var(--c-accent);
 }
 
 .brutal-card-v2--hatching {
-    background-color: var(--c-surface);
-    background-image: repeating-linear-gradient(
-        45deg,
-        var(--c-ink-muted),
-        var(--c-ink-muted) 1px,
-        transparent 1px,
-        transparent 8px
-    );
+    background: var(--c-surface-alt);
 }
 
-.brutal-card-v2--grid {
-    background-color: var(--c-bg);
-    background-image:
-        linear-gradient(var(--c-ink-muted) 1px, transparent 1px),
-        linear-gradient(90deg, var(--c-ink-muted) 1px, transparent 1px);
-    background-size: 16px 16px;
+/* Card media — screenshot bleeds to the card edges, sits above the title. */
+.brutal-card-v2__media {
+    margin: calc(var(--card-pad) * -1) calc(var(--card-pad) * -1) 0;
+    border-bottom: var(--border-thin) solid var(--c-border);
+    background: var(--c-surface-alt);
+    overflow: hidden;
 }
 
-/* Separated Header Box */
+.brutal-card-v2--featured .brutal-card-v2__media {
+    margin-top: calc((var(--card-pad) + 10px) * -1);
+}
+
+.brutal-card-v2__media img {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    object-position: top left;
+    display: block;
+}
+
+/* Card header — typography only: title + accent rule. */
 .brutal-card-v2__header {
-    background-color: var(--c-surface);
-    border: var(--border-thick) solid var(--c-border);
-    padding: var(--space-md) var(--space-lg);
-    margin: calc(var(--space-md) * -1);
-    margin-bottom: var(--space-sm);
-    width: fit-content;
-    min-width: 60%;
+    padding-bottom: var(--space-xs);
+    border-bottom: 2px solid var(--c-accent);
 }
 
 .brutal-card-v2__title {
     font-family: var(--font-mono);
-    font-size: var(--text-xl);
+    font-size: var(--text-lg);
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: var(--tracking-tight);
+    letter-spacing: var(--tracking-caps);
     color: var(--c-ink);
     margin: 0;
-    /* Underline accent */
-    text-decoration: underline;
-    text-decoration-color: var(--c-ink);
-    text-decoration-thickness: 2px;
-    text-underline-offset: 4px;
 }
 
-/* Inner Content Block - White for readability */
 .brutal-card-v2__content {
-    background-color: var(--c-surface);
-    border: var(--border-thick) solid var(--c-border);
-    padding: var(--space-lg);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
 }
 
 .brutal-card-v2__content p {
     color: var(--c-ink);
-    line-height: var(--leading-relaxed);
+    line-height: var(--leading-normal);
+    margin: 0;
 }
 
-.brutal-card-v2__content p strong {
-    font-weight: 700;
-}
-
-/* Action Button inside card - Hard shadow style */
+/* Action button inside a card — the one boxed action per card. */
 .brutal-card-v2__action {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+
     /* WCAG 2.5.5 — minimum 44x44 touch target. */
-    min-height: 48px;
+    min-height: 44px;
     background-color: var(--c-surface);
     color: var(--c-ink);
     border: var(--border-thick) solid var(--c-border);
-    padding: var(--space-sm) var(--space-lg);
+    padding: var(--space-xs) var(--space-md);
     font-family: var(--font-mono);
     font-weight: 700;
-    font-size: var(--text-sm);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-caps);
     text-transform: uppercase;
     text-decoration: none;
     cursor: pointer;
-    box-shadow: 4px 4px 0 var(--c-ink);
+    box-shadow: var(--shadow-sm) var(--c-shadow);
     transition: transform var(--transition-fast), box-shadow var(--transition-fast);
-    margin-top: var(--space-md);
 }
 
 .brutal-card-v2__action:hover {
     transform: translate(2px, 2px);
-    box-shadow: 2px 2px 0 var(--c-ink);
+    box-shadow: 2px 2px 0 var(--c-shadow);
 }
 
 .brutal-card-v2__action:active {
@@ -434,323 +438,95 @@ body {
     box-shadow: none;
 }
 
-/* ==========================================================================
-   4C. FOLDER TAB HEADER VARIANT
-
-   Header as a "tab" connected to the card body (LOGIN_SECURE.EXE style)
-   ========================================================================== */
-.brutal-card-v2--tabbed {
-    padding-top: 0;
-    margin-top: var(--space-xl);
-}
-
-.brutal-card-v2__tab {
-    display: inline-block;
-    background: var(--c-ink);
-    color: var(--c-surface);
-    padding: var(--space-xs) var(--space-lg);
-    font-family: var(--font-mono);
-    font-weight: 700;
-    font-size: var(--text-sm);
-    text-transform: uppercase;
-    border: var(--border-thick) solid var(--c-border);
-    border-bottom: none;
-    position: relative;
-    top: calc(var(--border-thick) * -1);
-    margin-left: var(--space-md);
-    z-index: 2;
-}
-
-.brutal-card-v2--tabbed .brutal-card-v2__body {
-    background: var(--c-surface);
-    border: var(--border-thick) solid var(--c-border);
-    padding: var(--space-lg);
-    position: relative;
-    z-index: 1;
-}
-
-/* ==========================================================================
-   4D. BRUTAL CARD V2 - Nested Cards & Grid Layout
-
-   Styles for cards nested inside grid containers
-   ========================================================================== */
-
-/* Reset margin for cards inside grid */
-.projects-grid .brutal-card-v2 {
-    margin-bottom: 0;
-}
-
-/* Nested cards should fill their grid cell */
-.projects-grid .brutal-card-v2 {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-}
-
-.projects-grid .brutal-card-v2__content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-}
-
-.projects-grid .brutal-card-v2__content p:last-of-type {
-    flex-grow: 1;
-}
-
-/* Contact links horizontal layout */
-.brutal-card-v2 .contact-links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-sm);
-    margin: var(--space-lg) 0;
-}
-
-.brutal-card-v2 .contact-links .brutal-card-v2__action {
-    margin-top: 0;
-    flex: 1 1 auto;
-    min-width: 120px;
-    text-align: center;
-}
-
-/* About/Contact wrapper with new cards */
-.about-contact-wrapper .brutal-card-v2 {
-    margin-bottom: 0;
-    flex: 1;
-}
-
-/* Project link styling inside v2 cards */
-.brutal-card-v2 .project-card__link {
-    color: var(--c-accent);
-    font-weight: 600;
-    padding: var(--space-xs) 0;
-    transition: all var(--transition-fast);
-    display: inline-block;
-}
-
-.brutal-card-v2 .project-card__link:hover {
-    color: var(--c-accent-hover);
-    text-decoration: underline;
-}
-
-/* Project Cards */
-.project-card {
-    display: flex;
-    flex-direction: column;
-    background: var(--c-surface);
-    border: var(--border-thick) solid var(--c-border);
-    box-shadow: var(--shadow-md) var(--c-shadow);
-    padding: var(--space-lg);
-    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
-}
-
-.project-card:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px) 0 var(--c-shadow);
-}
-
-.project-card__header {
-    margin-bottom: var(--space-md);
-    padding-bottom: var(--space-sm);
-    border-bottom: var(--border-thin) solid var(--c-border);
-}
-
-.project-card__title {
-    font-size: var(--text-xl);
-    margin-bottom: var(--space-xs);
-    color: var(--c-accent);
-}
-
+/* Tech-stack line: mono, small, NOT uppercase. */
 .project-card__tech {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
     color: var(--c-ink-light);
-    font-size: var(--text-sm);
+    letter-spacing: var(--tracking-normal);
     margin: 0;
 }
 
-.project-card__description {
-    flex-grow: 1;
-    margin-bottom: var(--space-lg);
-    color: var(--c-ink);
+.project-card__tech small {
+    font-size: inherit;
 }
 
-.project-card__footer {
-    margin-top: auto;
-    min-height: 70px;
+/* Proof points: two or three short measured facts under the lead sentence. */
+.project-card__proof {
+    margin: 0;
+    padding: 0;
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
-    gap: var(--space-xs);
+    gap: var(--space-2xs);
+    font-size: var(--text-sm);
+    color: var(--c-ink-light);
 }
 
-.project-card__footer--stacked {
-    flex-direction: column;
-    align-items: stretch;
+.project-card__proof li {
+    position: relative;
+    padding-left: var(--space-md);
 }
 
+.project-card__proof li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--c-accent);
+}
+
+.project-card__proof code {
+    font-size: var(--text-xs);
+}
+
+/* Secondary text link inside a card. */
 .project-card__link {
     display: inline-flex;
     align-items: center;
+
     /* WCAG 2.5.5 — minimum 44x44 touch target. */
     min-height: 44px;
     color: var(--c-accent);
     font-weight: 600;
-    padding: var(--space-xs) var(--space-sm);
-    transition: all var(--transition-fast);
+    font-size: var(--text-sm);
+    padding: var(--space-xs) 0;
+    transition: color var(--transition-fast);
 }
 
 .project-card__link:hover {
-    background: var(--c-accent);
-    color: var(--c-surface);
-}
-
-.project-card__link--button {
-    background: transparent;
-    border: var(--border-thick) solid var(--c-accent);
-    color: var(--c-accent);
-    padding: var(--space-xs) var(--space-sm);
-    cursor: pointer;
-    font-weight: 600;
-    text-align: left;
-    width: 100%;
-    font-family: inherit;
-    font-size: inherit;
-    transition: all var(--transition-fast);
-}
-
-.project-card__link--button:hover {
-    background: var(--c-accent);
-    color: var(--c-surface);
+    color: var(--c-accent-hover);
+    text-decoration: underline;
 }
 
 .project-status {
-    display: inline-block;
-    padding: var(--space-xs) var(--space-sm);
-    background: var(--c-accent);
-    color: var(--c-surface);
+    display: inline-flex;
+    align-items: center;
+    min-height: 32px;
+    padding: 0 var(--space-sm);
+    background: var(--c-surface-alt);
+    color: var(--c-ink-light);
+    border: 1px solid var(--c-border);
     font-family: var(--font-mono);
-    font-size: var(--text-sm);
+    font-size: var(--text-xs);
     font-weight: 700;
     text-transform: uppercase;
-    align-self: flex-start;
-    margin-top: var(--space-md);
+    letter-spacing: var(--tracking-caps);
 }
 
-/* Project Card Actions - Stacked links/buttons layout */
+/* Actions footer pinned to the card bottom: one boxed primary action
+   first, then text links / status pills. */
 .project-card__actions {
     display: flex;
-    flex-direction: column;
-    gap: var(--space-xs);
-    margin-top: var(--space-md);
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-xs) var(--space-lg);
+    margin-top: auto;
+    padding-top: var(--space-sm);
 }
 
 /* ==========================================================================
-   5. FOLDER TABS
-   ========================================================================== */
-.folder-wrapper {
-    position: relative;
-    margin-bottom: var(--space-xl);
-}
+   5. HERO SECTION
 
-.folder-tab {
-    display: inline-block;
-    background: var(--c-ink);
-    color: var(--c-surface);
-    padding: var(--space-xs) var(--space-lg);
-    font-family: var(--font-mono);
-    font-weight: bold;
-    font-size: var(--text-sm);
-    text-transform: uppercase;
-    border: var(--border-thick) solid var(--c-border);
-    border-bottom: none;
-    margin-bottom: calc(var(--border-thick) * -1);
-    position: relative;
-    z-index: 2;
-}
-
-.folder-body {
-    background: var(--c-surface);
-    border: var(--border-thick) solid var(--c-border);
-    padding: var(--space-lg);
-    box-shadow: var(--shadow-md) var(--c-shadow);
-    position: relative;
-    z-index: 1;
-}
-
-/* ==========================================================================
-   6. FORMS & INPUTS
-   ========================================================================== */
-.form-group {
-    margin-bottom: var(--space-lg);
-}
-
-.form-label {
-    display: block;
-    margin-bottom: var(--space-xs);
-    font-family: var(--font-mono);
-    font-size: var(--text-sm);
-    font-weight: 700;
-    text-transform: uppercase;
-    color: var(--c-ink);
-}
-
-.brutal-input {
-    width: 100%;
-    padding: var(--space-sm);
-    font-size: var(--text-base);
-    font-family: inherit;
-    border: var(--border-thick) solid var(--c-border);
-    background: var(--c-surface);
-    box-shadow: var(--shadow-sm) rgba(0,0,0,0.2);
-    transition: all var(--transition-fast);
-    appearance: none;
-}
-
-.brutal-input:focus {
-    transform: translate(2px, 2px);
-    box-shadow: 2px 2px 0 var(--c-ink);
-    background-color: var(--c-surface-alt);
-}
-
-.brutal-input::placeholder {
-    color: var(--c-ink-muted);
-}
-
-/* ==========================================================================
-   7. TOAST ALERTS
-   ========================================================================== */
-.toast {
-    display: flex;
-    border: var(--border-thick) solid var(--c-border);
-    background: var(--c-surface);
-    max-width: 100%;
-    margin-bottom: var(--space-lg);
-    box-shadow: var(--shadow-sm) rgba(0,0,0,0.1);
-}
-
-.toast-strip {
-    width: 30px;
-    flex-shrink: 0;
-    border-right: var(--border-thick) solid var(--c-border);
-}
-
-.toast-body {
-    padding: var(--space-md);
-    flex: 1;
-}
-
-.toast-body strong {
-    display: block;
-    font-family: var(--font-mono);
-    text-transform: uppercase;
-    margin-bottom: var(--space-2xs);
-}
-
-.toast-body span {
-    font-size: var(--text-sm);
-    color: var(--c-ink-light);
-}
-
-/* ==========================================================================
-   8. HERO SECTION
+   The one element that keeps the thick border + big hard shadow.
    ========================================================================== */
 .hero-section {
     background: var(--c-surface);
@@ -760,19 +536,19 @@ body {
     margin-bottom: var(--space-2xl);
 }
 
-.hero-section__content {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-xl);
+@media (max-width: 768px) {
+    .hero-section {
+        padding: var(--space-lg) var(--space-md);
+        box-shadow: var(--shadow-sm) var(--c-shadow);
+    }
 }
 
-.hero-section__text {
-    flex: 1;
-    text-align: center;
+.hero-section__content {
+    max-width: 820px;
 }
 
 .hero-section__header {
-    margin-bottom: var(--space-lg);
+    margin-bottom: var(--space-md);
 }
 
 .hero-section__title {
@@ -785,124 +561,37 @@ body {
     font-family: var(--font-mono);
     font-size: var(--text-base);
     color: var(--c-ink-light);
-    text-transform: uppercase;
     font-weight: 400;
-}
-
-.hero-section__summary {
-    max-width: 800px;
-    margin: 0 auto var(--space-lg);
-    font-size: var(--text-lg);
-    line-height: var(--leading-relaxed);
-}
-
-.hero-section__location {
-    font-size: var(--text-base);
-    color: var(--c-ink-light);
-}
-
-.hero-section__carousel {
-    flex: 1;
-}
-
-/* ==========================================================================
-   9. IMAGE CAROUSEL
-   ========================================================================== */
-.carousel-container {
-    position: relative;
-    width: 100%;
-    max-width: 800px;
-    margin: 0 auto;
-    border: var(--border-thick) solid var(--c-border);
-    box-shadow: var(--shadow-md) var(--c-shadow);
-    overflow: hidden;
-    background: var(--c-surface);
-}
-
-.carousel-slides {
-    position: relative;
-    width: 100%;
-    aspect-ratio: 4 / 3;
-}
-
-.carousel-slide {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    transition: opacity var(--transition-slow);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-.carousel-slide.active {
-    opacity: 1;
-}
-
-.carousel-slide img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-}
-
-.carousel-caption {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: var(--c-ink);
-    color: var(--c-surface);
-    padding: var(--space-xs) var(--space-md);
-    font-family: var(--font-mono);
-    font-size: var(--text-sm);
-    text-align: center;
-    text-transform: uppercase;
     margin: 0;
 }
 
-.carousel-btn {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    /* WCAG 2.5.5 — minimum 44x44 touch target. */
-    min-width: 44px;
-    min-height: 44px;
+.hero-section__summary {
+    font-size: var(--text-lg);
+    line-height: var(--leading-relaxed);
+    margin-bottom: var(--space-lg);
+}
+
+/* Contact buttons live in the hero so the PDF is one click from the top. */
+.hero-section__actions {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--c-ink);
-    color: var(--c-surface);
-    border: var(--border-thick) solid var(--c-border);
-    font-size: var(--text-2xl);
-    padding: var(--space-xs) var(--space-md);
-    cursor: pointer;
-    transition: all var(--transition-fast);
-    z-index: 10;
-    opacity: 0;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-lg);
 }
 
-.carousel-btn:hover {
-    background: var(--c-accent);
-    border-color: var(--c-accent);
+.hero-section__actions .btn {
+    flex: 1 1 140px;
 }
 
-.carousel-container:hover .carousel-btn {
-    opacity: 1;
-}
-
-.carousel-btn--prev { left: 0; }
-.carousel-btn--next { right: 0; }
-
-.carousel-indicators {
-    display: none;
+.hero-section__location {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--c-ink-light);
+    margin: 0;
 }
 
 /* ==========================================================================
-   10. SECTION STYLES
+   6. SECTION STYLES
    ========================================================================== */
 .section-title {
     font-size: var(--text-2xl);
@@ -913,31 +602,25 @@ body {
     display: inline-block;
 }
 
+.section-lede {
+    color: var(--c-ink-light);
+    max-width: 640px;
+    margin: calc(var(--space-md) * -1) 0 var(--space-lg);
+}
+
 /* About & Contact Wrapper */
 .about-contact-wrapper {
     display: flex;
     flex-direction: column;
     gap: var(--space-lg);
-    margin-bottom: var(--space-xl);
+    margin-bottom: var(--space-2xl);
 }
 
 .about-section,
 .contact-section {
     background: var(--c-surface);
     border: var(--border-thin) solid var(--c-border);
-    box-shadow: 3px 3px 0 var(--c-shadow);
     padding: var(--space-lg);
-    transition: box-shadow var(--transition-fast), transform var(--transition-fast);
-}
-
-/* Hover transforms only on devices with reliable hover (skip touch
-   to avoid sticky hover-state after tap-then-tap-elsewhere). #15.3 */
-@media (hover: hover) and (pointer: fine) {
-    .about-section:hover,
-    .contact-section:hover {
-        box-shadow: 4px 4px 0 var(--c-shadow);
-        transform: translate(-1px, -1px);
-    }
 }
 
 .about-section__paragraph,
@@ -945,21 +628,28 @@ body {
     margin-bottom: var(--space-md);
 }
 
-.contact-links {
+.contact-section__list {
     display: flex;
     flex-direction: column;
-    gap: var(--space-sm);
-    margin-bottom: var(--space-lg);
-}
-
-.contact-section__info {
-    text-align: center;
-    color: var(--c-ink-light);
+    gap: var(--space-2xs);
     font-size: var(--text-sm);
 }
 
-/* Projects Section */
-.projects-section {
+.contact-section__list a {
+    color: var(--c-accent);
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    min-height: 32px;
+}
+
+.contact-section__list a:hover {
+    text-decoration: underline;
+}
+
+/* Projects / Decisions */
+.projects-section,
+.decisions-section {
     margin-bottom: var(--space-2xl);
 }
 
@@ -970,8 +660,14 @@ body {
     align-items: stretch;
 }
 
+@media (max-width: 768px) {
+    .projects-grid {
+        gap: var(--space-md);
+    }
+}
+
 /* ==========================================================================
-   11. TECH RADAR
+   7. TECH RADAR
    ========================================================================== */
 .tech-radar-section {
     margin-bottom: var(--space-2xl);
@@ -979,20 +675,21 @@ body {
 
 .tech-radar-section__description {
     margin-bottom: var(--space-lg);
-    text-align: center;
-    max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
+    max-width: 720px;
+    color: var(--c-ink-light);
+}
+
+.tech-radar-section__description strong {
+    color: var(--c-ink);
 }
 
 .radar-container {
     width: 100%;
     max-width: var(--container-max);
-    margin: 0 auto var(--space-xl);
+    margin: 0 auto var(--space-lg);
     padding: var(--space-lg);
     background: var(--c-surface);
     border: var(--border-thin) solid var(--c-border);
-    box-shadow: 3px 3px 0 var(--c-shadow);
     overflow-x: auto;
 }
 
@@ -1000,6 +697,16 @@ body {
     width: 100%;
     height: auto;
     display: block;
+    font-family: var(--font-mono);
+}
+
+/* Text halo so ring/quadrant labels stay legible over grid lines. */
+.svg-text-halo {
+    fill: var(--c-surface);
+    stroke: var(--c-surface);
+    stroke-width: 5px;
+    stroke-linejoin: round;
+    paint-order: stroke;
 }
 
 .blip {
@@ -1013,14 +720,25 @@ body {
     opacity: 1;
 }
 
+/* Below tablet the 1200px-wide SVG scales to ~260px and blips are 2px.
+   Hide it and show the index expanded (radar.js opens it by default). */
+@media (max-width: 768px) {
+    .radar-container {
+        display: none;
+    }
+
+    .radar-legend__toggle {
+        display: none;
+    }
+}
+
 /* Radar Legend */
 .radar-legend {
     max-width: var(--container-max);
-    margin: 0 auto var(--space-xl);
+    margin: 0 auto;
     padding: var(--space-lg);
     background: var(--c-surface);
     border: var(--border-thin) solid var(--c-border);
-    box-shadow: 3px 3px 0 var(--c-shadow);
 }
 
 .radar-legend__header {
@@ -1031,13 +749,13 @@ body {
     gap: var(--space-md);
     margin-bottom: var(--space-lg);
     padding-bottom: var(--space-sm);
-    border-bottom: var(--border-thick) solid var(--c-accent);
+    border-bottom: 2px solid var(--c-accent);
 }
 
 .radar-legend__title {
     margin: 0;
     color: var(--c-accent);
-    font-size: var(--text-xl);
+    font-size: var(--text-lg);
 }
 
 .radar-legend__actions {
@@ -1060,12 +778,14 @@ body {
 
 .radar-legend__toggle {
     background: transparent;
-    border: var(--border-thick) solid var(--c-accent);
+    border: var(--border-thin) solid var(--c-accent);
     color: var(--c-accent);
+    min-height: 40px;
     padding: var(--space-xs) var(--space-md);
     font-family: var(--font-mono);
     font-weight: 700;
-    font-size: var(--text-sm);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-caps);
     text-transform: uppercase;
     cursor: pointer;
     transition: all var(--transition-fast);
@@ -1077,72 +797,80 @@ body {
     color: var(--c-surface);
 }
 
+.radar-legend__content {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(260px, 100%), 1fr));
+    gap: var(--space-lg) var(--space-xl);
+}
+
 .radar-legend__content[aria-hidden="true"] {
     display: none;
 }
 
-.legend-quadrant {
-    margin-bottom: var(--space-xl);
-}
-
 .legend-quadrant h3 {
-    font-size: var(--text-lg);
+    font-size: var(--text-base);
     color: var(--c-accent);
-    margin-bottom: var(--space-md);
+    margin-bottom: var(--space-sm);
     padding-bottom: var(--space-xs);
     border-bottom: var(--border-thin) solid var(--c-accent);
 }
 
-.legend-quadrant h4 {
-    font-size: var(--text-base);
-    margin-bottom: var(--space-sm);
-    color: var(--c-ink-light);
+.legend-list {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xs);
 }
 
-.legend-quadrant ul {
-    margin: 0 0 var(--space-md);
-}
-
-.legend-quadrant li {
-    margin-bottom: var(--space-2xs);
+.legend-list li {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
     font-size: var(--text-sm);
+    min-height: 28px;
 }
 
 .legend-number {
-    color: var(--c-accent);
-    font-weight: 600;
+    font-family: var(--font-mono);
+    color: var(--c-ink-muted);
+    font-size: var(--text-xs);
+    min-width: 2.2ch;
+    text-align: right;
 }
 
-/* Radar Tooltip */
-#radar-tooltip {
-    position: absolute;
-    background: var(--c-surface);
-    border: var(--border-thick) solid var(--c-border);
-    padding: var(--space-md);
-    max-width: 350px;
-    box-shadow: var(--shadow-md) var(--c-shadow);
-    z-index: var(--z-toast);
-    pointer-events: none;
+.legend-label {
+    color: var(--c-ink);
 }
 
-#radar-tooltip h4 {
-    margin: 0 0 var(--space-xs);
-    color: var(--c-accent);
-    font-size: var(--text-lg);
-}
-
-#radar-tooltip p {
-    margin: 0 0 var(--space-xs);
-    font-size: var(--text-sm);
-}
-
-#radar-tooltip p:last-child {
-    margin: 0;
+/* Ring shown as a tag next to each entry (replaces per-ring sub-headers). */
+.ring-tag {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+    line-height: 1;
+    padding: 3px 5px;
+    border: 1px solid currentcolor;
     color: var(--c-ink-light);
 }
 
+.ring-tag--adopt { color: var(--radar-adopt); }
+.ring-tag--trial { color: var(--radar-trial); }
+.ring-tag--assess { color: var(--radar-assess); }
+.ring-tag--hold { color: var(--radar-hold); }
+
+.legend-new {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--radar-new);
+}
+
 /* ==========================================================================
-   12. MODALS
+   8. MODALS
    ========================================================================== */
 .arch-modal {
     position: fixed;
@@ -1161,7 +889,7 @@ body {
 .arch-modal__overlay {
     position: absolute;
     inset: 0;
-    background: rgba(0, 0, 0, 0.8);
+    background: rgb(0, 0, 0, 0.8);
     backdrop-filter: blur(4px);
 }
 
@@ -1184,7 +912,7 @@ body {
     align-items: center;
     justify-content: space-between;
     padding: var(--space-lg);
-    border-bottom: var(--border-thick) solid var(--c-accent);
+    border-bottom: 2px solid var(--c-accent);
     background: var(--c-surface);
 }
 
@@ -1196,10 +924,10 @@ body {
 
 .arch-modal__close {
     background: transparent;
-    border: var(--border-thick) solid var(--c-border);
+    border: var(--border-thin) solid var(--c-border);
     color: var(--c-ink);
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
     font-size: var(--text-xl);
     cursor: pointer;
     transition: all var(--transition-fast);
@@ -1249,6 +977,7 @@ body {
     color: var(--c-accent);
     cursor: pointer;
     text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
     list-style: none;
     user-select: none;
 }
@@ -1291,25 +1020,47 @@ body {
     line-height: var(--leading-normal);
 }
 
-/* ==========================================================================
-   13. THEME SWITCHER
-   ========================================================================== */
-.theme-switcher {
-    position: fixed;
-    top: var(--space-lg);
-    right: var(--space-lg);
+/* Radar Tooltip (positioned by radar.js, styled here for theme support) */
+#radar-tooltip {
+    position: absolute;
     background: var(--c-surface);
-    border: var(--border-thick) solid var(--c-border);
-    padding: var(--space-sm);
-    display: flex;
-    gap: var(--space-sm);
-    z-index: calc(var(--z-sticky) - 1); /* Below header on mobile */
+    color: var(--c-ink);
+    border: var(--border-thin) solid var(--c-accent);
+    padding: var(--space-md);
+    max-width: 320px;
     box-shadow: var(--shadow-sm) var(--c-shadow);
+    z-index: var(--z-toast);
 }
 
-/* Mobile: hide theme switcher entirely — declutters narrow viewports.
-   Desktop users still get all three themes; mobile defaults to whichever
-   theme is saved (or the system default). */
+#radar-tooltip h4 {
+    margin: 0 0 var(--space-xs);
+    color: var(--c-accent);
+    font-size: var(--text-base);
+}
+
+#radar-tooltip p {
+    margin: 0 0 var(--space-xs);
+    font-size: var(--text-sm);
+}
+
+#radar-tooltip p:last-child {
+    margin: 0;
+    color: var(--c-ink-light);
+}
+
+/* ==========================================================================
+   9. THEME SWITCHER (lives inside the header)
+   ========================================================================== */
+.theme-switcher {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    padding-left: var(--space-sm);
+    border-left: var(--border-thin) solid var(--c-border);
+}
+
+/* Mobile: hide theme switcher — declutters narrow viewports. Mobile
+   defaults to whichever theme is saved (or the system default). */
 @media (max-width: 768px) {
     .theme-switcher {
         display: none;
@@ -1317,8 +1068,8 @@ body {
 }
 
 .color-dot {
-    width: 30px;
-    height: 30px;
+    width: 22px;
+    height: 22px;
     border-radius: 50%;
     border: var(--border-thin) solid var(--c-border);
     cursor: pointer;
@@ -1336,17 +1087,18 @@ body {
 }
 
 .color-dot.active {
-    box-shadow: 0 0 0 3px var(--c-surface), 0 0 0 5px var(--c-ink);
+    box-shadow: 0 0 0 2px var(--c-surface), 0 0 0 4px var(--c-ink);
 }
 
 /* ==========================================================================
-   14. FOOTER
+   10. FOOTER
    ========================================================================== */
 .site-footer {
     margin-top: var(--space-2xl);
     padding: var(--space-lg) 0;
     text-align: center;
-    border-top: var(--border-thick) solid var(--c-border);
+    border-top: var(--border-thin) solid var(--c-border);
+    background: var(--c-bg);
 }
 
 .site-footer__text {
@@ -1366,7 +1118,11 @@ body {
 }
 
 /* ==========================================================================
-   15. VILLAGE SCENE (3D Background)
+   11. BACKGROUND SCENE (3D, opt-in)
+
+   Three.js is only fetched when a visitor turns a scene on. The control
+   is a single small button, bottom-right, shown only where the viewport
+   has a real gutter for it (>= 1600px).
    ========================================================================== */
 #village-canvas {
     position: fixed;
@@ -1382,42 +1138,56 @@ body.village-active {
     background-color: transparent;
 }
 
-.scene-toggles {
+.scene-control {
+    display: none;
     position: fixed;
     bottom: var(--space-lg);
-    left: var(--space-lg);
-    display: flex;
+    right: var(--space-lg);
     flex-direction: column;
+    align-items: flex-end;
     gap: var(--space-xs);
     z-index: calc(var(--z-sticky) + 1);
 }
 
-/* Focus mode — hide all content, show only 3D scene + toggles */
-body.scene-focus .site-header,
-body.scene-focus .site-main,
-body.scene-focus .site-footer,
-body.scene-focus .theme-switcher {
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.4s ease;
+@media (min-width: 1600px) {
+    .scene-control {
+        display: flex;
+    }
+}
+
+.scene-control__menu {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xs);
+    background: var(--c-surface);
+    border: var(--border-thin) solid var(--c-border);
+    padding: var(--space-xs);
+}
+
+.scene-control__menu[hidden] {
+    display: none;
 }
 
 .village-toggle {
-    /* Reserve space for the longest possible label (e.g. "PARTICLES [PAUSED]")
-       so width doesn't jitter when the label changes between states. #65 */
-    min-width: 18ch;
+    min-width: 12ch;
+    min-height: 36px;
     text-align: left;
     background: var(--c-surface);
-    border: var(--border-thick) solid var(--c-border);
-    padding: var(--space-xs) var(--space-sm);
+    border: var(--border-thin) solid var(--c-border);
+    padding: var(--space-2xs) var(--space-sm);
     font-family: var(--font-mono);
     font-weight: 700;
-    font-size: var(--text-sm);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-caps);
     text-transform: uppercase;
     color: var(--c-ink);
     cursor: pointer;
-    box-shadow: var(--shadow-sm) var(--c-shadow);
-    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+    transition: background var(--transition-fast), color var(--transition-fast);
+}
+
+.village-toggle:hover {
+    background: var(--c-ink);
+    color: var(--c-surface);
 }
 
 .village-toggle.active {
@@ -1426,33 +1196,23 @@ body.scene-focus .theme-switcher {
     border-color: var(--c-accent);
 }
 
-.village-toggle:hover {
-    transform: translate(2px, 2px);
-    box-shadow: 2px 2px 0 var(--c-shadow);
+.scene-control__toggle {
+    box-shadow: var(--shadow-sm) var(--c-shadow);
 }
 
-.village-toggle:active {
-    transform: translate(4px, 4px);
-    box-shadow: none;
+/* Focus mode — hide all content, show only 3D scene + control */
+body.scene-focus .site-header,
+body.scene-focus .site-main,
+body.scene-focus .site-footer {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
 }
 
-.site-footer {
-    background: var(--c-bg);
-}
-
-/* Mobile: hide the FOCUS / VILLAGE / PARTICLES toggles — the decorative
-   3D scene toggle is a desktop-only flourish; on mobile it just steals
-   real estate from content.
-
-   Safeguard: if body.scene-focus carried over from a desktop session
-   (or a resize event), the only exit control is .scene-toggles which
-   we just hid. Re-show core content unconditionally on mobile so the
-   user can never get locked out of an invisible-content state. */
-@media (max-width: 768px) {
-    .scene-toggles {
-        display: none;
-    }
-
+/* Safeguard: if body.scene-focus carried over from a wide session and
+   the viewport shrank below the point where the control is visible,
+   re-show core content so the user can never get locked out. */
+@media (max-width: 1599px) {
     body.scene-focus .site-header,
     body.scene-focus .site-main,
     body.scene-focus .site-footer {
@@ -1462,43 +1222,27 @@ body.scene-focus .theme-switcher {
 }
 
 /* ==========================================================================
-   16. RESPONSIVE DESIGN
+   12. RESPONSIVE DESIGN
    ========================================================================== */
 
 /* Tablets and up (769px+) */
 @media (min-width: 769px) {
-    /* Hero side-by-side */
-    .hero-section__content {
-        flex-direction: row;
-        align-items: center;
-    }
-
-    .hero-section__text {
-        text-align: left;
-    }
-
-    .hero-section__carousel {
-        max-width: 50%;
-    }
-
     .hero-section__title {
         font-size: var(--text-5xl);
     }
 
-    /* About/Contact side-by-side */
+    /* About/Contact side-by-side, About takes the wider column */
     .about-contact-wrapper {
         flex-direction: row;
+        align-items: stretch;
     }
 
-    .about-section,
+    .about-section {
+        flex: 2 1 0;
+    }
+
     .contact-section {
-        flex: 1;
-    }
-
-    .contact-links {
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: center;
+        flex: 1 1 0;
     }
 
     /* Desktop Navigation */
@@ -1522,14 +1266,14 @@ body.scene-focus .theme-switcher {
     .nav-list {
         flex-direction: row;
         justify-content: flex-end;
-        gap: var(--space-sm);
+        gap: var(--space-2xs);
         padding: 0;
     }
 
     .nav-link {
-        font-size: var(--text-sm);
-        min-height: auto;
-        padding: var(--space-xs) var(--space-md);
+        font-size: var(--text-xs);
+        min-height: 36px;
+        padding: var(--space-2xs) var(--space-sm);
     }
 
     /* No backdrop on desktop */

@@ -140,23 +140,22 @@
 @media (prefers-color-scheme: dark) {
     /* Blueprint Dark (Default) */
     :root:not([data-theme]) {
-        --c-accent: #4d88ff;
-        --c-accent-hover: #3377ff;
-        --c-accent-light: #6699ff;
+        --c-accent: #6b9cff;
+        --c-accent-hover: #8ab0ff;
+        --c-accent-light: #4d88ff;
 
-        --c-bg: #0d1117;
-        --c-surface: #161b22;
-        --c-surface-alt: #21262d;
-
-        --c-ink: #c9d1d9;
-        --c-ink-light: #8b949e;
-        --c-ink-muted: #6e7681;
+        /* Deep navy keeps the "blueprint" identity in dark mode
+           (a neutral GitHub-grey palette read as a different site). */
+        --c-bg: #0a1024;
+        --c-surface: #111a33;
+        --c-surface-alt: #182347;
+        --c-ink: #dce4f7;
+        --c-ink-light: #a3b1d1;
+        --c-ink-muted: #6f7fa6;
 
         /* Softer border color for dark mode - key change! */
-        --c-border: #30363d;
-
-        --c-shadow: #010409;
-
+        --c-border: #2c3a63;
+        --c-shadow: #04081a;
         --radar-maintain: #4d88ff;
         --radar-adopt: #009eb0;
         --radar-trial: #c7ba00;
@@ -170,18 +169,14 @@
         --c-accent: #5ba300;
         --c-accent-hover: #4a8600;
         --c-accent-light: #6cb800;
-
         --c-bg: #1a1a18;
         --c-surface: #242422;
         --c-surface-alt: #2d2d2a;
-
         --c-ink: #e8e6e0;
         --c-ink-light: #b8b6b0;
         --c-ink-muted: #787876;
-
         --c-border: #4a4a46;
         --c-shadow: #000000;
-
         --radar-maintain: #5ba300;
         --radar-adopt: #009eb0;
         --radar-trial: #c7ba00;
@@ -195,18 +190,14 @@
         --c-accent: #ff8a33;
         --c-accent-hover: #ff7a1a;
         --c-accent-light: #ff9a4d;
-
         --c-bg: #1a1815;
         --c-surface: #252220;
         --c-surface-alt: #302c28;
-
         --c-ink: #f0ece6;
         --c-ink-light: #b8b4ae;
         --c-ink-muted: #807c76;
-
         --c-border: #4a4540;
         --c-shadow: #000000;
-
         --radar-maintain: #ff8a33;
         --radar-adopt: #009eb0;
         --radar-trial: #c7ba00;
@@ -222,18 +213,15 @@
    Use [data-mode="dark"] to force dark mode regardless of system preference
    ========================================================================== */
 [data-mode="dark"] {
-    --c-accent: #4d88ff;
-    --c-accent-hover: #3377ff;
-    --c-accent-light: #6699ff;
-
-    --c-bg: #0d1117;
-    --c-surface: #161b22;
-    --c-surface-alt: #21262d;
-
-    --c-ink: #c9d1d9;
-    --c-ink-light: #8b949e;
-    --c-ink-muted: #6e7681;
-
-    --c-border: #30363d;
-    --c-shadow: #010409;
+    --c-accent: #6b9cff;
+    --c-accent-hover: #8ab0ff;
+    --c-accent-light: #4d88ff;
+    --c-bg: #0a1024;
+    --c-surface: #111a33;
+    --c-surface-alt: #182347;
+    --c-ink: #dce4f7;
+    --c-ink-light: #a3b1d1;
+    --c-ink-muted: #6f7fa6;
+    --c-border: #2c3a63;
+    --c-shadow: #04081a;
 }

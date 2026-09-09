@@ -105,4 +105,4 @@ When adding new technologies or changing expertise levels:
 **Last Updated**: October 2025
 **Resume Version**: v4 (Datadog-focused)
 **GitHub**: github.com/cjunks94
-**LinkedIn**: linkedin.com/in/christopher-junker
+**LinkedIn**: linkedin.com/in/chris-junker-218aabba

@@ -9,7 +9,7 @@
     "test:a11y": "pa11y-ci",
     "lint": "npm run lint:html && npm run lint:css",
     "lint:html": "htmlhint index.html",
-    "lint:css": "stylelint styles.css",
+    "lint:css": "stylelint \"css/**/*.css\"",
     "serve": "python3 -m http.server 8000"
   },
   "keywords": [

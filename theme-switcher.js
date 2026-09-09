@@ -2,7 +2,7 @@
  * Theme Switcher
  *
  * Manages theme switching for the brutalist UI.
- * Themes: forest (default), blueprint, industrial
+ * Themes: blueprint (default), forest, industrial
  *
  * Features:
  * - Persists theme choice in localStorage
@@ -54,7 +54,7 @@
             return;
         }
 
-        // Remove theme attribute for default (forest), set for others
+        // Remove theme attribute for the default theme, set for others
         if (themeName === DEFAULT_THEME) {
             document.documentElement.removeAttribute('data-theme');
         } else {
@@ -140,9 +140,12 @@
         }
 
         function onDOMReady() {
-            // Create and insert theme switcher
+            // Mount the switcher inside the header (after the nav) so it
+            // never overlaps content. Falls back to <body> on pages that
+            // have no header (design-system-demo.html).
             const switcher = createThemeSwitcher();
-            document.body.appendChild(switcher);
+            const slot = document.querySelector('.site-header__content');
+            (slot || document.body).appendChild(switcher);
 
             // Update active states
             updateActiveStates(savedTheme);

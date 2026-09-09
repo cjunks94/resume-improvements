@@ -1,7 +1,7 @@
 # Christopher Junker
 **Senior Software Engineer | Full-Stack & Distributed Systems Specialist**
 
-631-827-5831 | cjunks94@gmail.com | [GitHub](https://github.com/cjunks94) | [LinkedIn](https://linkedin.com/in/christopher-junker)
+631-827-5831 | cjunks94@gmail.com | [GitHub](https://github.com/cjunks94) | [LinkedIn](https://linkedin.com/in/chris-junker-218aabba)
 Brooklyn, NY | Open to NYC-based roles (e.g., Datadog NY)
 
 ## Professional Summary

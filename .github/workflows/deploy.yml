@@ -110,12 +110,27 @@ jobs:
           cname: staging.cjunker.dev
           force_orphan: true
           keep_files: false
-          exclude_assets: '.github,node_modules,tests,package*.json,.gitignore,.stylelintrc.json,.htmlvalidate.json,decisions,TODO.md,CLAUDE.md,analytics-config.js,umami,healthcheck'
-      - name: Wait for deployment and verify CNAME
+          # CNAME is excluded on purpose: the repo-root CNAME says
+          # cjunker.dev, and actions-gh-pages skips writing its own `cname`
+          # when the publish dir already has one. Publishing cjunker.dev
+          # from the staging repo makes Pages drop the custom domain
+          # (cname: null) and staging.cjunker.dev 404s.
+          exclude_assets: '.github,node_modules,tests,package*.json,.gitignore,.stylelintrc.json,.htmlvalidate.json,decisions,TODO.md,CLAUDE.md,analytics-config.js,umami,healthcheck,CNAME'
+      - name: Verify staging CNAME
+        # Assert the outcome instead of assuming the action did the right
+        # thing. The staging repo is public, so no token is needed.
         run: |
-          echo "Waiting for GitHub Pages deployment to complete..."
-          sleep 10
-          echo "✅ Deployment complete - CNAME should be preserved by action"
+          for i in $(seq 1 12); do
+            actual=$(curl -fsSL "https://raw.githubusercontent.com/cjunks94/resume-improvements-staging/gh-pages/CNAME?nocache=$RANDOM" || true)
+            if [ "$actual" = "staging.cjunker.dev" ]; then
+              echo "CNAME on gh-pages: $actual"
+              exit 0
+            fi
+            echo "attempt $i: CNAME is '$actual', waiting..."
+            sleep 5
+          done
+          echo "::error::staging gh-pages CNAME is '$actual', expected staging.cjunker.dev"
+          exit 1
       - name: Summary
         run: |
           cat <<EOF >> $GITHUB_STEP_SUMMARY

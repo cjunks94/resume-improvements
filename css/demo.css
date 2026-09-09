@@ -1,0 +1,281 @@
+/* ==========================================================================
+   DEMO.CSS - Design-system showcase components
+
+   Components that exist only to be shown on design-system-demo.html.
+   Nothing in index.html references these. Keeping them here (instead of
+   in components.css) keeps the production stylesheet free of dead rules.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Legacy brutal card (v1) and content block
+   -------------------------------------------------------------------------- */
+.brutal-card {
+    border: var(--border-thick) solid var(--c-border);
+    padding: var(--space-lg);
+    margin-bottom: var(--space-xl);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+}
+
+.content-block {
+    background-color: var(--c-surface);
+    border: var(--border-thick) solid var(--c-border);
+    padding: var(--space-lg);
+    box-shadow: var(--shadow-sm) rgb(0, 0, 0, 0.05);
+}
+
+.content-block.beige {
+    background-color: var(--c-bg);
+}
+
+/* --------------------------------------------------------------------------
+   Card v2 variants that only the demo uses
+   -------------------------------------------------------------------------- */
+.brutal-card-v2--grid {
+    background-color: var(--c-bg);
+    background-image:
+        linear-gradient(var(--c-ink-muted) 1px, transparent 1px),
+        linear-gradient(90deg, var(--c-ink-muted) 1px, transparent 1px);
+    background-size: 16px 16px;
+}
+
+.brutal-card-v2--tabbed {
+    padding-top: 0;
+    margin-top: var(--space-xl);
+}
+
+.brutal-card-v2__tab {
+    display: inline-block;
+    background: var(--c-ink);
+    color: var(--c-surface);
+    padding: var(--space-xs) var(--space-lg);
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: var(--text-sm);
+    text-transform: uppercase;
+    border: var(--border-thick) solid var(--c-border);
+    border-bottom: none;
+    position: relative;
+    top: calc(var(--border-thick) * -1);
+    margin-left: var(--space-md);
+    z-index: 2;
+}
+
+.brutal-card-v2--tabbed .brutal-card-v2__body {
+    background: var(--c-surface);
+    border: var(--border-thick) solid var(--c-border);
+    padding: var(--space-lg);
+    position: relative;
+    z-index: 1;
+}
+
+/* --------------------------------------------------------------------------
+   Legacy project card
+   -------------------------------------------------------------------------- */
+.project-card {
+    display: flex;
+    flex-direction: column;
+    background: var(--c-surface);
+    border: var(--border-thick) solid var(--c-border);
+    box-shadow: var(--shadow-md) var(--c-shadow);
+    padding: var(--space-lg);
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.project-card:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px) 0 var(--c-shadow);
+}
+
+.project-card__header {
+    margin-bottom: var(--space-md);
+    padding-bottom: var(--space-sm);
+    border-bottom: var(--border-thin) solid var(--c-border);
+}
+
+.project-card__title {
+    font-size: var(--text-xl);
+    margin-bottom: var(--space-xs);
+    color: var(--c-accent);
+}
+
+.project-card__description {
+    flex-grow: 1;
+    margin-bottom: var(--space-lg);
+    color: var(--c-ink);
+}
+
+.project-card__footer {
+    margin-top: auto;
+    min-height: 70px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: var(--space-xs);
+}
+
+.project-card__link--button {
+    background: transparent;
+    border: var(--border-thick) solid var(--c-accent);
+    color: var(--c-accent);
+    padding: var(--space-xs) var(--space-sm);
+    cursor: pointer;
+    font-weight: 600;
+    text-align: left;
+    width: 100%;
+    font-family: inherit;
+    font-size: inherit;
+    transition: all var(--transition-fast);
+}
+
+.project-card__link--button:hover {
+    background: var(--c-accent);
+    color: var(--c-surface);
+}
+
+/* --------------------------------------------------------------------------
+   Folder tabs
+   -------------------------------------------------------------------------- */
+.folder-wrapper {
+    position: relative;
+    margin-bottom: var(--space-xl);
+}
+
+.folder-tab {
+    display: inline-block;
+    background: var(--c-ink);
+    color: var(--c-surface);
+    padding: var(--space-xs) var(--space-lg);
+    font-family: var(--font-mono);
+    font-weight: bold;
+    font-size: var(--text-sm);
+    text-transform: uppercase;
+    border: var(--border-thick) solid var(--c-border);
+    border-bottom: none;
+    margin-bottom: calc(var(--border-thick) * -1);
+    position: relative;
+    z-index: 2;
+}
+
+.folder-body {
+    background: var(--c-surface);
+    border: var(--border-thick) solid var(--c-border);
+    padding: var(--space-lg);
+    box-shadow: var(--shadow-md) var(--c-shadow);
+    position: relative;
+    z-index: 1;
+}
+
+/* --------------------------------------------------------------------------
+   Forms & inputs
+   -------------------------------------------------------------------------- */
+.form-group {
+    margin-bottom: var(--space-lg);
+}
+
+.form-label {
+    display: block;
+    margin-bottom: var(--space-xs);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--c-ink);
+}
+
+.brutal-input {
+    width: 100%;
+    padding: var(--space-sm);
+    font-size: var(--text-base);
+    font-family: inherit;
+    border: var(--border-thick) solid var(--c-border);
+    background: var(--c-surface);
+    box-shadow: var(--shadow-sm) rgb(0, 0, 0, 0.2);
+    transition: all var(--transition-fast);
+    appearance: none;
+}
+
+.brutal-input:focus {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 var(--c-ink);
+    background-color: var(--c-surface-alt);
+}
+
+.brutal-input::placeholder {
+    color: var(--c-ink-muted);
+}
+
+/* --------------------------------------------------------------------------
+   Toast alerts + accent strips
+   -------------------------------------------------------------------------- */
+.toast {
+    display: flex;
+    border: var(--border-thick) solid var(--c-border);
+    background: var(--c-surface);
+    max-width: 100%;
+    margin-bottom: var(--space-lg);
+    box-shadow: var(--shadow-sm) rgb(0, 0, 0, 0.1);
+}
+
+.toast-strip {
+    width: 30px;
+    flex-shrink: 0;
+    border-right: var(--border-thick) solid var(--c-border);
+}
+
+.toast-body {
+    padding: var(--space-md);
+    flex: 1;
+}
+
+.toast-body strong {
+    display: block;
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    margin-bottom: var(--space-2xs);
+}
+
+.toast-body span {
+    font-size: var(--text-sm);
+    color: var(--c-ink-light);
+}
+
+.strip-success {
+    background-color: var(--c-success);
+    background-image: radial-gradient(var(--c-ink) 25%, transparent 25%);
+    background-size: 4px 4px;
+}
+
+.strip-error {
+    background-color: var(--c-error);
+    background-image: repeating-linear-gradient(
+        45deg,
+        var(--c-ink),
+        var(--c-ink) 1px,
+        transparent 1px,
+        transparent 4px
+    );
+}
+
+.strip-warning {
+    background-color: var(--c-warning);
+    background-image: repeating-linear-gradient(
+        0deg,
+        var(--c-ink),
+        var(--c-ink) 1px,
+        transparent 1px,
+        transparent 4px
+    );
+}
+
+.strip-info {
+    background-color: var(--c-info);
+    background-image: repeating-linear-gradient(
+        90deg,
+        var(--c-ink),
+        var(--c-ink) 1px,
+        transparent 1px,
+        transparent 4px
+    );
+}

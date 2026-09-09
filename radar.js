@@ -67,19 +67,69 @@ const radar_visualization = function(config) {
   const radar = svg.append("g")
     .attr("transform", `translate(${center.x},${center.y})`);
 
+  // Ring geometry. cfg.rings is ordered outer -> inner (last ring is the
+  // center). Rings are sized by AREA so the ring holding most of the blips
+  // gets most of the space: outer radius of ring k (from the center) is
+  // R * sqrt(cumulativeCount_k / total). A minimum width keeps sparse or
+  // empty rings (HOLD) visible and leaves room for 10px blips.
+  const ringCount = cfg.rings.length;
+  const counts = cfg.rings.map(r =>
+    cfg.entries.filter(e => e.ring.toLowerCase() === r.name.toLowerCase()).length
+  );
+  const total = counts.reduce((a, b) => a + b, 0) || 1;
+  const minWidth = radius * 0.15;
+
+  // Ideal widths, inner -> outer (index ringCount-1 is the center ring).
+  let cumulative = 0;
+  const idealWidths = new Array(ringCount);
+  for (let i = ringCount - 1; i >= 0; i--) {
+    const innerR = radius * Math.sqrt(cumulative / total);
+    cumulative += counts[i];
+    const outerR = radius * Math.sqrt(cumulative / total);
+    idealWidths[i] = outerR - innerR;
+  }
+
+  // Clamp to minWidth, then give the leftover radius to the rings that
+  // are above the minimum, in proportion to their ideal width.
+  const widths = idealWidths.slice();
+  for (let pass = 0; pass < ringCount; pass++) {
+    let fixed = 0;
+    let flexIdeal = 0;
+    const flexIdx = [];
+    for (let i = 0; i < ringCount; i++) {
+      if (widths[i] <= minWidth) { widths[i] = minWidth; fixed += minWidth; }
+      else { flexIdeal += idealWidths[i]; flexIdx.push(i); }
+    }
+    const remaining = Math.max(radius - fixed, 0);
+    let clampedAgain = false;
+    flexIdx.forEach(i => {
+      widths[i] = flexIdeal > 0 ? remaining * (idealWidths[i] / flexIdeal) : 0;
+      if (widths[i] < minWidth) clampedAgain = true;
+    });
+    if (!clampedAgain) break;
+  }
+
+  // Outer radius of each ring (index 0 = outermost).
+  const ringOuter = new Array(ringCount);
+  let acc = 0;
+  for (let i = ringCount - 1; i >= 0; i--) {
+    acc += widths[i];
+    ringOuter[i] = acc;
+  }
+  const ringInner = i => (i === ringCount - 1 ? 0 : ringOuter[i + 1]);
+
   // Draw grid circles (rings)
-  const ringWidth = radius / cfg.rings.length;
   cfg.rings.forEach((ring, i) => {
     radar.append("circle")
       .attr("cx", 0)
       .attr("cy", 0)
-      .attr("r", radius - (i * ringWidth))
+      .attr("r", ringOuter[i])
       .style("fill", "none")
       .style("stroke", cfg.colors.grid)
       .style("stroke-width", 1);
 
-    // Ring labels with white stroke halo
-    const ringLabelY = -radius + (i * ringWidth) + ringWidth / 2;
+    // Ring labels sit on the vertical axis, centered in their band
+    const ringLabelY = -(ringInner(i) + widths[i] / 2) + 5;
 
     // White stroke (halo) layer
     radar.append("text")
@@ -139,7 +189,7 @@ const radar_visualization = function(config) {
       .attr("text-anchor", "middle")
       .style("font-weight", "bold")
       .style("font-size", "14px")
-      .style("fill", "#000")
+      .style("fill", "var(--c-ink)")
       .text(labelText);
   });
 
@@ -155,8 +205,15 @@ const radar_visualization = function(config) {
     ringMap[r.name.toLowerCase()] = i;
   });
 
-  // Plot entries (blips)
-  const legend = {};
+  // ------------------------------------------------------------------
+  // Pass 1: compute a position for every entry (deterministic jitter),
+  // then relax overlapping blips apart while keeping each one inside
+  // its own ring band and quadrant.
+  // ------------------------------------------------------------------
+  const BLIP_R = 10;
+  const MIN_DIST = BLIP_R * 2 + 4;
+  const placed = [];
+
   cfg.entries.forEach((entry, idx) => {
     const quadrantIndex = quadrantMap[entry.quadrant];
     const ringIndex = ringMap[entry.ring.toLowerCase()];
@@ -166,19 +223,73 @@ const radar_visualization = function(config) {
       return;
     }
 
-    // Calculate position
-    const ringRadius = radius - (ringIndex * ringWidth) - ringWidth / 2;
+    const bandWidth = widths[ringIndex];
+    const rMin = ringInner(ringIndex) + BLIP_R + 2;
+    const rMax = ringOuter[ringIndex] - BLIP_R - 2;
+    const ringRadius = (rMin + rMax) / 2;
     const quadrantAngle = quadrantAngles[quadrantIndex];
 
-    // Deterministic position within quadrant and ring (seeded by entry label)
-    const angleVariation = (seededRandom(entry.label + ":a") - 0.5) * 80; // +/- 40 degrees
-    const radiusVariation = (seededRandom(entry.label + ":r") - 0.5) * ringWidth * 0.6;
+    // Deterministic position within quadrant and ring (seeded by entry label).
+    // The innermost ring spreads blips further from the center so they
+    // don't pile up on the axis lines.
+    const angleVariation = (seededRandom(entry.label + ":a") - 0.5) * 76; // +/- 38 degrees
+    const radialSpread = ringIndex === ringCount - 1 ? 0.9 : 0.6;
+    const radiusVariation = (seededRandom(entry.label + ":r") - 0.5) * (rMax - rMin) * radialSpread;
 
     const angle = (quadrantAngle + angleVariation - 90) * Math.PI / 180;
-    const r = ringRadius + radiusVariation;
-    const x = r * Math.cos(angle);
-    const y = r * Math.sin(angle);
+    const r = Math.max(rMin, Math.min(rMax, ringRadius + radiusVariation));
 
+    placed.push({
+      entry, idx, quadrantIndex, ringIndex,
+      x: r * Math.cos(angle),
+      y: r * Math.sin(angle),
+      rMin, rMax,
+      // Allowed angular window (radians, screen coords) inside the quadrant
+      aMin: (quadrantAngle - 45 + 6 - 90) * Math.PI / 180,
+      aMax: (quadrantAngle + 45 - 6 - 90) * Math.PI / 180
+    });
+  });
+
+  // Clamp a point back into its polar bounds.
+  const clamp = function(p) {
+    let r = Math.sqrt(p.x * p.x + p.y * p.y);
+    let a = Math.atan2(p.y, p.x);
+    // Normalise angle into the same range as aMin/aMax
+    while (a < p.aMin - Math.PI) a += 2 * Math.PI;
+    while (a > p.aMax + Math.PI) a -= 2 * Math.PI;
+    if (a < p.aMin) a = p.aMin;
+    if (a > p.aMax) a = p.aMax;
+    if (r < p.rMin) r = p.rMin;
+    if (r > p.rMax) r = p.rMax;
+    p.x = r * Math.cos(a);
+    p.y = r * Math.sin(a);
+  };
+
+  // Simple pairwise repulsion, a few dozen iterations is plenty for 35 blips.
+  for (let iter = 0; iter < 80; iter++) {
+    let moved = false;
+    for (let a = 0; a < placed.length; a++) {
+      for (let b = a + 1; b < placed.length; b++) {
+        const pa = placed[a], pb = placed[b];
+        let dx = pb.x - pa.x, dy = pb.y - pa.y;
+        let d = Math.sqrt(dx * dx + dy * dy);
+        if (d >= MIN_DIST) continue;
+        if (d < 0.01) { dx = 1; dy = 0; d = 1; }
+        const push = (MIN_DIST - d) / 2 / d;
+        pa.x -= dx * push; pa.y -= dy * push;
+        pb.x += dx * push; pb.y += dy * push;
+        clamp(pa); clamp(pb);
+        moved = true;
+      }
+    }
+    if (!moved) break;
+  }
+
+  // ------------------------------------------------------------------
+  // Pass 2: draw
+  // ------------------------------------------------------------------
+  const legend = {};
+  placed.forEach(({ entry, idx, quadrantIndex, ringIndex, x, y }) => {
     // Draw blip
     const blip = radar.append("g")
       .attr("transform", `translate(${x},${y})`)
@@ -292,34 +403,33 @@ function showTooltip(entry, event) {
   // Remove existing tooltip
   d3.select("#radar-tooltip").remove();
 
+  // Visual styling lives in components.css (#radar-tooltip) so it follows
+  // the active theme; only the position is set here. Keyboard activation
+  // has no pointer coordinates, so anchor to the blip's bounding box.
+  let left, top;
+  if (event.type === "click" && event.pageX !== undefined) {
+    left = event.pageX + 10;
+    top = event.pageY + 10;
+  } else {
+    const box = event.currentTarget.getBoundingClientRect();
+    left = box.left + window.scrollX + box.width / 2;
+    top = box.bottom + window.scrollY + 8;
+  }
+
   const tooltip = d3.select("body")
     .append("div")
     .attr("id", "radar-tooltip")
     .attr("role", "tooltip")
-    .style("position", "absolute")
-    .style("background", "#fff")
-    .style("border", "2px solid #0066cc")
-    .style("border-radius", "8px")
-    .style("padding", "1rem")
-    .style("max-width", "300px")
-    .style("box-shadow", "0 4px 12px rgba(0,0,0,0.15)")
-    .style("z-index", "1000")
-    .style("left", `${event.pageX + 10}px`)
-    .style("top", `${event.pageY + 10}px`);
+    .style("left", `${left}px`)
+    .style("top", `${top}px`);
 
   tooltip.append("h4")
-    .style("margin", "0 0 0.5rem 0")
-    .style("color", "#0066cc")
     .text(entry.label);
 
   tooltip.append("p")
-    .style("margin", "0 0 0.5rem 0")
-    .html(`<strong>Level:</strong> ${entry.ring.toUpperCase()}`);
+    .html(`<strong>Ring:</strong> ${entry.ring.toUpperCase()}`);
 
   tooltip.append("p")
-    .style("margin", "0")
-    .style("font-size", "0.9rem")
-    .style("color", "#666")
     .text(entry.description || "No description available");
 
   // Close on click anywhere
@@ -367,18 +477,22 @@ function buildLegend(legend, cfg) {
     .attr("title", "Read Full Documentation")
     .html("📖 Docs");
 
+  // Below 768px the SVG is hidden (components.css), so the index is the
+  // radar: open it by default there. Desktop keeps it collapsed.
+  const narrow = window.matchMedia && window.matchMedia("(max-width: 768px)").matches;
+
   // Toggle button
   const toggleBtn = actions.append("button")
     .attr("class", "radar-legend__toggle")
-    .attr("aria-expanded", "false")
+    .attr("aria-expanded", narrow ? "true" : "false")
     .attr("aria-controls", "radar-legend-content")
-    .text("Show All");
+    .text(narrow ? "Hide All" : "Show All");
 
-  // Content container (collapsed by default)
+  // Content container (collapsed by default on desktop)
   const content = legendContainer.append("div")
     .attr("id", "radar-legend-content")
     .attr("class", "radar-legend__content")
-    .attr("aria-hidden", "true");
+    .attr("aria-hidden", narrow ? "false" : "true");
 
   // Toggle functionality
   toggleBtn.on("click", function() {
@@ -390,52 +504,49 @@ function buildLegend(legend, cfg) {
       .attr("aria-hidden", isExpanded);
   });
 
+  // Ring order for sorting: innermost (adopt) first
+  const ringOrder = {};
+  cfg.rings.slice().reverse().forEach((r, idx) => { ringOrder[r.name.toLowerCase()] = idx; });
+
   Object.keys(legend).forEach(quadrant => {
     const section = content.append("div")
-      .attr("class", "legend-quadrant")
-      .style("margin-bottom", "2rem");
+      .attr("class", "legend-quadrant");
 
     section.append("h3")
-      .style("margin-bottom", "1rem")
       .text(quadrant.replace('-', ' & ').toUpperCase());
 
+    // Flatten rings into one list per quadrant, ring shown as a tag
+    const items = [];
     Object.keys(legend[quadrant]).forEach(ring => {
-      const ringSection = section.append("div")
-        .style("margin-bottom", "1rem");
+      legend[quadrant][ring].forEach(item => items.push({ ...item, ring: ring }));
+    });
+    items.sort((a, b) =>
+      (ringOrder[a.ring.toLowerCase()] - ringOrder[b.ring.toLowerCase()]) || (a.number - b.number)
+    );
 
-      ringSection.append("h4")
-        .style("font-size", "1rem")
-        .style("margin-bottom", "0.5rem")
-        .text(ring.toUpperCase());
+    const list = section.append("ul")
+      .attr("class", "legend-list");
 
-      const list = ringSection.append("ul")
-        .style("list-style", "none")
-        .style("padding", "0")
-        .style("margin", "0");
+    items.forEach(item => {
+      const li = list.append("li");
 
-      legend[quadrant][ring].forEach(item => {
-        const li = list.append("li")
-          .style("margin-bottom", "0.25rem")
-          .style("font-size", "0.9rem");
+      li.append("span")
+        .attr("class", "legend-number")
+        .text(item.number + ".");
 
+      li.append("span")
+        .attr("class", "legend-label")
+        .text(item.label);
+
+      li.append("span")
+        .attr("class", "ring-tag ring-tag--" + item.ring.toLowerCase())
+        .text(item.ring.toUpperCase());
+
+      if (item.moved > 0) {
         li.append("span")
-          .attr("class", "legend-number")
-          .style("display", "inline-block")
-          .style("width", "30px")
-          .style("font-weight", "bold")
-          .text(item.number + ".");
-
-        li.append("span")
-          .text(item.label);
-
-        if (item.moved > 0) {
-          li.append("span")
-            .style("margin-left", "0.5rem")
-            .style("color", "var(--radar-new)")
-            .style("font-weight", "bold")
-            .text("▲ NEW");
-        }
-      });
+          .attr("class", "legend-new")
+          .text("\u25b2 NEW");
+      }
     });
   });
 }

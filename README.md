@@ -31,7 +31,7 @@ This repository tracks strategic improvements to my software engineering resume 
 ```
 resume-improvements/
 ├── index.html              # Portfolio site homepage
-├── styles.css              # Custom styling
+├── css/                    # base.css, themes/variables.css, components.css (+ demo.css for the design-system page)
 ├── tech-radar.csv          # Technology expertise radar
 ├── DEPLOYMENT.md           # Deployment and custom domain guide
 ├── README.md               # This file - project overview

@@ -26,8 +26,7 @@
 html {
     scroll-behavior: smooth;
     scroll-padding-top: 80px; /* Offset for sticky navbar */
-    -webkit-text-size-adjust: 100%;
-    -moz-tab-size: 4;
+    text-size-adjust: 100%;
     tab-size: 4;
 }
 
@@ -35,7 +34,7 @@ body {
     min-height: 100vh;
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeLegibility;
+    text-rendering: optimizelegibility;
 }
 
 img, picture, video, canvas, svg {
@@ -68,10 +67,34 @@ ul, ol {
 }
 
 /* ==========================================================================
-   2. STRUCTURAL VARIABLES (Non-Color)
+   2. WEB FONTS
 
-   These control the "brutalist" feel - thick borders, hard shadows, etc.
-   Adjust these to soften/harden the design.
+   Brutalist style: Monospace for headers, Sans-serif for body.
+   JetBrains Mono is self-hosted (latin subset only, ~21 KB per weight,
+   SIL OFL — see fonts/LICENSE-OFL.txt). font-display: swap keeps text
+   visible on the system mono stack until the file arrives.
+   ========================================================================== */
+@font-face {
+    font-family: 'JetBrains Mono';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('../fonts/jetbrains-mono-400.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'JetBrains Mono';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url('../fonts/jetbrains-mono-700.woff2') format('woff2');
+}
+
+/* ==========================================================================
+   3. DESIGN TOKENS (Non-Color)
+
+   Structural tokens control the "brutalist" feel - thick borders, hard
+   shadows, etc. Typography tokens follow in the same :root block.
    ========================================================================== */
 :root {
     /* Border System */
@@ -117,17 +140,11 @@ ul, ol {
     --z-modal-backdrop: 900;
     --z-modal: 1000;
     --z-toast: 1100;
-}
 
-/* ==========================================================================
-   3. TYPOGRAPHY SYSTEM
 
-   Brutalist style: Monospace for headers, Sans-serif for body
-   ========================================================================== */
-:root {
     /* Font Families */
-    --font-mono: 'Courier New', Courier, monospace;
-    --font-sans: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, 'Cascadia Code', 'SF Mono', menlo, consolas, monospace;
+    --font-sans: 'Helvetica Neue', helvetica, arial, sans-serif;
 
     /* Font Sizes (using clamp for fluid typography) */
     --text-xs: 0.75rem;     /* 12px */
@@ -145,17 +162,13 @@ ul, ol {
     --leading-normal: 1.6;
     --leading-relaxed: 1.75;
 
-    /* Letter Spacing */
-    --tracking-tight: -1px;
+    /* Letter Spacing
+       Uppercase text wants slightly positive tracking; negative tracking
+       on small caps text closes the counters and hurts legibility. */
+    --tracking-tight: -0.01em;
     --tracking-normal: 0;
-    --tracking-wide: 0.5px;
-}
-
-/* Body Typography */
-body {
-    font-family: var(--font-sans);
-    font-size: var(--text-base);
-    line-height: var(--leading-normal);
+    --tracking-wide: 0.04em;
+    --tracking-caps: 0.02em;
 }
 
 /* Headings - Monospace, Uppercase, Bold */
@@ -164,7 +177,7 @@ h1, h2, h3, h4, h5, h6,
     font-family: var(--font-mono);
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: var(--tracking-tight);
+    letter-spacing: var(--tracking-caps);
     line-height: var(--leading-tight);
     margin-top: 0;
 }
@@ -280,7 +293,7 @@ code, pre, .mono {
     }
 
     h1, h2, h3, h4, h5, h6 {
-        page-break-after: avoid;
+        break-after: avoid;
     }
 
     img {
@@ -290,7 +303,7 @@ code, pre, .mono {
 
     .no-print,
     #village-canvas,
-    .village-toggle {
+    .scene-control {
         /* Print: Hide non-printable elements */
         display: none !important;
     }

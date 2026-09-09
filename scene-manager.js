@@ -3,6 +3,11 @@
  * Handles canvas, renderer, and switching between background scenes.
  * Each scene registers itself via window.SceneManager.register(name, sceneObj).
  *
+ * Loading strategy: this file is tiny and loads with the page, but
+ * Three.js (~670 KB) and the scene scripts are only fetched the first
+ * time a visitor turns a scene on (or on load, if they turned one on in
+ * a previous visit). The default is OFF.
+ *
  * Scene interface:
  *   init(renderer, canvas)  — set up scene, camera, objects
  *   animate(elapsed)        — called each frame
@@ -17,16 +22,16 @@
 (function() {
     'use strict';
 
-    if (typeof THREE === 'undefined') return;
-    try {
-        var c = document.createElement('canvas');
-        if (!(c.getContext('webgl') || c.getContext('experimental-webgl'))) return;
-    } catch (e) { return; }
-
     // Skip in headless browsers (pa11y/puppeteer). Decorative scene isn't
     // useful for a11y testing and the WebGL animation can prevent
     // networkidle0 from settling, stalling page navigation in CI.
     if (/HeadlessChrome|Headless/.test(navigator.userAgent)) return;
+
+    // Scene scripts, in load order. Each scene file registers itself with
+    // SceneManager, so this object must exist before they run.
+    var ENGINE_SCRIPTS = ['vendor/three.min.js', 'village-scene.js', 'particle-scene.js'];
+    var SCENE_LABELS = { village: 'Village', particles: 'Particles' };
+    var STORAGE_KEY = 'scene-active';
 
     var scenes = {};
     var activeScene = null;
@@ -34,10 +39,48 @@
     var canvas, renderer;
     var animationId = null;
     var isRunning = false;
-    var isPaused = false;
     var elapsed = 0;
     var mouse = { x: 0, y: 0 };
     var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var enginePromise = null;
+    var focusMode = false;
+
+    // ========================================================================
+    // LAZY ENGINE LOAD
+    // ========================================================================
+    function loadScript(src) {
+        return new Promise(function(resolve, reject) {
+            var el = document.createElement('script');
+            el.src = src;
+            el.async = false;
+            el.onload = resolve;
+            el.onerror = function() { reject(new Error('Failed to load ' + src)); };
+            document.head.appendChild(el);
+        });
+    }
+
+    function webglAvailable() {
+        try {
+            var c = document.createElement('canvas');
+            return !!(c.getContext('webgl') || c.getContext('experimental-webgl'));
+        } catch (e) { return false; }
+    }
+
+    function loadEngine() {
+        if (!enginePromise) {
+            enginePromise = ENGINE_SCRIPTS.reduce(function(p, src) {
+                return p.then(function() { return loadScript(src); });
+            }, Promise.resolve()).then(function() {
+                if (typeof THREE === 'undefined') throw new Error('Three.js did not load');
+                if (!renderer) initRenderer();
+            }).catch(function(err) {
+                console.warn('Background scene unavailable:', err.message);
+                enginePromise = null;
+                throw err;
+            });
+        }
+        return enginePromise;
+    }
 
     // ========================================================================
     // CANVAS & RENDERER
@@ -62,6 +105,16 @@
         canvas.addEventListener('webglcontextrestored', function() {
             if (isRunning) animate();
         });
+
+        window.addEventListener('mousemove', onMouseMove);
+        window.addEventListener('scroll', onScroll);
+        canvas.addEventListener('click', onClick);
+        window.addEventListener('resize', onResize);
+        window.addEventListener('themechange', onThemeChange);
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', onThemeChange);
+        window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', function(e) {
+            reducedMotion = e.matches;
+        });
     }
 
     // ========================================================================
@@ -79,11 +132,7 @@
             return;
         }
 
-        if (!isPaused) {
-            activeScene.animate(elapsed);
-        } else if (activeScene.animatePaused) {
-            activeScene.animatePaused(elapsed);
-        }
+        activeScene.animate(elapsed);
         renderer.render(activeScene.getScene(), activeScene.getCamera());
     }
 
@@ -91,7 +140,7 @@
     // SCENE SWITCHING
     // ========================================================================
     function switchScene(name) {
-        if (!scenes[name]) return;
+        if (!scenes[name]) return false;
 
         if (activeScene && activeScene.destroy) {
             activeScene.destroy();
@@ -101,11 +150,38 @@
         activeScene = scenes[name];
         activeScene.init(renderer, canvas);
         activeScene.resize(window.innerWidth, window.innerHeight);
-        localStorage.setItem('scene-active', name);
+        return true;
     }
 
-    function getSceneNames() {
-        return Object.keys(scenes);
+    function startScene() {
+        if (canvas) canvas.style.display = 'block';
+        document.body.classList.add('village-active');
+        isRunning = true;
+        if (animationId) cancelAnimationFrame(animationId);
+        animate();
+    }
+
+    function stopScene() {
+        if (animationId) cancelAnimationFrame(animationId);
+        if (canvas) canvas.style.display = 'none';
+        document.body.classList.remove('village-active');
+        isRunning = false;
+        activeSceneName = null;
+    }
+
+    function activate(name) {
+        return loadEngine().then(function() {
+            if (switchScene(name)) {
+                startScene();
+                localStorage.setItem(STORAGE_KEY, name);
+            }
+        }).catch(function() { /* already logged */ }).then(updateControl);
+    }
+
+    function deactivate() {
+        stopScene();
+        localStorage.setItem(STORAGE_KEY, 'off');
+        updateControl();
     }
 
     // ========================================================================
@@ -147,93 +223,105 @@
     }
 
     // ========================================================================
-    // SCENE TOGGLE BUTTONS (one per scene, mutually exclusive)
+    // SINGLE "BACKGROUND" CONTROL (bottom-right, >= 1600px only via CSS)
+    //
+    //   [ BACKGROUND: OFF ]  -> click ->  menu: Off / Village / Particles / Focus
     // ========================================================================
-    var buttons = {};
+    var control = {};
 
-    function createButtons() {
+    function createControl() {
         var container = document.createElement('div');
-        container.className = 'scene-toggles';
-        document.body.appendChild(container);
+        container.className = 'scene-control';
 
-        function updateAll() {
-            Object.keys(buttons).forEach(function(name) {
-                var isActive = isRunning && activeSceneName === name;
-                var label = name.toUpperCase();
-                if (isActive && isPaused) {
-                    label += ' [PAUSED]';
-                } else if (isActive) {
-                    label += ' [ON]';
-                }
-                buttons[name].textContent = label;
-                buttons[name].classList.toggle('active', isActive);
-                buttons[name].setAttribute('aria-pressed', isActive ? 'true' : 'false');
+        var menu = document.createElement('div');
+        menu.className = 'scene-control__menu';
+        menu.id = 'scene-control-menu';
+        menu.hidden = true;
+
+        var toggle = document.createElement('button');
+        toggle.className = 'village-toggle scene-control__toggle';
+        toggle.type = 'button';
+        toggle.setAttribute('aria-expanded', 'false');
+        toggle.setAttribute('aria-controls', menu.id);
+        toggle.setAttribute('aria-label', 'Background scene options');
+        toggle.addEventListener('click', function() {
+            var open = menu.hidden;
+            menu.hidden = !open;
+            toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+        });
+
+        function option(label, ariaLabel, onClick) {
+            var btn = document.createElement('button');
+            btn.className = 'village-toggle';
+            btn.type = 'button';
+            btn.textContent = label;
+            btn.setAttribute('aria-label', ariaLabel);
+            btn.setAttribute('aria-pressed', 'false');
+            btn.addEventListener('click', function() {
+                onClick();
+                // Choosing an option closes the menu; keeps the control small.
+                menu.hidden = true;
+                toggle.setAttribute('aria-expanded', 'false');
+                toggle.focus();
             });
+            menu.appendChild(btn);
+            return btn;
         }
 
-        // Focus mode button — hides DOM, shows only 3D
-        var focusBtn = document.createElement('button');
-        focusBtn.className = 'village-toggle';
-        focusBtn.setAttribute('aria-label', 'Toggle focus mode — hide content, show only 3D scene');
-        focusBtn.setAttribute('aria-pressed', 'false');
-        focusBtn.textContent = 'FOCUS';
-        container.appendChild(focusBtn);
-
-        var focusMode = false;
-        focusBtn.addEventListener('click', function() {
+        control.off = option('Off', 'Turn background scene off', function() { deactivate(); });
+        control.sceneButtons = {};
+        Object.keys(SCENE_LABELS).forEach(function(name) {
+            control.sceneButtons[name] = option(SCENE_LABELS[name], 'Show ' + SCENE_LABELS[name] + ' background', function() {
+                activate(name);
+            });
+        });
+        control.focus = option('Focus', 'Focus mode: hide content, show only the 3D scene', function() {
             focusMode = !focusMode;
             document.body.classList.toggle('scene-focus', focusMode);
-            focusBtn.classList.toggle('active', focusMode);
-            focusBtn.setAttribute('aria-pressed', focusMode ? 'true' : 'false');
-            focusBtn.textContent = focusMode ? 'FOCUS [ON]' : 'FOCUS';
+            updateControl();
         });
 
-        return { container: container, updateAll: updateAll };
-    }
+        container.appendChild(menu);
+        container.appendChild(toggle);
+        document.body.appendChild(container);
 
-    function addButton(name, controls) {
-        var btn = document.createElement('button');
-        btn.className = 'village-toggle';
-        btn.setAttribute('aria-label', 'Toggle ' + name + ' background');
-        btn.setAttribute('aria-pressed', 'false');
-        btn.textContent = name.toUpperCase();
-        controls.container.appendChild(btn);
-        buttons[name] = btn;
+        control.toggle = toggle;
+        control.menu = menu;
 
-        btn.addEventListener('click', function() {
-            if (isRunning && activeSceneName === name) {
-                if (!isPaused) {
-                    // ON → PAUSED
-                    isPaused = true;
-                    if (activeScene && activeScene.pause) activeScene.pause();
-                } else {
-                    // PAUSED → OFF
-                    isPaused = false;
-                    stopScene();
-                    localStorage.setItem('scene-active', 'off');
-                }
-            } else {
-                // Switch to this scene (or turn on from off)
-                isPaused = false;
-                switchScene(name);
-                startScene();
+        // Close the menu on Escape or outside click
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && !menu.hidden) {
+                menu.hidden = true;
+                toggle.setAttribute('aria-expanded', 'false');
+                toggle.focus();
             }
-            controls.updateAll();
         });
+        document.addEventListener('click', function(e) {
+            if (!menu.hidden && !container.contains(e.target)) {
+                menu.hidden = true;
+                toggle.setAttribute('aria-expanded', 'false');
+            }
+        });
+
+        updateControl();
     }
 
-    function startScene() {
-        if (canvas) canvas.style.display = 'block';
-        document.body.classList.add('village-active');
-        isRunning = true;
-        animate();
-    }
+    function updateControl() {
+        if (!control.toggle) return;
+        var current = isRunning && activeSceneName ? SCENE_LABELS[activeSceneName] : 'Off';
+        control.toggle.textContent = 'Background: ' + current;
+        control.toggle.classList.toggle('active', isRunning);
 
-    function stopScene() {
-        if (animationId) cancelAnimationFrame(animationId);
-        if (canvas) canvas.style.display = 'none';
-        document.body.classList.remove('village-active');
-        isRunning = false;
+        control.off.classList.toggle('active', !isRunning);
+        control.off.setAttribute('aria-pressed', isRunning ? 'false' : 'true');
+        Object.keys(control.sceneButtons).forEach(function(name) {
+            var on = isRunning && activeSceneName === name;
+            control.sceneButtons[name].classList.toggle('active', on);
+            control.sceneButtons[name].setAttribute('aria-pressed', on ? 'true' : 'false');
+        });
+        control.focus.classList.toggle('active', focusMode);
+        control.focus.setAttribute('aria-pressed', focusMode ? 'true' : 'false');
+        control.focus.disabled = !isRunning;
     }
 
     // ========================================================================
@@ -257,42 +345,15 @@
     // INIT
     // ========================================================================
     function init() {
-        var saved = localStorage.getItem('scene-active');
+        if (!webglAvailable()) return;
 
-        initRenderer();
-        var controls = createButtons();
+        createControl();
 
-        // Wait for scenes to register (they load via defer too)
-        setTimeout(function() {
-            var names = getSceneNames();
-            if (names.length === 0) return;
-
-            // Create a button for each registered scene
-            names.forEach(function(name) { addButton(name, controls); });
-
-            if (saved === 'off') {
-                switchScene(names[0]);
-                stopScene();
-                controls.updateAll();
-                return;
-            }
-
-            var startWith = (saved && scenes[saved]) ? saved : names[0];
-            switchScene(startWith);
-
-            window.addEventListener('mousemove', onMouseMove);
-            window.addEventListener('scroll', onScroll);
-            canvas.addEventListener('click', onClick);
-            window.addEventListener('resize', onResize);
-            window.addEventListener('themechange', onThemeChange);
-            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', onThemeChange);
-            window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', function(e) {
-                reducedMotion = e.matches;
-            });
-
-            startScene();
-            controls.updateAll();
-        }, 50);
+        // Only restore a scene the visitor explicitly turned on before.
+        var saved = localStorage.getItem(STORAGE_KEY);
+        if (saved && SCENE_LABELS[saved]) {
+            activate(saved);
+        }
     }
 
     // ========================================================================

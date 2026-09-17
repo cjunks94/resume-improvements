@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="description" content="Christopher Junker is a senior backend engineer in Brooklyn, NY. Seven years leading Rails, Python, and Go systems for payments, CRM, and data pipelines. Open to Staff and Senior roles in NYC.">
+    <meta name="author" content="Christopher Junker">
+    <meta name="keywords" content="software engineer, senior engineer, staff engineer, Ruby on Rails, Python, Go, Kubernetes, AWS, payments, distributed systems, observability, NYC">
+    <title>Christopher Junker | Senior Software Engineer</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+    <!-- Open Graph / Social Sharing -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://cjunker.dev">
+    <meta property="og:title" content="Christopher Junker | Senior Software Engineer">
+    <meta property="og:description" content="Senior backend engineer in Brooklyn, NY. Seven years leading Rails, Python, and Go systems for payments, CRM, and data pipelines.">
+    <meta property="og:image" content="https://cjunker.dev/og-image.png">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Christopher Junker | Senior Software Engineer">
+    <meta name="twitter:description" content="Senior backend engineer in Brooklyn, NY. Rails, Python, Go. Payments, CRM, data pipelines.">
+    <meta name="twitter:image" content="https://cjunker.dev/og-image.png">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://cjunker.dev">
+
+    <!-- Fonts: self-hosted JetBrains Mono (latin, 400 + 700) -->
+    <link rel="preload" href="fonts/jetbrains-mono-700.woff2" as="font" type="font/woff2" crossorigin>
+
+    <!-- Brutalist Theme System (three parallel stylesheets, no @import waterfall)
+         Order matters: base (reset, type, spacing) -> theme colors -> components -->
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/themes/variables.css">
+    <link rel="stylesheet" href="css/components.css">
+
+    <!-- Theme Switcher (Forest/Blueprint/Industrial) — sync so the saved theme
+         applies before first paint -->
+    <script src="theme-switcher.js"></script>
+
+    <!-- Mobile menu + shrinking header -->
+    <script src="scripts.js" defer></script>
+
+    <!-- Architecture modals (Mermaid is lazy-loaded on first open) -->
+    <script src="modals.js" defer></script>
+
+    <!-- No-JS fallback: Show navigation if JavaScript is disabled -->
+    <noscript>
+        <style>
+            /* Higher specificity selectors to override without !important */
+            html body .site-header .nav-toggle { display: none; }
+            html body .site-header .main-nav {
+                position: static;
+                transform: none;
+                width: 100%;
+                max-width: none;
+                height: auto;
+                background: transparent;
+                border: none;
+                box-shadow: none;
+                padding: 0;
+            }
+            html body .site-header .nav-list {
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: var(--space-sm);
+            }
+            html body .radar-legend__content[aria-hidden="true"] { display: grid; }
+        </style>
+    </noscript>
+
+    <!-- D3.js for Tech Radar visualization (vendored to avoid CDN stalls in headless CI) -->
+    <script src="vendor/d3.v7.min.js" defer></script>
+    <script src="radar.js" defer></script>
+
+    <!-- Background scene control. Three.js (~670 KB) and the scene scripts are
+         only fetched when a visitor turns a scene on. -->
+    <script src="scene-manager.js" defer></script>
+</head>
+<body>
+    <!-- Skip navigation link for keyboard users (WCAG 2.4.1) -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <!-- Header Navigation -->
+    <header class="site-header container">
+        <div class="site-header__content">
+            <!-- Brand -->
+            <div class="site-brand">
+                <strong>Christopher Junker</strong>
+            </div>
+
+            <!-- Mobile Menu Toggle -->
+            <button class="nav-toggle"
+                    aria-expanded="false"
+                    aria-controls="main-nav"
+                    aria-label="Menu">
+                <span class="nav-toggle__icon"></span>
+                <span class="nav-toggle__text">Menu</span>
+            </button>
+
+            <!-- Navigation -->
+            <nav id="main-nav" class="main-nav" aria-label="Main navigation">
+                <ul class="nav-list">
+                    <li><a href="#about" class="nav-link">About</a></li>
+                    <li><a href="#projects" class="nav-link">Projects</a></li>
+                    <li><a href="#decisions" class="nav-link">Decisions</a></li>
+                    <li><a href="#tech-radar" class="nav-link">Tech Radar</a></li>
+                    <li><a href="#contact" class="nav-link">Contact</a></li>
+                    <li><a href="https://blog.cjunker.dev" class="nav-link" rel="noopener">Blog</a></li>
+                    <li>
+                        <a href="resume-versions/christopher-junker-resume.pdf"
+                           class="nav-link nav-link--resume"
+                           target="_blank"
+                           rel="noopener noreferrer">
+                            Resume
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <!-- theme-switcher.js appends the three theme dots here -->
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main id="main-content" class="site-main container" tabindex="-1">
+
+        <!-- Hero Section -->
+        <section id="hero" class="hero-section">
+            <div class="hero-section__content">
+                <hgroup class="hero-section__header">
+                    <h1 class="hero-section__title">Christopher Junker</h1>
+                    <p class="hero-section__subtitle">Senior Software Engineer &middot; Backend &amp; Platform &middot; Team Lead</p>
+                </hgroup>
+                <p class="hero-section__summary">
+                    Seven years leading production systems at 2U: a multi-tenant Rails CRM,
+                    a Python data-export platform for 70+ university partners, and a payment
+                    gateway routing to four providers. I ship Rails, Python, and Go, and I care
+                    about the unglamorous parts that make systems trustworthy: idempotency,
+                    audit trails, observability, and tests that measure something. Lately that
+                    includes building Go services and an AI code reviewer with a hand-labeled
+                    eval set, because I want AI in the workflow only where it measurably helps.
+                </p>
+                <div class="hero-section__actions">
+                    <a href="resume-versions/christopher-junker-resume.pdf"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       role="button"
+                       class="btn btn--primary">
+                        Resume (PDF)
+                    </a>
+                    <a href="mailto:cjunks94@gmail.com?subject=Engineering%20Role%20Inquiry"
+                       role="button"
+                       class="btn btn--secondary">
+                        Email
+                    </a>
+                    <a href="https://github.com/cjunks94"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       role="button"
+                       class="btn btn--secondary">
+                        GitHub
+                    </a>
+                    <a href="https://www.linkedin.com/in/chris-junker-218aabba/"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       role="button"
+                       class="btn btn--secondary">
+                        LinkedIn
+                    </a>
+                </div>
+                <p class="hero-section__location">
+                    <span role="img" aria-label="Location">📍</span> Brooklyn, NY &middot; Open to Staff and Senior backend roles in NYC
+                </p>
+            </div>
+        </section>
+
+        <!-- About & Contact Section (Side-by-Side) -->
+        <div class="about-contact-wrapper">
+            <!-- About Section -->
+            <section id="about" class="about-section">
+                <h2 class="section-title">About Me</h2>
+                <article class="about-section__content">
+                    <p class="about-section__paragraph">
+                        Over seven years at 2U I grew from engineer to team lead, running an
+                        8-person team that owned three production systems: a multi-tenant Rails CRM,
+                        a Python data-export platform serving 70+ global university partners, and a
+                        payment gateway routing to four providers. Highlights from that tenure:
+                        cutting CI runtime 85% (105 &rarr; 16 min), migrating 4B+ records from
+                        Python/MongoDB to Rails/MySQL with zero downtime, and architecting
+                        PCI-compliant secrets rotation across 100+ credentials.
+                    </p>
+                    <p class="about-section__paragraph">
+                        I like being both a learner and a leader. I onboarded 15+ engineers, drove
+                        architecture reviews, and helped the team adopt AI-assisted development
+                        through a company-wide Claude pilot. I'm now being deliberate about the next
+                        step: a Staff or Senior backend role in NYC where I own systems end to end.
+                    </p>
+                </article>
+            </section>
+
+            <!-- Contact Section -->
+            <section id="contact" class="contact-section">
+                <h2 class="section-title">Get In Touch</h2>
+                <article class="contact-section__content">
+                    <p class="contact-section__description">
+                        Email is the fastest way to reach me. I'm exploring Staff and Senior
+                        backend roles in NYC, hybrid or on-site.
+                    </p>
+                    <ul class="contact-section__list">
+                        <li><a href="mailto:cjunks94@gmail.com?subject=Engineering%20Role%20Inquiry">cjunks94@gmail.com</a></li>
+                        <li><a href="https://www.linkedin.com/in/chris-junker-218aabba/" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+                        <li><a href="https://github.com/cjunks94" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+                        <li><a href="resume-versions/christopher-junker-resume.pdf" target="_blank" rel="noopener noreferrer">Resume (PDF)</a></li>
+                    </ul>
+                </article>
+            </section>
+        </div>
+
+        <!-- Projects Section -->
+        <section id="projects" class="projects-section">
+            <h2 class="section-title">Featured Projects</h2>
+
+            <div class="projects-grid">
+                <article class="brutal-card-v2 brutal-card-v2--featured">
+                    <div class="brutal-card-v2__media">
+                        <img src="images/projects/panoptrain.webp"
+                             width="1200" height="610"
+                             alt="Panoptrain map view with live NYC subway positions and a planned trip"
+                             decoding="async">
+                    </div>
+                    <div class="brutal-card-v2__header">
+                        <h3 class="brutal-card-v2__title">Panoptrain</h3>
+                    </div>
+                    <div class="brutal-card-v2__content">
+                        <p class="project-card__tech">TypeScript &middot; React 19 &middot; Hono &middot; MapLibre &middot; Playwright</p>
+                        <p>
+                            Real-time NYC subway map that polls MTA GTFS-RT feeds and animates
+                            trains along their route shapes.
+                        </p>
+                        <ul class="project-card__proof">
+                            <li>Trip planning with Dijkstra and Yen's k-shortest paths</li>
+                            <li>Position interpolation between feed updates</li>
+                            <li>Playwright suite across 3 viewports</li>
+                        </ul>
+                        <div class="project-card__actions">
+                            <a href="https://panoptrain.cjunker.dev"
+                               class="brutal-card-v2__action"
+                               target="_blank"
+                               rel="noopener noreferrer">
+                                Live Demo
+                            </a>
+                            <a href="https://github.com/cjunks94/panoptrain"
+                               class="project-card__link"
+                               target="_blank"
+                               rel="noopener noreferrer">
+                                Source &rarr;
+                            </a>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="brutal-card-v2 brutal-card-v2--featured">
+                    <div class="brutal-card-v2__media">
+                        <img src="images/projects/agentic-portfolio.webp"
+                             width="1400" height="915"
+                             alt="Agentic Portfolio dashboard with equity curve, watchlist, P&L versus SPY, and run progress"
+                             loading="lazy"
+                             decoding="async">
+                    </div>
+                    <div class="brutal-card-v2__header">
+                        <h3 class="brutal-card-v2__title">Agentic_Portfolio</h3>
+                    </div>
+                    <div class="brutal-card-v2__content">
+                        <p class="project-card__tech">Python &middot; Pydantic &middot; LangGraph &middot; Railway &middot; pytest</p>
+                        <p>
+                            Paper-trading runner that turns LLM-generated ratings from a
+                            TradingAgents graph into orders against a pluggable broker.
+                        </p>
+                        <ul class="project-card__proof">
+                            <li>86 tests, 80%+ coverage, mypy strict</li>
+                            <li>Deterministic idempotency keys make re-runs safe</li>
+                            <li>Atomic JSONL audit trail for orders, decisions, and equity</li>
+                        </ul>
+                        <div class="project-card__actions">
+                            <a href="https://agentic-portfolio-production.up.railway.app/"
+                               class="brutal-card-v2__action"
+                               target="_blank"
+                               rel="noopener noreferrer">
+                                Live Demo
+                            </a>
+                            <button class="project-card__link"
+                                    data-modal="agentic-architecture-modal"
+                                    aria-label="View Agentic Portfolio architecture diagram">
+                                Architecture
+                            </button>
+                            <a href="https://github.com/cjunks94/agentic-portfolio"
+                               class="project-card__link"
+                               target="_blank"
+                               rel="noopener noreferrer">
+                                Source &rarr;
+                            </a>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="brutal-card-v2">
+                    <div class="brutal-card-v2__media">
+                        <img src="images/projects/exportee-rails.webp"
+                             width="1400" height="790"
+                             alt="Exportee-Rails dashboard showing pipeline status, success rate, and run history"
+                             decoding="async">
+                    </div>
+                    <div class="brutal-card-v2__header">
+                        <h3 class="brutal-card-v2__title">Exportee_Rails</h3>
+                    </div>
+                    <div class="brutal-card-v2__content">
+                        <p class="project-card__tech">Rails 7.2 &middot; Hotwire &middot; Sidekiq &middot; PostgreSQL &middot; Polars</p>
+                        <p>
+                            Multi-tenant, config-as-code pipeline platform that extracts from
+                            Postgres, MySQL, and Salesforce, masks PII, and delivers scheduled
+                            CSV exports.
+                        </p>
+                        <ul class="project-card__proof">
+                            <li>107 RSpec cases, 80%+ coverage, Pundit RBAC</li>
+                            <li>Append-only audit: frozen config plus SHA256 checksums</li>
+                            <li>Deliberate Rails rewrite of the FastAPI original for AI-tooling support</li>
+                        </ul>
+                        <div class="project-card__actions">
+                            <a href="https://exportee.cjunker.dev"
+                               class="brutal-card-v2__action"
+                               target="_blank"
+                               rel="noopener noreferrer">
+                                Live Demo
+                            </a>
+                            <button class="project-card__link"
+                                    data-modal="exportee-architecture-modal"
+                                    aria-label="View Exportee-Rails architecture diagram">
+                                Architecture
+                            </button>
+                            <a href="https://github.com/cjunks94/exportee-rails"
+                               class="project-card__link"
+                               target="_blank"
+                               rel="noopener noreferrer">
+                                Source &rarr;
+                            </a>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="brutal-card-v2 brutal-card-v2--featured">
+                    <div class="brutal-card-v2__header">
+                        <h3 class="brutal-card-v2__title">Nitpick</h3>
+                    </div>
+                    <div class="brutal-card-v2__content">
+                        <p class="project-card__tech">Go &middot; Anthropic SDK &middot; GitHub App &middot; Railway</p>
+                        <p>
+                            Self-hosted AI code reviewer, bring-your-own-LLM, that runs as a CLI,
+                            a GitHub Action, or a webhook server from one shared core.
+                        </p>
+                        <ul class="project-card__proof">
+                            <li>F1 0.46 on 20 hand-labeled PRs (Sonnet 4.6, $0.029/PR)</li>
+                            <li>Webhook acks in under 10 ms; the LLM call runs async</li>
+                            <li>Every prompt change is a commit on <code>eval/REPORT.md</code></li>
+                        </ul>
+                        <div class="project-card__actions">
+                            <a href="https://github.com/cjunks94/nitpick"
+                               class="brutal-card-v2__action"
+                               target="_blank"
+                               rel="noopener noreferrer">
+                                View Source
+                            </a>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="brutal-card-v2">
+                    <div class="brutal-card-v2__header">
+                        <h3 class="brutal-card-v2__title">Hush_Hush</h3>
+                    </div>
+                    <div class="brutal-card-v2__content">
+                        <p class="project-card__tech">Go &middot; SQLite &middot; AES-256-GCM &middot; Railway</p>
+                        <p>
+                            Self-hosted secrets API with AES-256-GCM at rest, shipped as a
+                            single Go binary.
+                        </p>
+                        <ul class="project-card__proof">
+                            <li>AAD binds name and scheme version, blocking tamper and downgrade attacks</li>
+                            <li>Constant-time SHA-256 token comparison</li>
+                            <li>Structured slog logging with request-id correlation</li>
+                        </ul>
+                        <div class="project-card__actions">
+                            <a href="https://github.com/cjunks94/hush-hush"
+                               class="brutal-card-v2__action"
+                               target="_blank"
+                               rel="noopener noreferrer">
+                                View Source
+                            </a>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="brutal-card-v2">
+                    <div class="brutal-card-v2__header">
+                        <h3 class="brutal-card-v2__title">Portfolio_Site</h3>
+                    </div>
+                    <div class="brutal-card-v2__content">
+                        <p class="project-card__tech">HTML &middot; CSS &middot; D3.js &middot; Three.js &middot; GitHub Pages</p>
+                        <p>
+                            This site: hand-built and accessible, with an interactive tech radar
+                            and an opt-in WebGL background.
+                        </p>
+                        <ul class="project-card__proof">
+                            <li>WCAG 2 AA checks (pa11y) run on every push</li>
+                            <li>Branch-based deploys: staging per PR, production on master</li>
+                            <li>Vendored libraries for hermetic CI</li>
+                        </ul>
+                        <div class="project-card__actions">
+                            <a href="https://github.com/cjunks94/resume-improvements"
+                               class="brutal-card-v2__action"
+                               target="_blank"
+                               rel="noopener noreferrer">
+                                View Source
+                            </a>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="brutal-card-v2">
+                    <div class="brutal-card-v2__media">
+                        <img src="images/projects/sqs-monitor-ui.webp"
+                             width="1400" height="755"
+                             alt="AWS SQS Monitoring UI dashboard listing queues with message counts"
+                             loading="lazy"
+                             decoding="async">
+                    </div>
+                    <div class="brutal-card-v2__header">
+                        <h3 class="brutal-card-v2__title">SQS_Monitor_UI</h3>
+                    </div>
+                    <div class="brutal-card-v2__content">
+                        <p class="project-card__tech">Go &middot; WebSocket &middot; Production tool</p>
+                        <p>
+                            Real-time SQS queue manager with DLQ monitoring and message export,
+                            deployed as a single binary.
+                        </p>
+                        <ul class="project-card__proof">
+                            <li>230+ tests, 80%+ coverage</li>
+                            <li>Serves 15+ production programs</li>
+                            <li>~50 ms WebSocket updates, one-click DLQ retry</li>
+                        </ul>
+                        <div class="project-card__actions">
+                            <a href="https://github.com/cjunks94/go-sqs-ui"
+                               class="brutal-card-v2__action"
+                               target="_blank"
+                               rel="noopener noreferrer">
+                                View Source
+                            </a>
+                            <button class="project-card__link"
+                                    data-modal="sqs-architecture-modal"
+                                    aria-label="View AWS SQS UI architecture diagram">
+                                Architecture
+                            </button>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="brutal-card-v2">
+                    <div class="brutal-card-v2__media">
+                        <img src="images/projects/bb-bounce.webp"
+                             width="1200" height="741"
+                             alt="BB-Bounce brick breaker gameplay with paddle, ball, and brick rows"
+                             loading="lazy"
+                             decoding="async">
+                    </div>
+                    <div class="brutal-card-v2__header">
+                        <h3 class="brutal-card-v2__title">BB_Bounce</h3>
+                    </div>
+                    <div class="brutal-card-v2__content">
+                        <p class="project-card__tech">HTML5 Canvas &middot; Node.js/Express &middot; PostgreSQL</p>
+                        <p>
+                            Retro brick-breaker in vanilla JavaScript with a server-validated
+                            leaderboard.
+                        </p>
+                        <ul class="project-card__proof">
+                            <li>60 FPS canvas rendering</li>
+                            <li>Server-side score validation and anti-cheat checks</li>
+                            <li>PostgreSQL high scores, deployed on Railway</li>
+                        </ul>
+                        <div class="project-card__actions">
+                            <a href="https://brickbreaker.cjunker.dev"
+                               class="brutal-card-v2__action"
+                               target="_blank"
+                               rel="noopener noreferrer">
+                                Play Live
+                            </a>
+                            <a href="https://github.com/cjunks94/bb-bounce"
+                               class="project-card__link"
+                               target="_blank"
+                               rel="noopener noreferrer">
+                                Source &rarr;
+                            </a>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="brutal-card-v2">
+                    <div class="brutal-card-v2__header">
+                        <h3 class="brutal-card-v2__title">TMJ_Tracker</h3>
+                    </div>
+                    <div class="brutal-card-v2__content">
+                        <p class="project-card__tech">Flutter &middot; MediaPipe &middot; SQLite</p>
+                        <p>
+                            Mobile app for TMJ physical therapy that tracks jaw movement in
+                            real time with MediaPipe Face Mesh.
+                        </p>
+                        <ul class="project-card__proof">
+                            <li>iOS, Android, and macOS from one codebase</li>
+                            <li>Local persistence with progress analytics</li>
+                            <li>Unit-tested tracking logic</li>
+                        </ul>
+                        <div class="project-card__actions">
+                            <span class="project-status">Contracted project</span>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="brutal-card-v2">
+                    <div class="brutal-card-v2__header">
+                        <h3 class="brutal-card-v2__title">SF_Debug_Svc</h3>
+                    </div>
+                    <div class="brutal-card-v2__content">
+                        <p class="project-card__tech">Go &middot; React/TypeScript &middot; Kubernetes</p>
+                        <p>
+                            Internal tool for debugging the Salesforce-to-AMT sync at 2U.
+                        </p>
+                        <ul class="project-card__proof">
+                            <li>Validates data consistency and field mappings across environments</li>
+                            <li>Kubernetes deployment with an ATM sidecar</li>
+                        </ul>
+                        <div class="project-card__actions">
+                            <span class="project-status">Internal tool @ 2U</span>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="brutal-card-v2">
+                    <div class="brutal-card-v2__header">
+                        <h3 class="brutal-card-v2__title">Search_Engine</h3>
+                    </div>
+                    <div class="brutal-card-v2__content">
+                        <p class="project-card__tech">Elasticsearch &middot; Rails &middot; AWS/K8s</p>
+                        <p>
+                            Admin-facing indexing and search tool at 2U, deployed on AWS/K8s.
+                        </p>
+                        <ul class="project-card__proof">
+                            <li>Serves 1K+ users</li>
+                            <li>60% faster selection times via real-time search</li>
+                        </ul>
+                        <div class="project-card__actions">
+                            <span class="project-status">Production @ 2U</span>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="brutal-card-v2">
+                    <div class="brutal-card-v2__header">
+                        <h3 class="brutal-card-v2__title">Data_Migrator</h3>
+                    </div>
+                    <div class="brutal-card-v2__content">
+                        <p class="project-card__tech">Python &middot; AWS &middot; AI/ML</p>
+                        <p>
+                            Automated legacy-to-modern data transfer at 2U with anomaly
+                            detection on the migrated records.
+                        </p>
+                        <ul class="project-card__proof">
+                            <li>500K+ records migrated</li>
+                            <li>Migration errors down 50%</li>
+                        </ul>
+                        <div class="project-card__actions">
+                            <span class="project-status">Production @ 2U</span>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- Recent Decisions Section -->
+        <section id="decisions" class="decisions-section">
+            <h2 class="section-title">Recent Decisions</h2>
+            <p class="section-lede">
+                How I think about trade-offs: the decisions behind the projects, not just
+                the results.
+            </p>
+
+            <div class="projects-grid">
+                <article class="brutal-card-v2">
+                    <div class="brutal-card-v2__header">
+                        <h3 class="brutal-card-v2__title">Railway over K8s</h3>
+                    </div>
+                    <div class="brutal-card-v2__content">
+                        <p class="project-card__tech">Exportee-Rails &middot; ADR-0001</p>
+                        <p>
+                            Picked Railway PaaS over Kubernetes for a 4-container app with one user. The "shows I know K8s"
+                            resume argument doesn't hold &mdash; reviewers see a Helm chart for low-traffic and think
+                            <em>over-engineered</em>, not <em>impressive</em>. Committed Docker Compose anyway for the self-hosting story.
+                        </p>
+                        <div class="project-card__actions">
+                            <a href="https://github.com/cjunks94/exportee-rails/blob/main/docs/adr/0001-deploy-strategy.md"
+                               class="project-card__link"
+                               target="_blank"
+                               rel="noopener noreferrer"
+                               aria-label="Read full ADR: Railway over K8s">
+                                Read full ADR &rarr;
+                            </a>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="brutal-card-v2">
+                    <div class="brutal-card-v2__header">
+                        <h3 class="brutal-card-v2__title">Pluggable Broker</h3>
+                    </div>
+                    <div class="brutal-card-v2__content">
+                        <p class="project-card__tech">Agentic Portfolio &middot; ADR-001</p>
+                        <p>
+                            Designed a Broker interface so the strategy and runner code never touch broker specifics.
+                            Paper-to-live (PaperBroker &rarr; Alpaca/IBKR) becomes a config swap, not a rewrite.
+                            Trade-off accepted: an extra abstraction layer the day-1 paper trader doesn't need, paid for by future flexibility.
+                        </p>
+                        <div class="project-card__actions">
+                            <a href="https://github.com/cjunks94/agentic-portfolio/blob/main/docs/adr/ADR-001-broker-abstraction.md"
+                               class="project-card__link"
+                               target="_blank"
+                               rel="noopener noreferrer"
+                               aria-label="Read full ADR: Pluggable Broker Abstraction">
+                                Read full ADR &rarr;
+                            </a>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="brutal-card-v2">
+                    <div class="brutal-card-v2__header">
+                        <h3 class="brutal-card-v2__title">Vendored CDN Libs</h3>
+                    </div>
+                    <div class="brutal-card-v2__content">
+                        <p class="project-card__tech">This portfolio &middot; PR #70</p>
+                        <p>
+                            Pa11y was disabled in CI because Three.js / D3 / Mermaid loaded from CDN stalled headless Chrome.
+                            Vendored Three.js + D3 locally (~950 KB) and lazy-loaded Mermaid on first modal open.
+                            Result: hermetic accessibility tests on every push, plus a real production perf win.
+                        </p>
+                        <div class="project-card__actions">
+                            <a href="https://github.com/cjunks94/resume-improvements/pull/70"
+                               class="project-card__link"
+                               target="_blank"
+                               rel="noopener noreferrer"
+                               aria-label="Read PR #70: Vendored CDN libs">
+                                Read PR &rarr;
+                            </a>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="brutal-card-v2">
+                    <div class="brutal-card-v2__header">
+                        <h3 class="brutal-card-v2__title">Branch-Based Deploys</h3>
+                    </div>
+                    <div class="brutal-card-v2__content">
+                        <p class="project-card__tech">This portfolio &middot; ADR-003</p>
+                        <p>
+                            Master pushes deploy to production (cjunker.dev); feature branches deploy to staging
+                            (staging.cjunker.dev) via a separate gh-pages repo. Lets every PR get a real preview URL
+                            without disrupting prod. Skip-staging escape hatch for Dependabot PRs.
+                        </p>
+                        <div class="project-card__actions">
+                            <a href="https://github.com/cjunks94/resume-improvements/blob/master/decisions/003-branch-based-deployment-strategy.md"
+                               class="project-card__link"
+                               target="_blank"
+                               rel="noopener noreferrer"
+                               aria-label="Read full ADR: Branch-based Deploys">
+                                Read full ADR &rarr;
+                            </a>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="brutal-card-v2">
+                    <div class="brutal-card-v2__header">
+                        <h3 class="brutal-card-v2__title">Silence First</h3>
+                    </div>
+                    <div class="brutal-card-v2__content">
+                        <p class="project-card__tech">nitpick &middot; prompt v2</p>
+                        <p>
+                            First-pass review prompt overflagged &mdash; F1 0.16 on a noisy 91% rate.
+                            Rewrote with a default-to-silence rule and a 90% confidence threshold; F1 climbed
+                            to 0.46 on Sonnet 4.6, noise dropped to 50%. The reverted alternative (looser threshold
+                            to lift Sonnet recall) crashed precision 0.50 &rarr; 0.14 with no recall gain &mdash; a
+                            committed data point. Reviewer trust is built by not crying wolf.
+                        </p>
+                        <div class="project-card__actions">
+                            <a href="https://github.com/cjunks94/nitpick/blob/main/eval/REPORT.md"
+                               class="project-card__link"
+                               target="_blank"
+                               rel="noopener noreferrer"
+                               aria-label="Read full eval report">
+                                Read full eval &rarr;
+                            </a>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- Tech Radar Section -->
+        <section id="tech-radar" class="tech-radar-section">
+            <h2 class="section-title">Tech Radar</h2>
+            <article class="tech-radar-section__content">
+                <p class="tech-radar-section__description">
+                    My technology landscape, organized by how much I'd bet on each.
+                    <strong>ADOPT</strong> (center) = production-ready and recommended,
+                    <strong>TRIAL</strong> = using with good results,
+                    <strong>ASSESS</strong> = exploring,
+                    <strong>HOLD</strong> (outer) = avoiding.
+                    Click any blip for details. ▲ marks a new addition.
+                </p>
+
+                <!-- Interactive Tech Radar Visualization (hidden below 768px; the index below is shown expanded instead) -->
+                <div id="radar" class="radar-container" role="region" aria-label="Interactive technology radar visualization"></div>
+
+                <!-- Legend / Technology Index -->
+                <div id="radar-legend" class="radar-legend" role="complementary" aria-label="Technology index"></div>
+            </article>
+        </section>
+
+        <!-- Tech Radar Initialization Script -->
+        <script>
+          // Wait for deferred d3.v7.min.js + radar.js to finish loading.
+          document.addEventListener('DOMContentLoaded', function() {
+          // Load and parse CSV data
+          d3.csv('tech-radar.csv').then(data => {
+            radar_visualization({
+              svg_id: "radar",
+              width: 1200,
+              height: 800,
+              title: "Christopher Junker's Tech Radar",
+              quadrants: [
+                { name: "languages-frameworks" },
+                { name: "platforms" },
+                { name: "tools" },
+                { name: "techniques" }
+              ],
+              // Outer to inner. ADOPT is the innermost ring (Thoughtworks convention).
+              rings: [
+                { name: "hold", color: "var(--radar-hold)" },
+                { name: "assess", color: "var(--radar-assess)" },
+                { name: "trial", color: "var(--radar-trial)" },
+                { name: "adopt", color: "var(--radar-adopt)" }
+              ],
+              entries: data.map(d => ({
+                quadrant: d.quadrant,
+                ring: d.ring.toLowerCase(),
+                label: d.name,
+                description: d.description,
+                active: true,
+                moved: d.isNew === 'TRUE' ? 1 : 0
+              }))
+            });
+          }).catch(error => {
+            console.error('Error loading tech radar data:', error);
+            document.getElementById('radar').innerHTML =
+              '<p>Error loading tech radar visualization. Please check the console for details.</p>';
+          });
+          });
+        </script>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer container">
+        <p class="site-footer__text">
+            <small>
+                © 2026 Christopher Junker &middot; Hand-built with HTML, CSS, and vanilla JS
+                (D3 for the radar, Three.js when you turn the background on) &middot;
+                <a href="https://github.com/cjunks94/resume-improvements"
+                   class="site-footer__link"
+                   target="_blank"
+                   rel="noopener noreferrer">
+                    View Source
+                </a>
+            </small>
+        </p>
+    </footer>
+
+    <!-- Architecture Diagram Modals -->
+    <div id="sqs-architecture-modal" class="arch-modal" role="dialog" aria-labelledby="sqs-modal-title" aria-hidden="true">
+        <div class="arch-modal__overlay"></div>
+        <div class="arch-modal__dialog">
+            <header class="arch-modal__header">
+                <h3 id="sqs-modal-title" class="arch-modal__title">AWS SQS Monitoring UI Architecture</h3>
+                <button class="arch-modal__close" aria-label="Close modal">✕</button>
+            </header>
+            <div class="arch-modal__content">
+                <p class="arch-modal__subtitle">Real-Time Queue Management System</p>
+                <div id="sqs-architecture-diagram" class="mermaid"></div>
+                <script type="text/javascript">
+                    // SQS UI Architecture Diagram (Mermaid syntax)
+                    document.getElementById('sqs-architecture-diagram').textContent = `
+graph TB
+    subgraph "Client Layer"
+        Browser["🌐 Web Browser<br/>Vanilla JavaScript"]
+        WS_Client["WebSocket Client<br/>Real-time Updates"]
+    end
+
+    subgraph "Application Layer"
+        Server["🔷 Go HTTP Server<br/>:8080"]
+        WSHandler["WebSocket Handler<br/>gorilla/websocket"]
+        SQSService["SQS Service Layer<br/>Queue Operations"]
+        Static["Static File Server<br/>HTML/CSS/JS"]
+    end
+
+    subgraph "AWS Services"
+        SQS["📬 Amazon SQS<br/>Message Queues"]
+        DLQ["💀 Dead Letter Queues<br/>Failed Messages"]
+        Tags["🏷️ Queue Tags<br/>Filtering"]
+    end
+
+    subgraph "Features"
+        Export["📊 Export<br/>JSON/CSV"]
+        Batch["✅ Batch Operations<br/>Multi-select"]
+        Filter["🔍 Smart Filtering<br/>Real-time Search"]
+    end
+
+    Browser --> |HTTP GET| Server
+    Browser <--> |WSS| WSHandler
+    Server --> Static
+    WSHandler --> SQSService
+    SQSService --> |AWS SDK| SQS
+    SQSService --> |AWS SDK| DLQ
+    SQSService --> |ListQueueTags| Tags
+    Browser --> Export
+    Browser --> Batch
+    Browser --> Filter
+
+    SQS -.-> |Failed Messages| DLQ
+
+    style Server fill:#0066cc,stroke:#0052a3,stroke-width:3px,color:#fff
+    style SQS fill:#ff9900,stroke:#ec7211,stroke-width:2px,color:#000
+    style DLQ fill:#c92a2a,stroke:#a61e1e,stroke-width:2px,color:#fff
+    style WSHandler fill:#1e7e34,stroke:#155d27,stroke-width:2px,color:#fff
+`;
+                </script>
+
+                <details class="arch-modal__details">
+                    <summary class="arch-modal__summary">Key Architectural Decisions & Performance</summary>
+                    <div class="arch-modal__details-content">
+                        <h4>Technical Decisions</h4>
+                        <ul class="arch-modal__list">
+                            <li><strong>WebSocket:</strong> Real-time updates, ~50ms latency</li>
+                            <li><strong>Single Binary:</strong> 6MB deployment (embedded assets)</li>
+                            <li><strong>Goroutine-per-Connection:</strong> 100+ concurrent users</li>
+                            <li><strong>Tag-Based Discovery:</strong> AWS tag filtering (env, product)</li>
+                            <li><strong>DLQ Retry:</strong> One-click failed message recovery</li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+        </div>
+    </div>
+
+    <!-- Exportee-Rails Architecture Modal -->
+    <div id="exportee-architecture-modal" class="arch-modal" role="dialog" aria-labelledby="exportee-modal-title" aria-hidden="true">
+        <div class="arch-modal__overlay"></div>
+        <div class="arch-modal__dialog">
+            <header class="arch-modal__header">
+                <h3 id="exportee-modal-title" class="arch-modal__title">Exportee-Rails Architecture</h3>
+                <button class="arch-modal__close" aria-label="Close modal">✕</button>
+            </header>
+            <div class="arch-modal__content">
+                <p class="arch-modal__subtitle">Multi-tenant config-as-code data pipeline platform</p>
+                <div id="exportee-architecture-diagram" class="mermaid"></div>
+                <script type="text/javascript">
+                    document.getElementById('exportee-architecture-diagram').textContent = `
+graph TB
+    subgraph "User Layer"
+        Admin["👤 Admin / Editor / Viewer"]
+        Client["🔌 REST API Client"]
+    end
+
+    subgraph "Rails 7.2 (Multi-tenant, OrgScoped)"
+        Web["🚂 Hotwire (Turbo + Stimulus)"]
+        Pundit["🔐 Pundit RBAC"]
+        Defs["📝 YAML Pipeline Definitions<br/>(config-as-code)"]
+    end
+
+    subgraph "Background"
+        Sidekiq["⚙️ Sidekiq + sidekiq-cron"]
+        Runner["ExportRun Worker"]
+    end
+
+    subgraph "Source Connections (Lockbox-encrypted creds)"
+        PG["🐘 PostgreSQL"]
+        MySQL["🐬 MySQL"]
+        SF["☁️ Salesforce<br/>(Bulk API 2.0)"]
+    end
+
+    subgraph "Transform Pipeline"
+        Polars["⚡ Polars<br/>vectorized DataFrame<br/>(10–100× faster)"]
+        Widgets["🛡️ PII Widgets<br/>mask_email, mask_ssn,<br/>redact, rename, filter"]
+    end
+
+    subgraph "Output"
+        CSV["📄 CSV"]
+        R2["☁️ Cloudflare R2<br/>(via Active Storage)"]
+    end
+
+    subgraph "Append-only Audit"
+        Run["ExportRun + frozen<br/>CompiledDefinition"]
+        Sums["row counts, byte counts,<br/>SHA256 checksums,<br/>per-stage timing"]
+    end
+
+    Admin --> Web
+    Client --> Web
+    Web --> Pundit
+    Pundit --> Defs
+    Defs --> Sidekiq
+    Sidekiq --> Runner
+    Runner --> PG
+    Runner --> MySQL
+    Runner --> SF
+    PG --> Polars
+    MySQL --> Polars
+    SF --> Polars
+    Polars --> Widgets
+    Widgets --> CSV
+    CSV --> R2
+    Runner --> Run
+    Run --> Sums
+
+    style Web fill:#cc0000,stroke:#990000,stroke-width:3px,color:#fff
+    style Polars fill:#0066cc,stroke:#0052a3,stroke-width:2px,color:#fff
+    style Widgets fill:#1e7e34,stroke:#155d27,stroke-width:2px,color:#fff
+    style Run fill:#5e3a8e,stroke:#3d2660,stroke-width:2px,color:#fff
+`;
+                </script>
+
+                <details class="arch-modal__details">
+                    <summary class="arch-modal__summary">Key Architectural Decisions</summary>
+                    <div class="arch-modal__details-content">
+                        <h4>Why these choices</h4>
+                        <ul class="arch-modal__list">
+                            <li><strong>Rails over FastAPI:</strong> intentional rewrite for AI-tooling support and faster team onboarding</li>
+                            <li><strong>OrgScoped concern:</strong> tenant isolation enforced at the query layer, not per-controller</li>
+                            <li><strong>Frozen CompiledDefinition:</strong> every ExportRun snapshots its exact config — re-derivable + tamper-evident</li>
+                            <li><strong>Polars (optional):</strong> 10–100× speedup vs row-by-row, swappable per pipeline</li>
+                            <li><strong>Lockbox encryption:</strong> source credentials encrypted at rest, decrypted at runtime only</li>
+                            <li><strong>Streaming PostgreSQL COPY:</strong> low-memory extraction for large tables</li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+        </div>
+    </div>
+
+    <!-- Agentic Portfolio Architecture Modal -->
+    <div id="agentic-architecture-modal" class="arch-modal" role="dialog" aria-labelledby="agentic-modal-title" aria-hidden="true">
+        <div class="arch-modal__overlay"></div>
+        <div class="arch-modal__dialog">
+            <header class="arch-modal__header">
+                <h3 id="agentic-modal-title" class="arch-modal__title">Agentic Portfolio Architecture</h3>
+                <button class="arch-modal__close" aria-label="Close modal">✕</button>
+            </header>
+            <div class="arch-modal__content">
+                <p class="arch-modal__subtitle">LLM-driven paper trading with pluggable broker abstraction</p>
+                <div id="agentic-architecture-diagram" class="mermaid"></div>
+                <script type="text/javascript">
+                    document.getElementById('agentic-architecture-diagram').textContent = `
+graph TB
+    subgraph "Trigger"
+        Cron["⏰ Railway Cron<br/>(weekly schedule)"]
+        CLI["💻 Manual Typer CLI"]
+    end
+
+    subgraph "Agentic Layer (sibling repo)"
+        TA["🤖 TradingAgents Graph<br/>(LangGraph)"]
+        Out["📊 5-tier Rating<br/>Buy / Overweight / Hold /<br/>Underweight / Sell<br/>+ markdown thesis"]
+    end
+
+    subgraph "Strategy"
+        Advisor["🧠 Advisor<br/>(parses Rating: line)"]
+        Strat["📐 Strategy<br/>(target weights per rating)"]
+        Runner["🏃 Runner<br/>(propose deltas, threshold trivials)"]
+    end
+
+    subgraph "Broker Abstraction (ADR-001)"
+        Iface["📋 Broker Interface<br/>place_order / get_positions /<br/>get_cash / mark_to_market"]
+        Paper["📈 PaperBroker<br/>(yfinance fills)"]
+        Live["💵 Live Broker<br/>(Alpaca / IBKR — config swap)"]
+    end
+
+    subgraph "Atomic Storage"
+        Port["💼 portfolio.json<br/>(temp + os.replace)"]
+        Orders["📜 orders.jsonl<br/>(append-only)"]
+        Decs["🗒️ decisions.jsonl"]
+        Eq["📊 equity.jsonl<br/>(snapshots + cost basis)"]
+    end
+
+    subgraph "Idempotency Key"
+        Key["(trade_date):(ticker):<br/>(side):(shares_rounded)"]
+    end
+
+    Cron --> Runner
+    CLI --> Runner
+    Runner --> TA
+    TA --> Out
+    Out --> Advisor
+    Advisor --> Strat
+    Strat --> Runner
+    Runner --> Iface
+    Iface --> Paper
+    Iface -.-> Live
+    Paper --> Orders
+    Runner --> Port
+    Runner --> Decs
+    Runner --> Eq
+    Runner -.-> Key
+    Key -.-> Orders
+
+    style TA fill:#5e3a8e,stroke:#3d2660,stroke-width:3px,color:#fff
+    style Iface fill:#0066cc,stroke:#0052a3,stroke-width:2px,color:#fff
+    style Paper fill:#1e7e34,stroke:#155d27,stroke-width:2px,color:#fff
+    style Live fill:#888,stroke:#555,stroke-width:1px,stroke-dasharray:4,color:#fff
+    style Key fill:#ff9900,stroke:#cc7700,stroke-width:2px,color:#000
+`;
+                </script>
+
+                <details class="arch-modal__details">
+                    <summary class="arch-modal__summary">Key Architectural Decisions</summary>
+                    <div class="arch-modal__details-content">
+                        <h4>Why these choices</h4>
+                        <ul class="arch-modal__list">
+                            <li><strong>Broker interface (ADR-001):</strong> paper-to-live by config change, not rewrite — strategy and runner code never touch broker specifics</li>
+                            <li><strong>Deterministic idempotency keys:</strong> safe re-runs after crash; same date+ticker+side never double-executes</li>
+                            <li><strong>Atomic JSON writes:</strong> temp file + os.replace prevents partial-state corruption during crash</li>
+                            <li><strong>Append-only JSONL:</strong> orders / decisions / equity logs are immutable audit primitives</li>
+                            <li><strong>LangGraph parsing:</strong> regex on <code>**Rating**:</code> line — explicit contract with the agent's output, not eval()</li>
+                            <li><strong>Per-ticker error isolation:</strong> one failure doesn't kill the run; partial results persist</li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

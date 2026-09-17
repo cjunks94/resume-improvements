@@ -1,0 +1,1290 @@
+/* ==========================================================================
+   COMPONENTS.CSS - Brutalist UI Components
+
+   All component styles using CSS variables from themes/variables.css
+   Components are self-contained and theme-agnostic.
+
+   MODULARITY: Components reference --c-* and structural variables.
+   Change themes by swapping variables.css, not this file.
+
+   VISUAL HIERARCHY (one rule, applied everywhere):
+   - Thick border + hard shadow is reserved for the hero and for buttons.
+   - Cards, section frames, and panels get a thin border and no shadow.
+   - Card headers are typography (title + 2px accent rule), never a
+     second bordered box.
+   - The halftone texture appears only as a slim band on featured cards.
+   ========================================================================== */
+
+/* ==========================================================================
+   1. BODY & PAGE STYLES
+   ========================================================================== */
+body {
+    background-color: var(--c-bg);
+    color: var(--c-ink);
+
+    /* Honor iPhone X+ safe-area-insets in landscape (notch / rounded corners).
+       The max() pattern keeps existing padding on devices without insets. */
+    padding: var(--space-xl) max(var(--space-xl), env(safe-area-inset-right)) max(var(--space-xl), env(safe-area-inset-bottom)) max(var(--space-xl), env(safe-area-inset-left));
+    margin: 0;
+}
+
+/* Mobile: tighten horizontal padding so cards fill the viewport.
+   32px each side was eating ~17% of an iPhone 13 mini width. */
+@media (max-width: 768px) {
+    body {
+        padding-top: var(--space-md);
+        padding-right: max(var(--space-md), env(safe-area-inset-right));
+        padding-left: max(var(--space-md), env(safe-area-inset-left));
+    }
+}
+
+/* Main content area */
+.site-main {
+    padding-top: var(--space-xl);
+}
+
+/* ==========================================================================
+   2. SITE HEADER & NAVIGATION
+   ========================================================================== */
+.site-header {
+    position: sticky;
+    top: 0;
+    background: var(--c-surface);
+    border: var(--border-thin) solid var(--c-border);
+    z-index: var(--z-sticky);
+    padding: var(--space-sm) var(--space-lg);
+    margin-bottom: var(--space-xl);
+    transition: box-shadow var(--transition-fast), padding var(--transition-fast);
+}
+
+/* Scrolled state — small shadow and slight blur backdrop so the
+   header reads cleanly over decorative WebGL backgrounds. */
+.site-header.scrolled {
+    box-shadow: var(--shadow-sm) var(--c-shadow);
+    backdrop-filter: blur(6px);
+}
+
+.site-header__content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-md);
+    max-width: var(--container-max);
+    margin: 0 auto;
+}
+
+/* Brand/Logo */
+.site-brand {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: var(--text-base);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    color: var(--c-ink);
+    white-space: nowrap;
+}
+
+/* Navigation Toggle (Mobile) */
+.nav-toggle {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    min-height: 44px;
+    padding: var(--space-xs) var(--space-sm);
+    background: var(--c-surface);
+    border: var(--border-thin) solid var(--c-border);
+    color: var(--c-ink);
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: var(--text-sm);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.nav-toggle:hover {
+    background: var(--c-ink);
+    color: var(--c-surface);
+}
+
+.nav-toggle:active {
+    transform: translate(2px, 2px);
+}
+
+/* Hamburger icon — 14px tall container with three 2px bars.
+   Top and bottom bars are pseudo-elements; middle bar is a centered
+   2px-tall linear-gradient on the container itself. */
+.nav-toggle__icon {
+    display: block;
+    position: relative;
+    width: 20px;
+    height: 14px;
+    background: linear-gradient(currentcolor, currentcolor) center/100% 2px no-repeat;
+    transition: all var(--transition-normal);
+}
+
+.nav-toggle__icon::before,
+.nav-toggle__icon::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: currentcolor;
+    transition: all var(--transition-normal);
+}
+
+.nav-toggle__icon::before { top: 0; }
+.nav-toggle__icon::after { bottom: 0; }
+
+/* Transform to X */
+.nav-toggle[aria-expanded="true"] .nav-toggle__icon {
+    background: transparent;
+}
+
+.nav-toggle[aria-expanded="true"] .nav-toggle__icon::before {
+    top: 50%;
+    transform: translateY(-50%) rotate(45deg);
+}
+
+.nav-toggle[aria-expanded="true"] .nav-toggle__icon::after {
+    bottom: 50%;
+    transform: translateY(50%) rotate(-45deg);
+}
+
+/* Mobile menu text */
+.nav-toggle__text {
+    display: none;
+}
+
+@media (min-width: 360px) {
+    .nav-toggle__text { display: inline; }
+}
+
+/* Main Navigation (Mobile: Slide-out) */
+.main-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 80%;
+    max-width: 320px;
+    height: 100vh;
+    height: 100dvh;
+    background: var(--c-surface);
+    border-right: var(--border-thick) solid var(--c-border);
+    box-shadow: var(--shadow-lg) var(--c-shadow);
+    transform: translateX(-100%);
+    transition: transform var(--transition-slow);
+    z-index: calc(var(--z-sticky) + 10);
+    padding-top: 5rem;
+    overflow-y: auto;
+}
+
+.nav-toggle[aria-expanded="true"] ~ .main-nav {
+    transform: translateX(0);
+}
+
+/* Mobile backdrop */
+.nav-toggle[aria-expanded="true"]::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: rgb(0, 0, 0, 0.5);
+    z-index: calc(var(--z-sticky) + 5);
+}
+
+/* Navigation list */
+.nav-list {
+    padding: var(--space-lg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+}
+
+/* Navigation links */
+.nav-link {
+    display: flex;
+    align-items: center;
+    padding: var(--space-sm) var(--space-md);
+    font-family: var(--font-mono);
+    font-weight: 600;
+    font-size: var(--text-base);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    color: var(--c-ink);
+    border: var(--border-thin) solid transparent;
+    transition: all var(--transition-fast);
+    min-height: 48px;
+}
+
+.nav-link:hover {
+    background: var(--c-accent);
+    color: var(--c-surface);
+    border-color: var(--c-ink);
+}
+
+/* Resume link in the nav gets an outline so a recruiter spots it. */
+.nav-link--resume {
+    border-color: var(--c-accent);
+    color: var(--c-accent);
+}
+
+/* ==========================================================================
+   3. BUTTONS
+   ========================================================================== */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    /* WCAG 2.5.5 — minimum 44x44 touch target. Use 48 for comfortable taps. */
+    min-height: 48px;
+    min-width: 48px;
+    padding: var(--space-sm) var(--space-lg);
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: var(--text-sm);
+    letter-spacing: var(--tracking-caps);
+    text-align: center;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    background: var(--c-surface);
+    color: var(--c-ink);
+    border: var(--border-thick) solid var(--c-border);
+    box-shadow: var(--shadow-sm) var(--c-shadow);
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.btn:hover {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 var(--c-shadow);
+}
+
+.btn:active {
+    transform: translate(4px, 4px);
+    box-shadow: none;
+}
+
+/* Primary button - filled with accent */
+.btn--primary {
+    background-color: var(--c-accent);
+    color: var(--c-surface);
+    border-color: var(--c-accent);
+}
+
+.btn--primary:hover {
+    background-color: var(--c-accent-hover);
+}
+
+/* Secondary button - outline style */
+.btn--secondary {
+    background: transparent;
+    color: var(--c-ink);
+}
+
+.btn--secondary:hover {
+    background: var(--c-ink);
+    color: var(--c-surface);
+}
+
+/* Full width button */
+.btn--full {
+    width: 100%;
+}
+
+/* Small button */
+.btn--sm {
+    min-height: 40px;
+    padding: var(--space-xs) var(--space-md);
+    font-size: var(--text-xs);
+}
+
+/* ==========================================================================
+   4. CARDS
+
+   .brutal-card-v2 is the single card component. It is one bordered
+   layer: thin border, no shadow, solid surface. Card padding shrinks on
+   mobile via --card-pad so nested content never gets crushed.
+   ========================================================================== */
+.brutal-card-v2 {
+    --card-pad: var(--space-lg);
+
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    background: var(--c-surface);
+    border: var(--border-thin) solid var(--c-border);
+    padding: var(--card-pad);
+}
+
+@media (max-width: 768px) {
+    .brutal-card-v2 {
+        --card-pad: var(--space-md);
+    }
+}
+
+/* Featured cards: a slim halftone band across the top. This is the only
+   place the texture appears, so it reads as emphasis, not wallpaper. */
+.brutal-card-v2--featured {
+    border-top: none;
+    padding-top: calc(var(--card-pad) + 10px);
+}
+
+.brutal-card-v2--featured::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 10px;
+    background-color: var(--c-accent);
+    background-image: radial-gradient(var(--c-ink) 18%, transparent 18%);
+    background-size: 6px 6px;
+    background-position: 0 0;
+}
+
+/* Legacy pattern names kept as quiet variants, so any straggler markup
+   still renders a card rather than a wall of texture. */
+.brutal-card-v2--halftone {
+    border-top: var(--border-thin) solid var(--c-accent);
+}
+
+.brutal-card-v2--hatching {
+    background: var(--c-surface-alt);
+}
+
+/* Card media — screenshot bleeds to the card edges, sits above the title. */
+.brutal-card-v2__media {
+    margin: calc(var(--card-pad) * -1) calc(var(--card-pad) * -1) 0;
+    border-bottom: var(--border-thin) solid var(--c-border);
+    background: var(--c-surface-alt);
+    overflow: hidden;
+}
+
+.brutal-card-v2--featured .brutal-card-v2__media {
+    margin-top: calc((var(--card-pad) + 10px) * -1);
+}
+
+.brutal-card-v2__media img {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    object-position: top left;
+    display: block;
+}
+
+/* Card header — typography only: title + accent rule. */
+.brutal-card-v2__header {
+    padding-bottom: var(--space-xs);
+    border-bottom: 2px solid var(--c-accent);
+}
+
+.brutal-card-v2__title {
+    font-family: var(--font-mono);
+    font-size: var(--text-lg);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    color: var(--c-ink);
+    margin: 0;
+}
+
+.brutal-card-v2__content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+
+.brutal-card-v2__content p {
+    color: var(--c-ink);
+    line-height: var(--leading-normal);
+    margin: 0;
+}
+
+/* Action button inside a card — the one boxed action per card. */
+.brutal-card-v2__action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    /* WCAG 2.5.5 — minimum 44x44 touch target. */
+    min-height: 44px;
+    background-color: var(--c-surface);
+    color: var(--c-ink);
+    border: var(--border-thick) solid var(--c-border);
+    padding: var(--space-xs) var(--space-md);
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    box-shadow: var(--shadow-sm) var(--c-shadow);
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.brutal-card-v2__action:hover {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 var(--c-shadow);
+}
+
+.brutal-card-v2__action:active {
+    transform: translate(4px, 4px);
+    box-shadow: none;
+}
+
+/* Tech-stack line: mono, small, NOT uppercase. */
+.project-card__tech {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--c-ink-light);
+    letter-spacing: var(--tracking-normal);
+    margin: 0;
+}
+
+.project-card__tech small {
+    font-size: inherit;
+}
+
+/* Proof points: two or three short measured facts under the lead sentence. */
+.project-card__proof {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xs);
+    font-size: var(--text-sm);
+    color: var(--c-ink-light);
+}
+
+.project-card__proof li {
+    position: relative;
+    padding-left: var(--space-md);
+}
+
+.project-card__proof li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--c-accent);
+}
+
+.project-card__proof code {
+    font-size: var(--text-xs);
+}
+
+/* Secondary text link inside a card. */
+.project-card__link {
+    display: inline-flex;
+    align-items: center;
+
+    /* WCAG 2.5.5 — minimum 44x44 touch target. */
+    min-height: 44px;
+    color: var(--c-accent);
+    font-weight: 600;
+    font-size: var(--text-sm);
+    padding: var(--space-xs) 0;
+    transition: color var(--transition-fast);
+}
+
+.project-card__link:hover {
+    color: var(--c-accent-hover);
+    text-decoration: underline;
+}
+
+.project-status {
+    display: inline-flex;
+    align-items: center;
+    min-height: 32px;
+    padding: 0 var(--space-sm);
+    background: var(--c-surface-alt);
+    color: var(--c-ink-light);
+    border: 1px solid var(--c-border);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+}
+
+/* Actions footer pinned to the card bottom: one boxed primary action
+   first, then text links / status pills. */
+.project-card__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-xs) var(--space-lg);
+    margin-top: auto;
+    padding-top: var(--space-sm);
+}
+
+/* ==========================================================================
+   5. HERO SECTION
+
+   The one element that keeps the thick border + big hard shadow.
+   ========================================================================== */
+.hero-section {
+    background: var(--c-surface);
+    border: var(--border-thick) solid var(--c-border);
+    box-shadow: var(--shadow-lg) var(--c-shadow);
+    padding: var(--space-xl);
+    margin-bottom: var(--space-2xl);
+}
+
+@media (max-width: 768px) {
+    .hero-section {
+        padding: var(--space-lg) var(--space-md);
+        box-shadow: var(--shadow-sm) var(--c-shadow);
+    }
+}
+
+.hero-section__content {
+    max-width: 820px;
+}
+
+.hero-section__header {
+    margin-bottom: var(--space-md);
+}
+
+.hero-section__title {
+    font-size: var(--text-4xl);
+    color: var(--c-accent);
+    margin-bottom: var(--space-xs);
+}
+
+.hero-section__subtitle {
+    font-family: var(--font-mono);
+    font-size: var(--text-base);
+    color: var(--c-ink-light);
+    font-weight: 400;
+    margin: 0;
+}
+
+.hero-section__summary {
+    font-size: var(--text-lg);
+    line-height: var(--leading-relaxed);
+    margin-bottom: var(--space-lg);
+}
+
+/* Contact buttons live in the hero so the PDF is one click from the top. */
+.hero-section__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-lg);
+}
+
+.hero-section__actions .btn {
+    flex: 1 1 140px;
+}
+
+.hero-section__location {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--c-ink-light);
+    margin: 0;
+}
+
+/* ==========================================================================
+   6. SECTION STYLES
+   ========================================================================== */
+.section-title {
+    font-size: var(--text-2xl);
+    color: var(--c-accent);
+    margin-bottom: var(--space-lg);
+    padding-bottom: var(--space-sm);
+    border-bottom: var(--border-thick) solid var(--c-accent);
+    display: inline-block;
+}
+
+.section-lede {
+    color: var(--c-ink-light);
+    max-width: 640px;
+    margin: calc(var(--space-md) * -1) 0 var(--space-lg);
+}
+
+/* About & Contact Wrapper */
+.about-contact-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    margin-bottom: var(--space-2xl);
+}
+
+.about-section,
+.contact-section {
+    background: var(--c-surface);
+    border: var(--border-thin) solid var(--c-border);
+    padding: var(--space-lg);
+}
+
+.about-section__paragraph,
+.contact-section__description {
+    margin-bottom: var(--space-md);
+}
+
+.contact-section__list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xs);
+    font-size: var(--text-sm);
+}
+
+.contact-section__list a {
+    color: var(--c-accent);
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    min-height: 32px;
+}
+
+.contact-section__list a:hover {
+    text-decoration: underline;
+}
+
+/* Projects / Decisions */
+.projects-section,
+.decisions-section {
+    margin-bottom: var(--space-2xl);
+}
+
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr));
+    gap: var(--space-lg);
+    align-items: stretch;
+}
+
+@media (max-width: 768px) {
+    .projects-grid {
+        gap: var(--space-md);
+    }
+}
+
+/* ==========================================================================
+   7. TECH RADAR
+   ========================================================================== */
+.tech-radar-section {
+    margin-bottom: var(--space-2xl);
+}
+
+.tech-radar-section__description {
+    margin-bottom: var(--space-lg);
+    max-width: 720px;
+    color: var(--c-ink-light);
+}
+
+.tech-radar-section__description strong {
+    color: var(--c-ink);
+}
+
+.radar-container {
+    width: 100%;
+    max-width: var(--container-max);
+    margin: 0 auto var(--space-lg);
+    padding: var(--space-lg);
+    background: var(--c-surface);
+    border: var(--border-thin) solid var(--c-border);
+    overflow-x: auto;
+}
+
+.radar-container svg {
+    width: 100%;
+    height: auto;
+    display: block;
+    font-family: var(--font-mono);
+}
+
+/* Text halo so ring/quadrant labels stay legible over grid lines. */
+.svg-text-halo {
+    fill: var(--c-surface);
+    stroke: var(--c-surface);
+    stroke-width: 5px;
+    stroke-linejoin: round;
+    paint-order: stroke;
+}
+
+.blip {
+    cursor: pointer;
+    transition: opacity var(--transition-normal);
+}
+
+/* Higher specificity to override inline opacity from JS */
+.radar-container .blip:hover,
+.radar-container .blip:focus {
+    opacity: 1;
+}
+
+/* Below tablet the 1200px-wide SVG scales to ~260px and blips are 2px.
+   Hide it and show the index expanded (radar.js opens it by default). */
+@media (max-width: 768px) {
+    .radar-container {
+        display: none;
+    }
+
+    .radar-legend__toggle {
+        display: none;
+    }
+}
+
+/* Radar Legend */
+.radar-legend {
+    max-width: var(--container-max);
+    margin: 0 auto;
+    padding: var(--space-lg);
+    background: var(--c-surface);
+    border: var(--border-thin) solid var(--c-border);
+}
+
+.radar-legend__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--space-md);
+    margin-bottom: var(--space-lg);
+    padding-bottom: var(--space-sm);
+    border-bottom: 2px solid var(--c-accent);
+}
+
+.radar-legend__title {
+    margin: 0;
+    color: var(--c-accent);
+    font-size: var(--text-lg);
+}
+
+.radar-legend__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+.radar-legend__link {
+    color: var(--c-accent);
+    font-size: var(--text-sm);
+    padding: var(--space-xs);
+    transition: opacity var(--transition-normal);
+}
+
+.radar-legend__link:hover {
+    opacity: 0.7;
+    text-decoration: underline;
+}
+
+.radar-legend__toggle {
+    background: transparent;
+    border: var(--border-thin) solid var(--c-accent);
+    color: var(--c-accent);
+    min-height: 40px;
+    padding: var(--space-xs) var(--space-md);
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    min-width: 100px;
+}
+
+.radar-legend__toggle:hover {
+    background: var(--c-accent);
+    color: var(--c-surface);
+}
+
+.radar-legend__content {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(260px, 100%), 1fr));
+    gap: var(--space-lg) var(--space-xl);
+}
+
+.radar-legend__content[aria-hidden="true"] {
+    display: none;
+}
+
+.legend-quadrant h3 {
+    font-size: var(--text-base);
+    color: var(--c-accent);
+    margin-bottom: var(--space-sm);
+    padding-bottom: var(--space-xs);
+    border-bottom: var(--border-thin) solid var(--c-accent);
+}
+
+.legend-list {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xs);
+}
+
+.legend-list li {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+    font-size: var(--text-sm);
+    min-height: 28px;
+}
+
+.legend-number {
+    font-family: var(--font-mono);
+    color: var(--c-ink-muted);
+    font-size: var(--text-xs);
+    min-width: 2.2ch;
+    text-align: right;
+}
+
+.legend-label {
+    color: var(--c-ink);
+}
+
+/* Ring shown as a tag next to each entry (replaces per-ring sub-headers). */
+.ring-tag {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+    line-height: 1;
+    padding: 3px 5px;
+    border: 1px solid currentcolor;
+    color: var(--c-ink-light);
+}
+
+.ring-tag--adopt { color: var(--radar-adopt); }
+.ring-tag--trial { color: var(--radar-trial); }
+.ring-tag--assess { color: var(--radar-assess); }
+.ring-tag--hold { color: var(--radar-hold); }
+
+.legend-new {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--radar-new);
+}
+
+/* ==========================================================================
+   8. MODALS
+   ========================================================================== */
+.arch-modal {
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-modal);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-lg);
+}
+
+.arch-modal.active {
+    display: flex;
+}
+
+.arch-modal__overlay {
+    position: absolute;
+    inset: 0;
+    background: rgb(0, 0, 0, 0.8);
+    backdrop-filter: blur(4px);
+}
+
+.arch-modal__dialog {
+    position: relative;
+    width: 100%;
+    max-width: 1200px;
+    max-height: 90vh;
+    background: var(--c-surface);
+    border: var(--border-thick) solid var(--c-border);
+    box-shadow: var(--shadow-lg) var(--c-shadow);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    z-index: calc(var(--z-modal) + 1);
+}
+
+.arch-modal__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-lg);
+    border-bottom: 2px solid var(--c-accent);
+    background: var(--c-surface);
+}
+
+.arch-modal__title {
+    margin: 0;
+    font-size: var(--text-xl);
+    color: var(--c-accent);
+}
+
+.arch-modal__close {
+    background: transparent;
+    border: var(--border-thin) solid var(--c-border);
+    color: var(--c-ink);
+    width: 44px;
+    height: 44px;
+    font-size: var(--text-xl);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.arch-modal__close:hover {
+    background: var(--c-accent);
+    border-color: var(--c-accent);
+    color: var(--c-surface);
+}
+
+.arch-modal__content {
+    padding: var(--space-lg);
+    overflow-y: auto;
+    flex: 1;
+}
+
+.arch-modal__subtitle {
+    font-size: var(--text-lg);
+    color: var(--c-ink-light);
+    margin-bottom: var(--space-lg);
+    text-align: center;
+}
+
+.arch-modal__content .mermaid {
+    margin: var(--space-lg) 0;
+    background: transparent;
+    padding: var(--space-lg);
+    overflow-x: auto;
+}
+
+.arch-modal__details {
+    margin-top: var(--space-xl);
+    padding: var(--space-lg);
+    background: var(--c-surface-alt);
+    border: var(--border-thin) solid var(--c-border);
+}
+
+.arch-modal__summary {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: var(--text-base);
+    color: var(--c-accent);
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    list-style: none;
+    user-select: none;
+}
+
+.arch-modal__summary::-webkit-details-marker {
+    display: none;
+}
+
+.arch-modal__summary::before {
+    content: '>';
+    display: inline-block;
+    margin-right: var(--space-xs);
+    transition: transform var(--transition-fast);
+}
+
+.arch-modal__details[open] .arch-modal__summary::before {
+    transform: rotate(90deg);
+}
+
+.arch-modal__summary:hover {
+    color: var(--c-accent-hover);
+}
+
+.arch-modal__details-content {
+    padding: var(--space-lg) var(--space-sm);
+}
+
+.arch-modal__details-content h4 {
+    margin-top: 0;
+    margin-bottom: var(--space-md);
+    color: var(--c-accent);
+}
+
+.arch-modal__list {
+    margin: 0;
+}
+
+.arch-modal__list li {
+    padding: var(--space-xs) 0;
+    line-height: var(--leading-normal);
+}
+
+/* Radar Tooltip (positioned by radar.js, styled here for theme support) */
+#radar-tooltip {
+    position: absolute;
+    background: var(--c-surface);
+    color: var(--c-ink);
+    border: var(--border-thin) solid var(--c-accent);
+    padding: var(--space-md);
+    max-width: 320px;
+    box-shadow: var(--shadow-sm) var(--c-shadow);
+    z-index: var(--z-toast);
+}
+
+#radar-tooltip h4 {
+    margin: 0 0 var(--space-xs);
+    color: var(--c-accent);
+    font-size: var(--text-base);
+}
+
+#radar-tooltip p {
+    margin: 0 0 var(--space-xs);
+    font-size: var(--text-sm);
+}
+
+#radar-tooltip p:last-child {
+    margin: 0;
+    color: var(--c-ink-light);
+}
+
+/* ==========================================================================
+   9. THEME SWITCHER (lives inside the header)
+   ========================================================================== */
+.theme-switcher {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    padding-left: var(--space-sm);
+    border-left: var(--border-thin) solid var(--c-border);
+}
+
+/* Mobile: hide theme switcher — declutters narrow viewports. Mobile
+   defaults to whichever theme is saved (or the system default). */
+@media (max-width: 768px) {
+    .theme-switcher {
+        display: none;
+    }
+}
+
+.color-dot {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: var(--border-thin) solid var(--c-border);
+    cursor: pointer;
+    transition: transform var(--transition-fast);
+    padding: 0;
+}
+
+.color-dot:hover {
+    transform: scale(1.15);
+}
+
+.color-dot:focus {
+    outline: 3px solid var(--c-border);
+    outline-offset: 2px;
+}
+
+.color-dot.active {
+    box-shadow: 0 0 0 2px var(--c-surface), 0 0 0 4px var(--c-ink);
+}
+
+/* ==========================================================================
+   10. FOOTER
+   ========================================================================== */
+.site-footer {
+    margin-top: var(--space-2xl);
+    padding: var(--space-lg) 0;
+    text-align: center;
+    border-top: var(--border-thin) solid var(--c-border);
+    background: var(--c-bg);
+}
+
+.site-footer__text {
+    margin: 0;
+    color: var(--c-ink-light);
+    font-size: var(--text-sm);
+}
+
+.site-footer__link {
+    color: var(--c-accent);
+    text-decoration: underline;
+    transition: color var(--transition-normal);
+}
+
+.site-footer__link:hover {
+    color: var(--c-accent-hover);
+}
+
+/* ==========================================================================
+   11. BACKGROUND SCENE (3D, opt-in)
+
+   Three.js is only fetched when a visitor turns a scene on. The control
+   is a single small button, bottom-right, shown only where the viewport
+   has a real gutter for it (>= 1600px).
+   ========================================================================== */
+#village-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    pointer-events: auto;
+}
+
+body.village-active {
+    background-color: transparent;
+}
+
+.scene-control {
+    display: none;
+    position: fixed;
+    bottom: var(--space-lg);
+    right: var(--space-lg);
+    flex-direction: column;
+    align-items: flex-end;
+    gap: var(--space-xs);
+    z-index: calc(var(--z-sticky) + 1);
+}
+
+@media (min-width: 1600px) {
+    .scene-control {
+        display: flex;
+    }
+}
+
+.scene-control__menu {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xs);
+    background: var(--c-surface);
+    border: var(--border-thin) solid var(--c-border);
+    padding: var(--space-xs);
+}
+
+.scene-control__menu[hidden] {
+    display: none;
+}
+
+.village-toggle {
+    min-width: 12ch;
+    min-height: 36px;
+    text-align: left;
+    background: var(--c-surface);
+    border: var(--border-thin) solid var(--c-border);
+    padding: var(--space-2xs) var(--space-sm);
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+    color: var(--c-ink);
+    cursor: pointer;
+    transition: background var(--transition-fast), color var(--transition-fast);
+}
+
+.village-toggle:hover {
+    background: var(--c-ink);
+    color: var(--c-surface);
+}
+
+.village-toggle.active {
+    background: var(--c-accent);
+    color: var(--c-surface);
+    border-color: var(--c-accent);
+}
+
+.scene-control__toggle {
+    box-shadow: var(--shadow-sm) var(--c-shadow);
+}
+
+/* Focus mode — hide all content, show only 3D scene + control */
+body.scene-focus .site-header,
+body.scene-focus .site-main,
+body.scene-focus .site-footer {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+}
+
+/* Safeguard: if body.scene-focus carried over from a wide session and
+   the viewport shrank below the point where the control is visible,
+   re-show core content so the user can never get locked out. */
+@media (max-width: 1599px) {
+    body.scene-focus .site-header,
+    body.scene-focus .site-main,
+    body.scene-focus .site-footer {
+        opacity: 1;
+        pointer-events: auto;
+    }
+}
+
+/* ==========================================================================
+   12. RESPONSIVE DESIGN
+   ========================================================================== */
+
+/* Tablets and up (769px+) */
+@media (min-width: 769px) {
+    .hero-section__title {
+        font-size: var(--text-5xl);
+    }
+
+    /* About/Contact side-by-side, About takes the wider column */
+    .about-contact-wrapper {
+        flex-direction: row;
+        align-items: stretch;
+    }
+
+    .about-section {
+        flex: 2 1 0;
+    }
+
+    .contact-section {
+        flex: 1 1 0;
+    }
+
+    /* Desktop Navigation */
+    .nav-toggle {
+        display: none;
+    }
+
+    .main-nav {
+        position: static;
+        width: auto;
+        max-width: none;
+        height: auto;
+        transform: none;
+        background: transparent;
+        border: none;
+        box-shadow: none;
+        padding: 0;
+        overflow: visible;
+    }
+
+    .nav-list {
+        flex-direction: row;
+        justify-content: flex-end;
+        gap: var(--space-2xs);
+        padding: 0;
+    }
+
+    .nav-link {
+        font-size: var(--text-xs);
+        min-height: 36px;
+        padding: var(--space-2xs) var(--space-sm);
+    }
+
+    /* No backdrop on desktop */
+    .nav-toggle[aria-expanded="true"]::before {
+        display: none;
+    }
+}
+
+/* Large screens (1024px+) */
+@media (min-width: 1024px) {
+    body {
+        padding: var(--space-2xl);
+    }
+}
